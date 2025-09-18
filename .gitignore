@@ -1,0 +1,13 @@
+# Ignore Shopify-specific files
+config.yml
+.env
+
+# Ignore dependency directories
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
