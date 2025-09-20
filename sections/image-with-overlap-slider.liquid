@@ -30,20 +30,29 @@
     }
   }
 
-  /* Left image wrapper has a fixed shape */
-    #shopify-section-{{ section.id }} .io-image{
+ /* Desktop: hard height */
+@media (min-width: 991px){
+  #shopify-section-{{ section.id }} .io-image{
     border-radius: var(--radius);
     overflow: hidden;
-    aspect-ratio: 2 / 5;   /* <- pick the shape you want (4/5, 3/4, 16/9) */
-    }
+    height: 520px;        /* <- set the exact height you want */
+  }
+}
 
-    /* Make the image fill that shape consistently */
-    #shopify-section-{{ section.id }} .io-image img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;      /* crop to fit the box, not stretch */
-    display: block;
-    }
+/* Mobile: let it auto or use a ratio so it doesn’t look squashed */
+@media (max-width: 990px){
+  #shopify-section-{{ section.id }} .io-image{
+    aspect-ratio: 4 / 5;  /* or set a smaller fixed height if you prefer */
+    height: auto;
+  }
+}
+
+#shopify-section-{{ section.id }} .io-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
   #shopify-section-{{ section.id }} .io-image img{
     width:100%; height:100%; object-fit:cover; display:block;
