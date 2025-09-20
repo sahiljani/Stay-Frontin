@@ -102,12 +102,12 @@
       "type": "image-with-overlap-slider",
       "name": "Image + Overlap slider",
       "settings": {
-        "left_image": "shopify://shop_images/fashion-model-walks-down-city-street.jpg",
+        "left_image": "shopify://shop_images/urban-vintage-denimn-on-hangers.jpg",
         "heading": "NEW SKIN & HAIR CARE PRODUCTS",
-        "collection": "automated-collection",
-        "max_items": 10,
-        "overlap": 10,
-        "radius": 7,
+        "collection": "frontpage",
+        "max_items": 20,
+        "overlap": 12,
+        "radius": 16,
         "panel_bg": "#ffffff",
         "section_bg": "#f6f2ef"
       }
