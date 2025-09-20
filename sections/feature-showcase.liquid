@@ -1,0 +1,334 @@
+{%- comment -%}
+  Feature Showcase Section
+  Renders a headline, optional subheading, central image (or two images), and up to 4 feature blocks (icon + title + text) arranged 2 on left, 2 on right around the image for desktop. On mobile everything stacks.
+  Uses Tailwind utility classes. Assumes Tailwind build pipeline is integrated producing classes.
+{%- endcomment -%}
+
+{% comment %} Added dynamic class computations {% endcomment %}
+{% liquid
+  assign pad_y = section.settings.section_padding_y | default: 6
+  case pad_y
+    when 2
+      assign py_class = 'py-8'
+    when 3
+      assign py_class = 'py-12'
+    when 4
+      assign py_class = 'py-16'
+    when 5
+      assign py_class = 'py-20'
+    when 6
+      assign py_class = 'py-24'
+    when 7
+      assign py_class = 'py-28'
+    when 8
+      assign py_class = 'py-32'
+    when 9
+      assign py_class = 'py-36'
+    when 10
+      assign py_class = 'py-40'
+    when 11
+      assign py_class = 'py-44'
+    when 12
+      assign py_class = 'py-48'
+    else
+      assign py_class = 'py-24'
+  endcase
+
+  case section.settings.background_style
+    when 'subtle'
+      assign bg_class = 'bg-gray-50'
+    when 'soft'
+      assign bg_class = 'bg-indigo-50'
+    when 'dark'
+      assign bg_class = 'bg-gray-900 text-white'
+    else
+      assign bg_class = ''
+  endcase
+
+  case section.settings.container_width
+    when 'lg'
+      assign container_class = 'max-w-5xl'
+    when 'xl'
+      assign container_class = 'max-w-7xl'
+    when 'full'
+      assign container_class = 'w-full'
+    else
+      assign container_class = 'max-w-7xl'
+  endcase
+
+  case section.settings.heading_align
+    when 'left'
+      assign heading_align_class = 'text-left'
+    when 'right'
+      assign heading_align_class = 'text-right'
+    else
+      assign heading_align_class = 'text-center'
+  endcase
+
+  case section.settings.icon_size
+    when 'sm'
+      assign icon_image_class = 'max-h-8'
+      assign icon_wrapper_size = 'w-10 h-10'
+    when 'lg'
+      assign icon_image_class = 'max-h-16'
+      assign icon_wrapper_size = 'w-20 h-20'
+    else
+      assign icon_image_class = 'max-h-12'
+      assign icon_wrapper_size = 'w-14 h-14'
+  endcase
+
+  case section.settings.icon_shape
+    when 'rounded'
+      assign icon_shape_class = 'bg-white rounded-lg shadow ring-1 ring-gray-200'
+    when 'circle'
+      assign icon_shape_class = 'bg-white rounded-full shadow ring-1 ring-gray-200'
+    when 'soft'
+      assign icon_shape_class = 'bg-gray-100 rounded-xl'
+    else
+      assign icon_shape_class = ''
+  endcase
+
+  assign bg_style = ''
+  if section.settings.background_color != blank
+    assign bg_style = bg_style | append: 'background-color:' | append: section.settings.background_color | append: ';'
+  endif
+  if section.settings.background_image != blank
+    assign bg_style = bg_style | append: 'background-image:url(' | append: section.settings.background_image | image_url: width: 2000 | append: ');'
+    assign bg_style = bg_style | append: 'background-size:' | append: section.settings.background_size | append: ';'
+    assign pos = section.settings.background_position | default: 'center'
+    assign bg_style = bg_style | append: 'background-position:' | append: pos | append: ';'
+    assign bg_style = bg_style | append: 'background-repeat:' | append: section.settings.background_repeat | append: ';'
+  endif
+  assign overlay_opacity = section.settings.overlay_opacity | default: 0 | divided_by: 100.0
+%}
+
+<section id="feature-showcase-{{ section.id }}" class="feature-showcase {{ py_class }} {{ bg_class }} relative" style="{{ bg_style }}">
+  {% if section.settings.overlay_color != blank and overlay_opacity > 0 %}
+    <div class="absolute inset-0 pointer-events-none" style="background-color: {{ section.settings.overlay_color }}; opacity: {{ overlay_opacity }};"></div>
+  {% endif %}
+  <div class="relative {{ container_class }} mx-auto px-4 sm:px-6 lg:px-8">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="{{ heading_align_class }} font-bold tracking-tight text-3xl md:text-5xl text-gray-900 mb-4">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="max-w-3xl mx-auto {{ heading_align_class }} text-base md:text-lg text-gray-600 mb-12">
+        {{ section.settings.subheading }}
+      </p>
+    {%- endif -%}
+
+    <div class="feature-grid grid lg:grid-cols-12 gap-10 lg:gap-8 items-start lg:items-center {% if section.settings.layout_variant == 'stacked' %}lg:grid-cols-1{% endif %}">
+      {% if section.settings.layout_variant == 'image_left' %}
+        {% assign left_order = 'order-2 lg:order-1' %}
+        {% assign image_order = 'order-1 lg:order-2' %}
+        {% assign right_order = 'order-3' %}
+      {% elsif section.settings.layout_variant == 'image_right' %}
+        {% assign left_order = 'order-1' %}
+        {% assign image_order = 'order-3 lg:order-2' %}
+        {% assign right_order = 'order-2 lg:order-3' %}
+      {% elsif section.settings.layout_variant == 'stacked' %}
+        {% assign left_order = 'order-2' %}
+        {% assign image_order = 'order-1' %}
+        {% assign right_order = 'order-3' %}
+      {% else %}
+        {% assign left_order = 'order-1' %}
+        {% assign image_order = 'order-2' %}
+        {% assign right_order = 'order-3' %}
+      {% endif %}
+
+      <div class="space-y-10 lg:col-span-3 {{ left_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+        {%- assign idx = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign show_left = false -%}
+          {%- if section.settings.auto_distribute -%}
+            {%- assign remainder = forloop.index0 | modulo: 2 -%}
+            {%- if remainder == 0 -%}{% assign show_left = true %}{% endif -%}
+          {%- elsif block.type == 'feature' and block.settings.column == 'left' -%}
+            {%- assign show_left = true -%}
+          {%- endif -%}
+          {%- if show_left -%}
+          <div class="flex items-start gap-4" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="shrink-0 {{ icon_wrapper_size }} flex items-center justify-center {{ icon_shape_class }}">
+                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" class="w-auto {{ icon_image_class }}" loading="lazy" />
+              </div>
+            {%- endif -%}
+            <div>
+              {%- if block.settings.title != blank -%}
+                <h3 class="font-semibold text-gray-900 text-lg mb-1">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="text-sm leading-relaxed text-gray-600">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="relative lg:col-span-6 flex justify-center lg:justify-center items-center {{ image_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+        {%- if section.settings.main_image != blank -%}
+          <div class="relative w-full flex justify-center">
+            <img src="{{ section.settings.main_image | image_url: width: 900 }}" alt="{{ section.settings.heading | escape }} image" class="w-full max-w-md mx-auto drop-shadow-xl rounded-lg" loading="lazy" />
+          </div>
+        {%- else -%}
+          <div class="w-full max-w-md aspect-[3/5] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+            {{ 'image' | placeholder_svg_tag: 'w-16 h-16' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="space-y-10 lg:col-span-3 {{ right_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+        {%- for block in section.blocks -%}
+          {%- assign show_right = false -%}
+          {%- if section.settings.auto_distribute -%}
+            {%- assign remainder = forloop.index0 | modulo: 2 -%}
+            {%- if remainder == 1 -%}{% assign show_right = true %}{% endif -%}
+          {%- elsif block.type == 'feature' and block.settings.column == 'right' -%}
+            {%- assign show_right = true -%}
+          {%- endif -%}
+          {%- if show_right -%}
+          <div class="flex items-start gap-4" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="shrink-0 {{ icon_wrapper_size }} flex items-center justify-center {{ icon_shape_class }}">
+                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" class="w-auto {{ icon_image_class }}" loading="lazy" />
+              </div>
+            {%- endif -%}
+            <div>
+              {%- if block.settings.title != blank -%}
+                <h3 class="font-semibold text-gray-900 text-lg mb-1">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="text-sm leading-relaxed text-gray-600">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Fallback minimal styling if Tailwind not present or purged classes */
+    #feature-showcase-{{ section.id }} .feature-grid { }
+    @media (min-width: 1024px) {
+      #feature-showcase-{{ section.id }} .feature-grid { display: grid; grid-template-columns: repeat(12, 1fr); }
+      #feature-showcase-{{ section.id }} .feature-grid > * { grid-column: span 12; }
+      #feature-showcase-{{ section.id }} .feature-grid > .space-y-10:first-of-type { grid-column: span 3; }
+      #feature-showcase-{{ section.id }} .feature-grid > .relative { grid-column: span 6; }
+      #feature-showcase-{{ section.id }} .feature-grid > .space-y-10:last-of-type { grid-column: span 3; }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Feature showcase",
+  "tag": "section",
+  "class": "section feature-showcase-section",
+  "settings": [
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Powerful Features Designed For You"},
+    {"type": "textarea", "id": "subheading", "label": "Subheading", "default": "Designed to help you focus on what's important and get more done in less time."},
+    {"type": "image_picker", "id": "main_image", "label": "Main image"},
+
+    {"type": "select", "id": "layout_variant", "label": "Layout variant", "default": "centered",
+      "options": [
+        {"value": "centered", "label": "Image Center (default)"},
+        {"value": "image_left", "label": "Image Left"},
+        {"value": "image_right", "label": "Image Right"},
+        {"value": "stacked", "label": "Stacked (image above)"}
+      ]
+    },
+    {"type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center", "options": [
+      {"value": "left", "label": "Left"},
+      {"value": "center", "label": "Center"},
+      {"value": "right", "label": "Right"}
+    ]},
+    {"type": "select", "id": "container_width", "label": "Container width", "default": "xl", "options": [
+      {"value": "lg", "label": "Large"},
+      {"value": "xl", "label": "Extra Large"},
+      {"value": "full", "label": "Full width (edge padding)"}
+    ]},
+    {"type": "select", "id": "background_style", "label": "Background style", "default": "none", "options": [
+      {"value": "none", "label": "None"},
+      {"value": "subtle", "label": "Subtle gray"},
+      {"value": "soft", "label": "Soft tinted"},
+      {"value": "dark", "label": "Dark"}
+    ]},
+    {"type": "range", "id": "section_padding_y", "label": "Vertical padding (rem)", "min": 2, "max": 12, "step": 1, "default": 6},
+    {"type": "checkbox", "id": "auto_distribute", "label": "Auto distribute features (ignore individual column setting)", "default": false},
+    {"type": "select", "id": "icon_size", "label": "Icon size", "default": "md", "options": [
+      {"value": "sm", "label": "Small"},
+      {"value": "md", "label": "Medium"},
+      {"value": "lg", "label": "Large"}
+    ]},
+    {"type": "select", "id": "icon_shape", "label": "Icon shape background", "default": "none", "options": [
+      {"value": "none", "label": "None"},
+      {"value": "rounded", "label": "Rounded"},
+      {"value": "circle", "label": "Circle"},
+      {"value": "soft", "label": "Soft gray"}
+    ]},
+
+    {"type": "header", "content": "Background customization"},
+    {"type": "image_picker", "id": "background_image", "label": "Background image"},
+    {"type": "color", "id": "background_color", "label": "Background color"},
+    {"type": "select", "id": "background_size", "label": "Background size", "default": "cover", "options": [
+      {"value": "cover", "label": "Cover"},
+      {"value": "contain", "label": "Contain"},
+      {"value": "auto", "label": "Auto"}
+    ]},
+    {"type": "select", "id": "background_position", "label": "Background position", "default": "center", "options": [
+      {"value": "center", "label": "Center"},
+      {"value": "top", "label": "Top"},
+      {"value": "bottom", "label": "Bottom"},
+      {"value": "left", "label": "Left"},
+      {"value": "right", "label": "Right"}
+    ]},
+    {"type": "select", "id": "background_repeat", "label": "Background repeat", "default": "no-repeat", "options": [
+      {"value": "no-repeat", "label": "No repeat"},
+      {"value": "repeat", "label": "Repeat"},
+      {"value": "repeat-x", "label": "Repeat X"},
+      {"value": "repeat-y", "label": "Repeat Y"}
+    ]},
+    {"type": "color", "id": "overlay_color", "label": "Overlay color"},
+    {"type": "range", "id": "overlay_opacity", "label": "Overlay opacity (0-100)", "min": 0, "max": 100, "step": 5, "default": 0}
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {"type": "image_picker", "id": "icon", "label": "Icon"},
+        {"type": "text", "id": "title", "label": "Title", "default": "Task Management"},
+        {"type": "textarea", "id": "text", "label": "Description", "default": "Organize your tasks with our intuitive drag-and-drop interface."},
+        {"type": "select", "id": "column", "label": "Column", "default": "left", "options": [
+          {"value": "left", "label": "Left"},
+          {"value": "right", "label": "Right"}
+        ]}
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Feature showcase",
+      "blocks": [
+        {"type": "feature", "settings": {"title": "Task Management", "text": "Organize your tasks with our intuitive drag-and-drop interface.", "column": "left"}},
+        {"type": "feature", "settings": {"title": "Team Collaboration", "text": "Work seamlessly with your team, assign tasks, and track progress in real-time.", "column": "right"}},
+        {"type": "feature", "settings": {"title": "Time Tracking", "text": "Understand where your time goes with detailed reports and analytics.", "column": "left"}},
+        {"type": "feature", "settings": {"title": "Progress Analytics", "text": "Visualize your progress with beautiful charts and get insights to optimize your workflow.", "column": "right"}}
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+/* Additional optional custom styles (Tailwind utilities preferred) */
+{% endstylesheet %}
+
+{% javascript %}
+/* No JS required for static layout */
+{% endjavascript %}
