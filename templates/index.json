@@ -104,7 +104,7 @@
       "settings": {
         "left_image": "shopify://shop_images/Gemini_Generated_Image_4z67pq4z67pq4z67_1.png",
         "heading": "NEW SKIN & HAIR CARE PRODUCTS",
-        "collection": "frontpage",
+        "collection": "products",
         "max_items": 20,
         "overlap": 12,
         "radius": 16,
