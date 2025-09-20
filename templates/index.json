@@ -106,7 +106,7 @@
         "heading": "NEW SKIN & HAIR CARE PRODUCTS",
         "collection": "automated-collection",
         "max_items": 4,
-        "overlap": 10,
+        "overlap": 0,
         "radius": 7,
         "panel_bg": "#ffffff",
         "page_bg": "#f6f2ef"
