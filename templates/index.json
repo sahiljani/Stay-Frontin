@@ -105,11 +105,11 @@
         "left_image": "shopify://shop_images/fashion-model-walks-down-city-street.jpg",
         "heading": "NEW SKIN & HAIR CARE PRODUCTS",
         "collection": "automated-collection",
-        "max_items": 4,
-        "overlap": 0,
+        "max_items": 10,
+        "overlap": 10,
         "radius": 7,
         "panel_bg": "#ffffff",
-        "page_bg": "#f6f2ef"
+        "section_bg": "#f6f2ef"
       }
     }
   },
