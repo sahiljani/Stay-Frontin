@@ -48,6 +48,13 @@
             "text": "LATEX - FREE"
           }
         },
+        "ticker_item_K8rjmF": {
+          "type": "ticker_item",
+          "settings": {
+            "emoji": "",
+            "text": "MULTI - WEEK HOLD"
+          }
+        },
         "ticker_item_z7jkCb": {
           "type": "ticker_item",
           "settings": {
@@ -72,9 +79,13 @@
       },
       "block_order": [
         "ticker_item_ctNTph",
+        "ticker_item_K8rjmF",
         "ticker_item_z7jkCb",
         "ticker_item_zHYa7B",
         "ticker_item_UwyqjG"
+      ],
+      "custom_css": [
+        ".hero2-left {background: radial-gradient( circle at 50% 50%, #9d5d6f 0%, #c08c9a 30%, #d8a4b2 60%, #d9a3b2 85%, #d59ead 100% ) !important;}"
       ],
       "name": "Hero 2 Grid",
       "settings": {
@@ -83,9 +94,10 @@
         "body_richtext": "<p>Whether you need an ultra-strong hold for all-day wear, a sweat-proof formula for active days, or a natural finish that blends seamlessly, we've got you covered.</p>",
         "button_label": "SHOP NOW",
         "button_link": "",
+        "image": "shopify://shop_images/unnamed_1.png",
         "min_height": "screen",
         "show_ticker": true,
-        "dark_background_color": "#000000",
+        "dark_background_color": "#121212",
         "text_color": "#ffffff",
         "primary_color": "#e5e7eb"
       }
