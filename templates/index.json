@@ -90,7 +90,7 @@
         "body_richtext": "<p>Whether you need an ultra-strong hold for all-day wear, a sweat-proof formula for active days, or a natural finish that blends seamlessly, we've got you covered.</p>",
         "button_label": "SHOP NOW",
         "button_link": "",
-        "image": "shopify://shop_images/unnamed_1.png",
+        "image": "shopify://shop_images/Gemini_Generated_Image_4z67pq4z67pq4z67_3.png",
         "min_height": "screen",
         "show_ticker": true,
         "dark_background_color": "#121212",
@@ -102,7 +102,7 @@
       "type": "image-with-overlap-slider",
       "name": "Image + Overlap slider",
       "settings": {
-        "left_image": "shopify://shop_images/urban-vintage-denimn-on-hangers.jpg",
+        "left_image": "shopify://shop_images/Gemini_Generated_Image_4z67pq4z67pq4z67_1.png",
         "heading": "NEW SKIN & HAIR CARE PRODUCTS",
         "collection": "frontpage",
         "max_items": 20,
