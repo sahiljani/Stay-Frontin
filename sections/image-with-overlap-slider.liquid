@@ -145,27 +145,28 @@
       </div>
 
       <div class="ios-track" id="track-{{ section.id }}">
-        {%- assign coll = collections[section.settings.collection] -%}
+        {%- assign coll = section.settings.collection -%}
         {%- if coll and coll.products_count > 0 -%}
-          {%- for product in coll.products limit: max_items -%}
+        {%- for product in coll.products limit: max_items -%}
             <a class="ios-card" href="{{ product.url }}">
-              {% if product.featured_image %}
-                {{ product.featured_image | image_url: width: 640 | image_tag: class: 'media', loading: 'lazy', alt: product.title }}
-              {% else %}
+            {% if product.featured_media %}
+                {{ product.featured_media | image_url: width: 640 | image_tag: class: 'media', loading: 'lazy', alt: product.title }}
+            {% else %}
                 <div class="media"></div>
-              {% endif %}
-              <div class="body">
+            {% endif %}
+            <div class="body">
                 <div class="vendor">{{ product.vendor }}</div>
                 <div class="title">{{ product.title }}</div>
                 <div class="ios-price">
-                  <span>{{ product.price | money }}</span>
-                  {%- if product.compare_at_price > product.price -%}
-                    <s>{{ product.compare_at_price | money }}</s>
-                  {%- endif -%}
+                <span>{{ product.price | money }}</span>
+                {%- if product.compare_at_price_max > product.price -%}
+                    <s>{{ product.compare_at_price_max | money }}</s>
+                {%- endif -%}
                 </div>
-              </div>
+            </div>
             </a>
-          {%- endfor -%}
+        {%- endfor -%}   
+
         {%- else -%}
           {%- for i in (1..6) -%}
             <div class="ios-card">
