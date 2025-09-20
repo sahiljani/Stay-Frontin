@@ -85,7 +85,7 @@
         "ticker_item_UwyqjG"
       ],
       "custom_css": [
-        ".hero2-left {background: radial-gradient( circle at 50% 50%, #9d5d6f 0%, #c08c9a 30%, #d8a4b2 60%, #d9a3b2 85%, #d59ead 100% ) !important;}"
+        ".hero2-left {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}"
       ],
       "name": "Hero 2 Grid",
       "settings": {
