@@ -1,172 +1,223 @@
 {% comment %}
-Image left (40%) + Product carousel right (60%)
-Always fixed 40/60 split. Right side shows 3 products at a time.
+  Image (40%) + Overlapping Product Panel (60%) – 3-up carousel
 {% endcomment %}
-
 {%- assign coll = section.settings.collection -%}
-{%- assign max_items = section.settings.max_items | default: 6 -%}
+{%- assign max_items = section.settings.max_items | default: 12 -%}
 
 <style>
-  #shopify-section-{{ section.id }} .split-wrap {
-    display: grid;
+  #shopify-section-{{ section.id }} .io-wrap{
+    --overlap: {{ section.settings.overlap | default: 5 }}%;
+    --radius: {{ section.settings.radius | default: 18 }}px;
+    --panel-bg: {{ section.settings.panel_bg | default: '#ffffff' }};
+    --section-bg: {{ section.settings.section_bg | default: '#f6f2ef' }};
+    --card-radius: 14px;
+    --border: 1px solid rgba(0,0,0,.06);
+    background: var(--section-bg);
+    padding: clamp(22px, 3vw, 36px);
+  }
+
+  /* 40 / 60 split */
+  #shopify-section-{{ section.id }} .io-grid{
+    display:grid;
     grid-template-columns: 40% 60%;
     align-items: stretch;
-    gap: 0;
+    gap: clamp(12px, 1.6vw, 22px);
+    position: relative;
   }
-  @media (max-width: 990px) {
-    #shopify-section-{{ section.id }} .split-wrap {
+  @media (max-width: 990px){
+    #shopify-section-{{ section.id }} .io-grid{
       grid-template-columns: 1fr;
     }
   }
 
   /* Left image */
-  #shopify-section-{{ section.id }} .split-image {
-    position: relative;
+  #shopify-section-{{ section.id }} .io-image{
+    border-radius: var(--radius);
     overflow: hidden;
+    min-height: 420px;
   }
-  #shopify-section-{{ section.id }} .split-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  #shopify-section-{{ section.id }} .io-image img{
+    width:100%; height:100%; object-fit:cover; display:block;
   }
 
-  /* Right carousel */
-  #shopify-section-{{ section.id }} .split-carousel {
+  /* Right panel (overlaps ~5%) */
+  #shopify-section-{{ section.id }} .io-panel{
+    background: var(--panel-bg);
+    border-radius: var(--radius);
+    box-shadow: 0 25px 60px rgba(0,0,0,.12);
+    padding: clamp(18px, 2vw, 28px);
     position: relative;
-    background: #fff;
-    padding: 2rem 1rem;
+    z-index: 2;
   }
-  #shopify-section-{{ section.id }} .carousel-track {
-    display: flex;
-    transition: transform 0.4s ease;
+  @media (min-width: 991px){
+    #shopify-section-{{ section.id }} .io-panel{
+      margin-left: calc(-1 * var(--overlap));
+    }
   }
-  #shopify-section-{{ section.id }} .carousel-card {
-    flex: 0 0 calc(100% / 3); /* exactly 3 cards visible */
+
+  /* Header */
+  #shopify-section-{{ section.id }} .io-head{
+    position: relative;
+    padding: 4px 48px 18px 48px;
+    text-align:center;
+  }
+  #shopify-section-{{ section.id }} .io-title{
+    margin:0; letter-spacing:.01em;
+    font-size: clamp(22px, 2.7vw, 36px);
+    line-height:1.2;
+  }
+  #shopify-section-{{ section.id }} .io-nav{
+    position:absolute; top:0; right:0; display:flex; gap:8px;
+  }
+  #shopify-section-{{ section.id }} .io-btn{
+    width:38px; height:38px; border-radius:999px; border:1px solid rgba(0,0,0,.12);
+    display:grid; place-items:center; background:#fff; cursor:pointer;
+  }
+
+  /* 3-up carousel */
+  #shopify-section-{{ section.id }} .io-window{ overflow:hidden; }
+  #shopify-section-{{ section.id }} .io-track{
+    display:flex; transition:transform .45s ease;
+  }
+  #shopify-section-{{ section.id }} .io-card{
+    flex: 0 0 calc(100% / 3);
+    padding: 0 clamp(8px, 1vw, 12px);
     box-sizing: border-box;
-    padding: 0 0.5rem;
   }
-  #shopify-section-{{ section.id }} .carousel-card-inner {
-    border: 1px solid #eee;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-    text-align: center;
+  @media (max-width: 990px){
+    #shopify-section-{{ section.id }} .io-card{ flex: 0 0 80%; }
   }
-  #shopify-section-{{ section.id }} .carousel-card img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: contain;
-    background: #f8f8f8;
+  #shopify-section-{{ section.id }} .io-card-inner{
+    border: var(--border); border-radius: var(--card-radius); overflow:hidden; background:#fff;
   }
-  #shopify-section-{{ section.id }} .carousel-card .body {
-    padding: 0.75rem;
+  #shopify-section-{{ section.id }} .io-media{
+    position:relative; background:#f4f4f4;
   }
-  #shopify-section-{{ section.id }} .carousel-card .title {
-    font-size: 14px;
-    margin: 0.5rem 0;
+  #shopify-section-{{ section.id }} .io-media img{ width:100%; aspect-ratio: 1/1; object-fit:contain; display:block; }
+
+  /* SALE pill + % OFF chip */
+  #shopify-section-{{ section.id }} .pill{
+    position:absolute; top:12px; left:12px;
+    background:#ff3ea5; color:#fff; font-weight:700;
+    padding:.35rem .6rem; border-radius:999px; font-size:12px;
+  }
+  #shopify-section-{{ section.id }} .chip{
+    position:absolute; bottom:12px; left:12px;
+    background:#ff6ea1; color:#fff; font-weight:700;
+    padding:.35rem .6rem; border-radius:999px; font-size:12px;
+  }
+
+  #shopify-section-{{ section.id }} .io-body{ padding: 12px 14px 16px; }
+  #shopify-section-{{ section.id }} .vendor{
+    font-size:12px; color:#999; letter-spacing:.08em; text-transform:uppercase;
+  }
+  #shopify-section-{{ section.id }} .title{
+    font-size:14px; color:#111; line-height:1.35; margin:.35rem 0 .45rem 0;
     min-height: 2.6em;
   }
-  #shopify-section-{{ section.id }} .carousel-card .price {
-    font-weight: 700;
+  #shopify-section-{{ section.id }} .price{
+    display:flex; gap:8px; align-items:baseline;
   }
-
-  /* Nav buttons */
-  #shopify-section-{{ section.id }} .carousel-nav {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    transform: translateY(-50%);
-  }
-  #shopify-section-{{ section.id }} .carousel-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    background: #fff;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-  }
+  #shopify-section-{{ section.id }} .price .now{ font-weight:700; }
+  #shopify-section-{{ section.id }} .price s{ color:#888; }
 </style>
 
-<div class="split-wrap">
-  <!-- Left image -->
-  <div class="split-image">
-    {%- if section.settings.left_image != blank -%}
-      <img
-        src="{{ section.settings.left_image | image_url: width: 1200 }}"
-        alt="{{ section.settings.left_image.alt | escape }}"
-        loading="lazy">
-    {%- else -%}
-      {{ 'image' | placeholder_svg_tag }}
-    {%- endif -%}
-  </div>
+<section class="io-wrap">
+  <div class="io-grid">
+    <!-- 40% image -->
+    <div class="io-image">
+      {%- if section.settings.left_image != blank -%}
+        {{ section.settings.left_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.left_image.alt }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
 
-  <!-- Right product carousel -->
-  <div class="split-carousel">
-    <h2>{{ section.settings.heading }}</h2>
-    <div class="carousel-window">
-      <div class="carousel-track" id="track-{{ section.id }}">
-        {%- if coll and coll.products_count > 0 -%}
-          {%- for product in coll.products limit: max_items -%}
-            <div class="carousel-card">
-              <div class="carousel-card-inner">
-                {% if product.featured_media %}
-                  {{ product.featured_media | image_url: width: 500 | image_tag: loading: 'lazy', alt: product.title }}
-                {% else %}
-                  <div style="background:#eee;aspect-ratio:1/1;"></div>
-                {% endif %}
-                <div class="body">
-                  <div class="title">{{ product.title }}</div>
-                  <div class="price">{{ product.price | money }}</div>
+    <!-- 60% panel -->
+    <div class="io-panel">
+      <div class="io-head">
+        <h2 class="io-title">{{ section.settings.heading }}</h2>
+        <div class="io-nav" aria-hidden="true">
+          <button class="io-btn" data-dir="-1" aria-label="Previous">‹</button>
+          <button class="io-btn" data-dir="1" aria-label="Next">›</button>
+        </div>
+      </div>
+
+      <div class="io-window">
+        <div class="io-track" id="track-{{ section.id }}">
+          {%- if coll and coll.products_count > 0 -%}
+            {%- for product in coll.products limit: max_items -%}
+                {%- comment -%} Compute discount flags safely in Liquid {%- endcomment -%}
+                {%- assign has_discount = false -%}
+                {%- assign pct = 0 -%}
+                {%- if product.compare_at_price_max and product.compare_at_price_max > product.price -%}
+                    {%- assign diff = product.compare_at_price_max | minus: product.price -%}
+                    {%- assign pct  = diff | times: 100 | divided_by: product.compare_at_price_max -%}
+                    {%- assign has_discount = true -%}
+                {%- endif -%}
+
+                <a class="io-card" href="{{ product.url }}">
+                    <div class="io-card-inner">
+                    <div class="io-media">
+                        {% if product.featured_media %}
+                        {{ product.featured_media | image_url: width: 650 | image_tag: loading: 'lazy', alt: product.title }}
+                        {% else %}
+                        <div style="aspect-ratio:1/1;background:#f2f2f2;"></div>
+                        {% endif %}
+                        {%- if has_discount -%}
+                        <span class="pill">SALE</span>
+                        <span class="chip">{{ pct | round }}% OFF</span>
+                        {%- endif -%}
+                    </div>
+                    <div class="io-body">
+                        <div class="vendor">{{ product.vendor }}</div>
+                        <div class="title">{{ product.title }}</div>
+                        <div class="price">
+                        <span class="now">{{ product.price | money }}</span>
+                        {%- if has_discount -%}<s>{{ product.compare_at_price_max | money }}</s>{%- endif -%}
+                        </div>
+                    </div>
+                    </div>
+                </a>
+                {%- endfor -%}
+
+          {%- else -%}
+            {%- for i in (1..6) -%}
+              <div class="io-card">
+                <div class="io-card-inner">
+                  <div class="io-media"><div style="aspect-ratio:1/1;background:#f2f2f2;"></div></div>
+                  <div class="io-body">
+                    <div class="vendor">ANUA</div>
+                    <div class="title">Product title</div>
+                    <div class="price"><span class="now">$24.00</span></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..6) -%}
-            <div class="carousel-card">
-              <div class="carousel-card-inner">
-                <div style="background:#eee;aspect-ratio:1/1;"></div>
-                <div class="body">
-                  <div class="title">Product title</div>
-                  <div class="price">$24.00</div>
-                </div>
-              </div>
-            </div>
-          {%- endfor -%}
-        {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
       </div>
     </div>
-    <div class="carousel-nav">
-      <button class="carousel-btn" data-dir="-1">‹</button>
-      <button class="carousel-btn" data-dir="1">›</button>
-    </div>
   </div>
-</div>
+</section>
 
 <script>
   (function(){
     const track = document.getElementById('track-{{ section.id }}');
     if(!track) return;
-    const btns = track.closest('.split-carousel').querySelectorAll('[data-dir]');
+    const btns = track.closest('.io-panel').querySelectorAll('[data-dir]');
+    const cards = track.querySelectorAll('.io-card');
+    const visible = window.matchMedia('(max-width:990px)').matches ? 1 : 3;
     let index = 0;
-    const cards = track.querySelectorAll('.carousel-card');
-    const visible = 3;
 
     function update(){
       const step = 100/visible;
       track.style.transform = `translateX(${-index*step}%)`;
     }
-
     btns.forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const dir = parseInt(btn.dataset.dir,10);
-        index = Math.max(0, Math.min(cards.length-visible, index+dir));
+        index = Math.max(0, Math.min(cards.length - visible, index + dir));
         update();
       });
     });
@@ -175,15 +226,21 @@ Always fixed 40/60 split. Right side shows 3 products at a time.
 
 {% schema %}
 {
-  "name": "40/60 Image + Carousel",
+  "name": "Image + Overlap (40/60)",
+  "tag": "section",
+  "class": "section image-overlap-4060",
   "settings": [
     { "type": "image_picker", "id": "left_image", "label": "Left image" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "New Skin & Hair Care Products" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "NEW SKIN & HAIR CARE PRODUCTS" },
     { "type": "collection", "id": "collection", "label": "Product collection" },
-    { "type": "range", "id": "max_items", "label": "Max products", "min": 3, "max": 12, "step": 1, "default": 6 }
+    { "type": "range", "id": "max_items", "label": "Max products", "min": 3, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "overlap", "label": "Overlap onto image (%)", "min": 0, "max": 12, "step": 1, "default": 5 },
+    { "type": "range", "id": "radius", "label": "Corner radius (px)", "min": 0, "max": 28, "step": 1, "default": 18 },
+    { "type": "color", "id": "panel_bg", "label": "Panel background", "default": "#ffffff" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#f6f2ef" }
   ],
   "presets": [
-    { "name": "40/60 Image + Carousel" }
+    { "name": "Image + Overlap (40/60)" }
   ]
 }
 {% endschema %}
