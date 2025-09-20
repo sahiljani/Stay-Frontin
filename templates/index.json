@@ -48,13 +48,6 @@
             "text": "LATEX - FREE"
           }
         },
-        "ticker_item_K8rjmF": {
-          "type": "ticker_item",
-          "settings": {
-            "emoji": "",
-            "text": "MULTI - WEEK HOLD"
-          }
-        },
         "ticker_item_z7jkCb": {
           "type": "ticker_item",
           "settings": {
@@ -79,13 +72,16 @@
       },
       "block_order": [
         "ticker_item_ctNTph",
-        "ticker_item_K8rjmF",
         "ticker_item_z7jkCb",
         "ticker_item_zHYa7B",
         "ticker_item_UwyqjG"
       ],
       "custom_css": [
-        ".hero2-left {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}"
+        ".hero2-left {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}",
+        ".hero2-ticker {background: #000 !important; border-top: 1px solid rgba(255, 255, 255, 0.15) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;}",
+        ".hero2-marquee {color: #fff !important;}",
+        ".hero2-chip {color: #fff !important;}",
+        ".hero2-chip .emoji {margin-right: 0.5rem;}"
       ],
       "name": "Hero 2 Grid",
       "settings": {
