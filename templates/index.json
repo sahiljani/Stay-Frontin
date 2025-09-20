@@ -97,10 +97,25 @@
         "text_color": "#ffffff",
         "primary_color": "#e5e7eb"
       }
+    },
+    "image_with_overlap_slider_KYgUd3": {
+      "type": "image-with-overlap-slider",
+      "name": "Image + Overlap slider",
+      "settings": {
+        "left_image": "shopify://shop_images/fashion-model-walks-down-city-street.jpg",
+        "heading": "NEW SKIN & HAIR CARE PRODUCTS",
+        "collection": "automated-collection",
+        "max_items": 4,
+        "overlap": 10,
+        "radius": 7,
+        "panel_bg": "#ffffff",
+        "page_bg": "#f6f2ef"
+      }
     }
   },
   "order": [
     "featured_collection",
-    "hero_2_grid_z46BYi"
+    "hero_2_grid_z46BYi",
+    "image_with_overlap_slider_KYgUd3"
   ]
 }
