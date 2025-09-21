@@ -272,8 +272,9 @@
         "feature_CtLzdy"
       ],
       "custom_css": [
-        "h2,h3,p {color: white;}",
-        "h2 {font-size: 40px;}"
+        "h3,p {color: white;}",
+        "h2 {color: white; font-size: 40px;}",
+        "#feature-showcase-template--25554219270510__feature_showcase_7q9V7E{background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}"
       ],
       "name": "Feature showcase",
       "settings": {
