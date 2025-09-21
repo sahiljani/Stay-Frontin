@@ -170,7 +170,7 @@
         "video_min_width": 200,
         "video_scale": 100,
         "gap": 15,
-        "aspect_ratio": "16/9",
+        "aspect_ratio": "4/5",
         "border_radius": 12,
         "autoplay": true,
         "muted": true,
