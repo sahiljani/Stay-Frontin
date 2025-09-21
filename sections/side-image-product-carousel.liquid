@@ -80,19 +80,32 @@
     }
     #section-{{ section.id }} .container { max-width: 1300px; margin: 0 auto; padding: 0 1.5rem; }
     #section-{{ section.id }} .section-heading { text-align:center; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight:700; margin-bottom: 2.5rem; letter-spacing: .08em; }
-    #section-{{ section.id }} .layout { display:flex; gap: clamp(1rem, 2vw, 2.5rem); align-items: stretch; }
-    #section-{{ section.id }} .side-image-wrapper { flex: 0 0 {{ section.settings.image_width_percent }}%; position:relative; }
+    #section-{{ section.id }} .layout { display:flex; gap: clamp(1rem, 2vw, 2.5rem); align-items: stretch; min-height: 400px; }
+    #section-{{ section.id }} .side-image-wrapper { flex: 0 0 {{ section.settings.image_width_percent }}%; position:relative; min-width: 200px; }
     #section-{{ section.id }} .side-image-ratio { aspect-ratio: 3/4; overflow:hidden; border-radius: 12px; }
-  #section-{{ section.id }} .side-image-ratio img { width:100%; height:100%; object-fit:cover; display:block; }
+    #section-{{ section.id }} .side-image-ratio img { width:100%; height:100%; object-fit:cover; display:block; }
+    #section-{{ section.id }} .placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:12px; aspect-ratio: 3/4; }
+    #section-{{ section.id }} .placeholder svg { width: 64px; height: 64px; opacity: 0.5; }
   #section-{{ section.id }} .carousel-outer { position:relative; flex:1; margin-left: calc(-1 * {{ section.settings.carousel_overlap_x }}px); margin-top: {{ section.settings.carousel_overlap_y }}px; }
   #section-{{ section.id }} .embla { position:relative; }
   #section-{{ section.id }} .embla__viewport { overflow:hidden; width:100%; }
-  #section-{{ section.id }} .embla__container { display:flex; gap:1.5rem; }
-    #section-{{ section.id }} .card { background:#fff; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding:1rem; flex: 0 0 calc(33% - 1rem); display:flex; flex-direction:column; position:relative; transition: box-shadow .25s ease, transform .25s ease; }
+  #section-{{ section.id }} .embla__container { display:flex; gap:1.5rem; touch-action: pan-y pinch-zoom; }
+    #section-{{ section.id }} .card { background:#fff; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding:1rem; flex: 0 0 calc(33% - 1rem); display:flex; flex-direction:column; position:relative; transition: box-shadow .25s ease, transform .25s ease; cursor: grab; user-select: none; }
+    #section-{{ section.id }} .embla__container.is-dragging .card { cursor: grabbing; }
     #section-{{ section.id }} .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.14); transform: translateY(-4px); }
     #section-{{ section.id }} .card-image-wrapper { display:block; position:relative; margin-bottom: 0.75rem; }
-    #section-{{ section.id }} .card-image-wrapper img { width:100%; height: clamp(220px, 30vw, 270px); object-fit:cover; border-radius:10px; }
-    #section-{{ section.id }} .placeholder.small { width:100%; height: clamp(220px, 30vw, 270px); display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:10px; }
+    
+    {% comment %} Default aspect ratio (4:3) {% endcomment %}
+    {% if section.settings.video_aspect_ratio == 'shorts' %}
+      #section-{{ section.id }} .card-image-wrapper img { width:100%; aspect-ratio: 9/16; object-fit:cover; border-radius:10px; }
+      #section-{{ section.id }} .placeholder.small { width:100%; aspect-ratio: 9/16; display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:10px; }
+    {% elsif section.settings.video_aspect_ratio == 'youtube' %}
+      #section-{{ section.id }} .card-image-wrapper img { width:100%; aspect-ratio: 16/9; object-fit:cover; border-radius:10px; }
+      #section-{{ section.id }} .placeholder.small { width:100%; aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:10px; }
+    {% else %}
+      #section-{{ section.id }} .card-image-wrapper img { width:100%; height: clamp(220px, 30vw, 270px); object-fit:cover; border-radius:10px; }
+      #section-{{ section.id }} .placeholder.small { width:100%; height: clamp(220px, 30vw, 270px); display:flex; align-items:center; justify-content:center; background:#f3f3f3; border-radius:10px; }
+    {% endif %}
     #section-{{ section.id }} .card-info { flex:1; display:flex; flex-direction:column; }
     #section-{{ section.id }} .vendor { font-size:.65rem; font-weight:600; letter-spacing:.15em; color:#6b7280; margin:0 0 0.15rem; text-transform:uppercase; }
     #section-{{ section.id }} .title { font-size:1rem; margin:0; line-height:1.3; }
@@ -139,6 +152,17 @@
       { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Sold Out" },
       { "type": "color", "id": "background_color", "label": "Background color", "default": "#F8F5F2" },
       { "type": "range", "id": "scroll_cards", "label": "Cards to scroll per click", "min": 1, "max": 4, "step": 1, "default": 2 },
+      {
+        "type": "select",
+        "id": "video_aspect_ratio",
+        "label": "Video aspect ratio",
+        "options": [
+          { "value": "default", "label": "Default (4:3)" },
+          { "value": "shorts", "label": "Shorts Video (9:16)" },
+          { "value": "youtube", "label": "YouTube Video (16:9)" }
+        ],
+        "default": "default"
+      },
       { "type": "header", "content": "Products" }
     ],
     "blocks": [

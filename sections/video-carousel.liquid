@@ -1,0 +1,1522 @@
+{% comment %}
+  Video Carousel Section
+  Displays videos in a horizontal carousel with autoplay, mute controls, overlay text, and lightbox functionality
+{% endcomment %}
+
+{% comment %} Load video lightbox assets {% endcomment %}
+{{ 'video-lightbox.css' | asset_url | stylesheet_tag }}
+
+<section id="section-{{ section.id }}" class="video-carousel" data-section-id="{{ section.id }}">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <p class="section-description">{{ section.settings.description }}</p>
+    {% endif %}
+
+    <div class="video-carousel-wrapper">
+      <div class="embla" id="video-carousel-{{ section.id }}" aria-label="Video carousel" data-embla-init data-section-id="{{ section.id }}" data-scroll-cards="{{ section.settings.scroll_cards | default: 1 }}">
+        <div class="embla__viewport">
+          <div class="embla__container">
+            {% for block in section.blocks %}
+              {% if block.type == 'video' %}
+                <div class="video-slide embla__slide" {{ block.shopify_attributes }}>
+                  <div class="video-container" 
+                       data-video-id="{{ block.id }}"
+                       data-video-index="{{ forloop.index0 }}"
+                       {% if section.settings.enable_lightbox %}data-lightbox-trigger{% endif %}
+                       {% if section.settings.enable_lightbox %}role="button" tabindex="0" aria-label="Open video in lightbox"{% endif %}
+                  >
+                    {% comment %} Determine video source: prioritize uploaded file, fallback to URL {% endcomment %}
+                    {% assign video_source = '' %}
+                    {% assign has_video = false %}
+                    {% assign video_type = 'file' %}
+                    
+                    {% if block.settings.video_file != blank %}
+                      {% assign video_source = block.settings.video_file | file_url %}
+                      {% assign has_video = true %}
+                      {% assign video_type = 'file' %}
+                    {% elsif block.settings.video_url != blank %}
+                      {% assign video_source = block.settings.video_url %}
+                      {% assign has_video = true %}
+                      {% assign video_type = 'url' %}
+                    {% endif %}
+
+                    {% comment %} Clean up video source URL {% endcomment %}
+                    {% if video_source != blank %}
+                      {% comment %} Remove query parameters that might cause CORS issues {% endcomment %}
+                      {% if video_type == 'file' %}
+                        {% assign video_source = video_source | split: '?' | first %}
+                      {% endif %}
+                      
+                      {% comment %} Ensure proper protocol {% endcomment %}
+                      {% unless video_source contains 'http' %}
+                        {% if video_source contains '//' %}
+                          {% assign video_source = 'https:' | append: video_source %}
+                        {% else %}
+                          {% assign video_source = 'https://' | append: video_source %}
+                        {% endif %}
+                      {% endunless %}
+                    {% endif %}
+
+                    {% if has_video and video_source != blank %}
+                      <video
+                        class="video-player"
+                        src="{{ video_source }}"
+                        {% if section.settings.autoplay %}autoplay{% endif %}
+                        {% if section.settings.loop %}loop{% endif %}
+                        {% if section.settings.muted %}muted{% endif %}
+                        {% unless section.settings.show_controls %}controls="false"{% else %}controls{% endunless %}
+                        playsinline
+                        preload="metadata"
+                        crossorigin="anonymous"
+                        data-video-id="{{ block.id }}"
+                        data-video-url="{{ video_source | escape }}"
+                        data-video-type="{{ video_type }}"
+                        x5-video-player-type="h5"
+                        x5-video-player-fullscreen="true"
+                        x5-video-orientation="portraint"
+                        webkit-playsinline="true"
+                        onloadstart="console.log('Video loading started:', this.src)"
+                        onerror="console.error('Video failed to load:', this.src, 'Error:', this.error)"
+                        oncanplay="console.log('Video ready to play:', this.src)"
+                        onplay="console.log('Video started playing:', this.src)"
+                        onpause="console.log('Video paused:', this.src)"
+                      >
+                        <source src="{{ video_source }}" type="video/mp4">
+                        <source src="{{ video_source }}" type="video/webm">
+                        <source src="{{ video_source }}" type="video/ogg">
+                        Your browser does not support the video tag.
+                      </video>
+                    {% else %}
+                      <div class="video-placeholder">
+                        <div class="placeholder-content">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="placeholder-icon">
+                            <path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14M5 18h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2Z"/>
+                          </svg>
+                          <h4 class="placeholder-title">Upload Your Video</h4>
+                          <p class="placeholder-text">Upload an MP4 video file or provide a direct video URL</p>
+                          <div class="placeholder-instructions">
+                            <p>• Click "Add block" to create video</p>
+                            <p>• Upload MP4 files from your computer</p>
+                            <p>• Or paste a direct video URL</p>
+                            <p>• Add product info for shopping features</p>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+
+                    {% if section.settings.show_overlay %}
+                      <div class="video-overlay">
+                        {% if block.settings.overlay_heading != blank %}
+                          <h3 class="overlay-heading">{{ block.settings.overlay_heading }}</h3>
+                        {% endif %}
+                        {% if block.settings.overlay_text != blank %}
+                          <p class="overlay-text">{{ block.settings.overlay_text }}</p>
+                        {% endif %}
+                        {% if block.settings.button_label != blank and block.settings.button_url != blank %}
+                          <a href="{{ block.settings.button_url }}" class="overlay-button">{{ block.settings.button_label }}</a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+
+                    {% if section.settings.show_play_pause %}
+                      <button type="button" class="play-pause-btn" data-video-id="{{ block.id }}" aria-label="Play/Pause video">
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" style="display: {% if section.settings.autoplay and has_video %}none{% else %}block{% endif %};">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: {% if section.settings.autoplay and has_video %}block{% else %}none{% endif %};">
+                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+
+                    {% if section.settings.show_mute_toggle %}
+                      <button type="button" class="mute-toggle-btn" data-video-id="{{ block.id }}" aria-label="Mute/Unmute video">
+                        <svg class="volume-icon" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                        </svg>
+                        <svg class="mute-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+
+                    {% if section.settings.enable_lightbox %}
+                      {% comment %} Lightbox trigger button {% endcomment %}
+                      <button type="button" class="lightbox-trigger-btn" data-video-id="{{ block.id }}" aria-label="Open video in fullscreen">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if section.settings.show_navigation %}
+          <button type="button" class="nav prev" aria-label="Previous video" id="prev-{{ section.id }}" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <button type="button" class="nav next" aria-label="Next video" id="next-{{ section.id }}" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </svg>
+          </button>
+        {% endif %}
+
+        {% if section.settings.show_dots %}
+          <div class="carousel-dots" id="dots-{{ section.id }}"></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.enable_lightbox %}
+    {% comment %} Video Lightbox Modal {% endcomment %}
+    {% render 'video-lightbox-modal', section_id: section.id %}
+  {% endif %}
+
+  <style>
+    #section-{{ section.id }} {
+      background: {{ section.settings.background_color }};
+      padding: {{ section.settings.padding_vertical }}px 0;
+    }
+
+    #section-{{ section.id }} .container {
+      {% if section.settings.container_type == 'full_width' %}
+        max-width: 100%;
+        width: 100%;
+        padding: 0 2rem;
+      {% else %}
+        max-width: {{ section.settings.container_width }}px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      {% endif %}
+    }
+
+    /* Full width layout adjustments */
+    {% if section.settings.container_type == 'full_width' %}
+      #section-{{ section.id }} .video-carousel-wrapper {
+        padding: 0 1rem;
+      }
+      
+      #section-{{ section.id }} .nav.prev {
+        left: 1rem;
+      }
+      
+      #section-{{ section.id }} .nav.next {
+        right: 1rem;
+      }
+    {% endif %}
+
+    #section-{{ section.id }} .section-heading {
+      text-align: center;
+      font-size: clamp(1.75rem, 4vw, {{ section.settings.heading_size }}px);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: {{ section.settings.heading_color }};
+      letter-spacing: 0.08em;
+    }
+
+    #section-{{ section.id }} .section-description {
+      text-align: center;
+      font-size: 1.1rem;
+      color: {{ section.settings.text_color }};
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #section-{{ section.id }} .video-carousel-wrapper {
+      position: relative;
+    }
+
+    #section-{{ section.id }} .embla {
+      position: relative;
+    }
+
+    #section-{{ section.id }} .embla__viewport {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    #section-{{ section.id }} .embla__container {
+      display: flex;
+      gap: {{ section.settings.gap }}px;
+    }
+
+    #section-{{ section.id }} .video-slide {
+      flex: 0 0 {{ section.settings.slide_width }}%;
+      min-width: {{ section.settings.video_min_width }}px;
+      max-width: {{ section.settings.video_max_width }}px;
+    }
+
+    #section-{{ section.id }} .video-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: {{ section.settings.aspect_ratio }};
+      border-radius: {{ section.settings.border_radius }}px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      {% if section.settings.enable_lightbox %}cursor: pointer;{% endif %}
+      max-width: {{ section.settings.video_max_width }}px;
+      min-width: {{ section.settings.video_min_width }}px;
+      margin: 0 auto;
+      transform: scale({{ section.settings.video_scale | divided_by: 100.0 }});
+    }
+
+    #section-{{ section.id }} .video-slide:hover .video-container {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+    }
+
+    {% if section.settings.enable_lightbox %}
+      #section-{{ section.id }} .video-container[data-lightbox-trigger]::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 5;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 24px 24px;
+      }
+
+      #section-{{ section.id }} .video-slide:hover .video-container[data-lightbox-trigger]::before {
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        #section-{{ section.id }} .video-container[data-lightbox-trigger]::before {
+          opacity: 0.7;
+        }
+      }
+    {% endif %}
+
+    #section-{{ section.id }} .video-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: none;
+      display: block;
+      background: #000;
+    }
+
+    /* Hide videos only if they have no source elements and no src */
+    #section-{{ section.id }} .video-player:not([src]):not(:has(source)) {
+      display: none;
+    }
+
+    /* Fallback for browsers that don't support :has() */
+    @supports not selector(:has(*)) {
+      #section-{{ section.id }} .video-player {
+        display: block !important;
+      }
+    }
+
+    #section-{{ section.id }} .video-container:has(.video-player[src=""]),
+    #section-{{ section.id }} .video-container:has(.video-player:not([src])) {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    #section-{{ section.id }} .video-container:has(.video-player[src=""]):before,
+    #section-{{ section.id }} .video-container:has(.video-player:not([src])):before {
+      content: "Video failed to load";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #6c757d;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    #section-{{ section.id }} .video-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #6c757d;
+      text-align: center;
+      border: 2px dashed #dee2e6;
+      border-radius: {{ section.settings.border_radius }}px;
+      padding: 2rem 1rem;
+      min-height: 200px;
+      transition: all 0.3s ease;
+    }
+
+    #section-{{ section.id }} .video-placeholder:hover {
+      border-color: #adb5bd;
+      background: linear-gradient(135deg, #f1f3f4 0%, #e1e5e9 100%);
+    }
+
+    #section-{{ section.id }} .placeholder-content {
+      max-width: 280px;
+    }
+
+    #section-{{ section.id }} .placeholder-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      color: #adb5bd;
+      stroke-width: 1.5;
+    }
+
+    #section-{{ section.id }} .placeholder-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: #495057;
+    }
+
+    #section-{{ section.id }} .placeholder-text {
+      font-size: 0.95rem;
+      margin: 0 0 1.5rem;
+      color: #6c757d;
+      line-height: 1.4;
+    }
+
+    #section-{{ section.id }} .placeholder-instructions {
+      font-size: 0.85rem;
+      color: #868e96;
+      line-height: 1.5;
+    }
+
+    #section-{{ section.id }} .placeholder-instructions p {
+      margin: 0.25rem 0;
+      text-align: left;
+    }
+
+    #section-{{ section.id }} .video-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      color: white;
+      padding: 2rem 1.5rem 1.5rem;
+      transform: translateY(100%);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
+    }
+
+    #section-{{ section.id }} .video-slide:hover .video-overlay {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      #section-{{ section.id }} .video-overlay {
+        transform: translateY(0);
+        background: linear-gradient(transparent 60%, rgba(0,0,0,0.9));
+      }
+    }
+
+    #section-{{ section.id }} .overlay-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+    }
+
+    #section-{{ section.id }} .overlay-text {
+      font-size: 0.9rem;
+      margin: 0 0 1rem;
+      opacity: 0.9;
+    }
+
+    #section-{{ section.id }} .overlay-button {
+      display: inline-block;
+      background: white;
+      color: black;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.2s ease;
+    }
+
+    #section-{{ section.id }} .overlay-button:hover {
+      background: #f0f0f0;
+    }
+
+    #section-{{ section.id }} .play-pause-btn,
+    #section-{{ section.id }} .mute-toggle-btn,
+    #section-{{ section.id }} .lightbox-trigger-btn {
+      position: absolute;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+      z-index: 10;
+    }
+
+    #section-{{ section.id }} .play-pause-btn {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    #section-{{ section.id }} .mute-toggle-btn {
+      top: 1rem;
+      right: 1rem;
+      width: 44px;
+      height: 44px;
+      transform: scale(0.8);
+    }
+
+    #section-{{ section.id }} .lightbox-trigger-btn {
+      top: 1rem;
+      left: 1rem;
+      width: 44px;
+      height: 44px;
+      transform: scale(0.8);
+    }
+
+    #section-{{ section.id }} .video-slide:hover .play-pause-btn,
+    #section-{{ section.id }} .video-slide:hover .mute-toggle-btn,
+    #section-{{ section.id }} .video-slide:hover .lightbox-trigger-btn {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #section-{{ section.id }} .video-slide:hover .mute-toggle-btn {
+      transform: scale(1);
+    }
+
+    #section-{{ section.id }} .video-slide:hover .lightbox-trigger-btn {
+      transform: scale(1);
+    }
+
+    #section-{{ section.id }} .play-pause-btn:hover,
+    #section-{{ section.id }} .mute-toggle-btn:hover,
+    #section-{{ section.id }} .lightbox-trigger-btn:hover {
+      background: rgba(0,0,0,0.9);
+      border-color: rgba(255,255,255,0.4);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    #section-{{ section.id }} .mute-toggle-btn:hover {
+      transform: scale(1.1);
+    }
+
+    #section-{{ section.id }} .lightbox-trigger-btn:hover {
+      transform: scale(1.1);
+    }
+
+    #section-{{ section.id }} .play-pause-btn svg,
+    #section-{{ section.id }} .mute-toggle-btn svg,
+    #section-{{ section.id }} .lightbox-trigger-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    #section-{{ section.id }} .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.1);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+      color: white;
+      opacity: 0.8;
+    }
+
+    #section-{{ section.id }} .nav:hover {
+      background: rgba(0,0,0,0.95);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-50%) scale(1.15);
+      opacity: 1;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+
+    #section-{{ section.id }} .nav.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: translateY(-50%) scale(0.9);
+    }
+
+    #section-{{ section.id }} .nav.prev {
+      left: -24px;
+    }
+
+    #section-{{ section.id }} .nav.next {
+      right: -24px;
+    }
+
+    #section-{{ section.id }} .nav svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    #section-{{ section.id }} .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 2rem;
+    }
+
+    #section-{{ section.id }} .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    #section-{{ section.id }} .dot.active {
+      background: {{ section.settings.accent_color }};
+    }
+
+    /* Tablet breakpoint */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      #section-{{ section.id }} .video-slide {
+        flex: 0 0 {{ section.settings.tablet_width }}%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #section-{{ section.id }} .video-slide {
+        flex: 0 0 {{ section.settings.mobile_width }}%;
+      }
+
+      {% if section.settings.container_type == 'full_width' %}
+        #section-{{ section.id }} .container {
+          padding: 0 1rem;
+        }
+        
+        #section-{{ section.id }} .nav.prev {
+          left: 0.5rem;
+        }
+
+        #section-{{ section.id }} .nav.next {
+          right: 0.5rem;
+        }
+      {% else %}
+        #section-{{ section.id }} .nav.prev {
+          left: 8px;
+        }
+
+        #section-{{ section.id }} .nav.next {
+          right: 8px;
+        }
+      {% endif %}
+
+      #section-{{ section.id }} .video-overlay {
+        transform: translateY(0);
+      }
+
+      #section-{{ section.id }} .play-pause-btn,
+      #section-{{ section.id }} .mute-toggle-btn,
+      #section-{{ section.id }} .lightbox-trigger-btn {
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const section = document.querySelector('#section-{{ section.id }}');
+      if (!section) return;
+
+      // Video controls
+      const playPauseBtns = section.querySelectorAll('.play-pause-btn');
+      const muteBtns = section.querySelectorAll('.mute-toggle-btn');
+      const lightboxBtns = section.querySelectorAll('.lightbox-trigger-btn');
+      const videos = section.querySelectorAll('video');
+
+      // Wait for lightbox component to be loaded
+      {% if section.settings.enable_lightbox %}
+        if (!customElements.get('video-lightbox-modal')) {
+          const lightboxScript = document.createElement('script');
+          lightboxScript.src = '{{ "video-lightbox.js" | asset_url }}';
+          lightboxScript.async = true;
+          document.head.appendChild(lightboxScript);
+        }
+      {% endif %}
+
+      // Auto-pause videos when not in view and handle loading errors
+      function handleVideoVisibility() {
+        videos.forEach(video => {
+          const rect = video.getBoundingClientRect();
+          const isVisible = rect.left >= 0 && rect.right <= window.innerWidth;
+          
+          // Check if video has a valid source (both file uploads and URLs)
+          const videoType = video.dataset.videoType || 'file';
+          const hasValidSrc = video.src && video.src !== '';
+          const isVideoReady = video.readyState > 0 || videoType === 'url';
+          const canPlay = hasValidSrc && isVideoReady;
+
+          if (!isVisible && !video.paused && canPlay) {
+            video.pause();
+          } else if (isVisible && video.paused && {{ section.settings.autoplay }} && canPlay) {
+            video.play().catch((error) => {
+              console.log('Autoplay failed:', error);
+              // Show play button if autoplay fails
+              const container = video.closest('.video-container');
+              const playPauseBtn = container.querySelector('.play-pause-btn');
+              if (playPauseBtn) {
+                const playIcon = playPauseBtn.querySelector('.play-icon');
+                const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+                if (playIcon && pauseIcon) {
+                  playIcon.style.display = 'block';
+                  pauseIcon.style.display = 'none';
+                }
+              }
+            });
+          }
+        });
+      }
+
+      playPauseBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const videoContainer = this.closest('.video-container');
+          const video = videoContainer.querySelector('video');
+          const playIcon = this.querySelector('.play-icon');
+          const pauseIcon = this.querySelector('.pause-icon');
+
+          if (video && playIcon && pauseIcon) {
+            if (video.paused) {
+              // Check if video is ready to play
+              if (video.readyState >= 2) { // HAVE_CURRENT_DATA or higher
+                // Pause all other videos
+                videos.forEach(v => {
+                  if (v !== video) {
+                    v.pause();
+                    // Update their buttons too
+                    const otherContainer = v.closest('.video-container');
+                    const otherBtn = otherContainer.querySelector('.play-pause-btn');
+                    if (otherBtn) {
+                      const otherPlayIcon = otherBtn.querySelector('.play-icon');
+                      const otherPauseIcon = otherBtn.querySelector('.pause-icon');
+                      if (otherPlayIcon && otherPauseIcon) {
+                        otherPlayIcon.style.display = 'block';
+                        otherPauseIcon.style.display = 'none';
+                      }
+                    }
+                  }
+                });
+
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      playIcon.style.display = 'none';
+                      pauseIcon.style.display = 'block';
+                    })
+                    .catch((error) => {
+                      console.log('Play failed:', error.name, error.message);
+                      
+                      if (error.name === 'NotAllowedError') {
+                        // Try unmuting first
+                        video.muted = false;
+                        video.play().catch(() => {
+                          // If still fails, keep play icon
+                          playIcon.style.display = 'block';
+                          pauseIcon.style.display = 'none';
+                        });
+                      } else {
+                        playIcon.style.display = 'block';
+                        pauseIcon.style.display = 'none';
+                      }
+                    });
+                } else {
+                  // Fallback for older browsers
+                  try {
+                    video.play();
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                  } catch (e) {
+                    console.log('Fallback play failed:', e);
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                  }
+                }
+              } else {
+                console.log('Video not ready, readyState:', video.readyState);
+                // Wait for video to be ready
+                const waitForVideo = () => {
+                  if (video.readyState >= 2) {
+                    this.click(); // Retry the click
+                  } else {
+                    setTimeout(waitForVideo, 100);
+                  }
+                };
+                setTimeout(waitForVideo, 100);
+              }
+            } else {
+              video.pause();
+              playIcon.style.display = 'block';
+              pauseIcon.style.display = 'none';
+            }
+          }
+        });
+      });
+
+      muteBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const videoContainer = this.closest('.video-container');
+          const video = videoContainer.querySelector('video');
+          const volumeIcon = this.querySelector('.volume-icon');
+          const muteIcon = this.querySelector('.mute-icon');
+
+          if (video) {
+            video.muted = !video.muted;
+            if (video.muted) {
+              volumeIcon.style.display = 'none';
+              muteIcon.style.display = 'block';
+            } else {
+              volumeIcon.style.display = 'block';
+              muteIcon.style.display = 'none';
+            }
+          }
+        });
+      });
+
+      // Lightbox functionality
+      {% if section.settings.enable_lightbox %}
+        const lightbox = document.querySelector('#VideoLightbox-{{ section.id }}');
+        
+        // Collect video data for lightbox
+        function getVideoData() {
+          const videoSlides = section.querySelectorAll('.video-slide');
+          const videoData = [];
+          
+          videoSlides.forEach((slide, index) => {
+            const container = slide.querySelector('.video-container');
+            const video = slide.querySelector('video');
+            const overlayHeading = slide.querySelector('.overlay-heading');
+            const overlayText = slide.querySelector('.overlay-text');
+            const button = slide.querySelector('.overlay-button');
+            
+            let videoInfo = {
+              index: index,
+              blockId: container.dataset.videoId
+            };
+
+            // Determine video type and source
+            if (video) {
+              const videoType = video.dataset.videoType || 'file';
+              videoInfo.type = videoType;
+              
+              // Get video URL from multiple sources with proper validation
+              let videoSrc = video.dataset.videoUrl || video.src || video.querySelector('source')?.src;
+              console.log('Video source detected:', videoSrc, 'Type:', videoType);
+              
+              // Clean up and validate video URL
+              if (videoSrc) {
+                // Remove empty or invalid sources
+                if (videoSrc === '' || videoSrc === 'undefined' || videoSrc === 'null') {
+                  videoSrc = null;
+                } else {
+                  // For file uploads, remove query parameters that might cause issues
+                  if (videoType === 'file') {
+                    videoSrc = videoSrc.split('?')[0];
+                  }
+                  
+                  // Ensure proper protocol for video URL
+                  if (videoSrc.startsWith('//')) {
+                    videoSrc = window.location.protocol + videoSrc;
+                    console.log('Protocol added:', videoSrc);
+                  } else if (videoSrc && !videoSrc.startsWith('http') && !videoSrc.startsWith('/')) {
+                    // Handle relative URLs or incomplete URLs (but not absolute paths)
+                    videoSrc = window.location.protocol + '//' + videoSrc.replace(/^\/+/, '');
+                    console.log('Full protocol added:', videoSrc);
+                  }
+                  
+                  // Additional validation for common video file extensions and CDN URLs
+                  const validExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
+                  const hasValidExtension = validExtensions.some(ext => videoSrc.toLowerCase().includes(ext));
+                  const isShopifyVideo = videoSrc.includes('cdn.shopify.com/videos');
+                  const isValidUrl = videoSrc.startsWith('http') || videoSrc.startsWith('/');
+                  const isValidVideo = hasValidExtension || isShopifyVideo || (videoType === 'url' && isValidUrl);
+                  
+                  if (!isValidVideo && isValidUrl) {
+                    console.warn('Video may not have valid extension:', videoSrc);
+                  }
+                }
+              }
+              
+              // Always set videoFile if we have videoSrc, regardless of validation
+              videoInfo.videoFile = videoSrc || null;
+              console.log('Final video info:', videoInfo);
+              
+              if (!videoSrc) {
+                console.warn('No valid video source found for video', index);
+              }
+            }
+
+            // Add overlay content as product info
+            if (overlayHeading) {
+              videoInfo.productTitle = overlayHeading.textContent.trim();
+            }
+            
+            if (overlayText) {
+              videoInfo.productDescription = overlayText.textContent.trim();
+            }
+
+            if (button) {
+              videoInfo.productUrl = button.href;
+              videoInfo.productPrice = button.textContent.trim();
+            }
+
+            // Add featured product info from block settings
+            {% for block in section.blocks %}
+              if (index === {{ forloop.index0 }} && '{{ block.id }}' === videoInfo.blockId) {
+                {% if block.settings.featured_product %}
+                  {% assign product = block.settings.featured_product %}
+                  videoInfo.productTitle = videoInfo.productTitle || '{{ product.title | escape }}';
+                  videoInfo.productPrice = '{{ block.settings.product_price_override | default: product.price | money | escape }}';
+                  videoInfo.productUrl = videoInfo.productUrl || '{{ product.url }}';
+                  {% if product.featured_image %}
+                    videoInfo.productImage = '{{ product.featured_image | image_url: width: 120 }}';
+                    videoInfo.productImageLarge = '{{ product.featured_image | image_url: width: 300 }}';
+                  {% endif %}
+                {% endif %}
+              }
+            {% endfor %}
+
+            videoData.push(videoInfo);
+          });
+          
+          return videoData;
+        }
+
+        // Lightbox trigger buttons
+        lightboxBtns.forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const container = this.closest('.video-container');
+            const slide = container.closest('.video-slide');
+            const videoIndex = parseInt(container.dataset.videoIndex);
+            
+            if (lightbox) {
+              const videoData = {
+                videos: getVideoData(),
+                startIndex: videoIndex
+              };
+              lightbox.show(this, videoData);
+            }
+          });
+        });
+      {% endif %}
+
+      // Click to play/pause video or open lightbox
+      section.querySelectorAll('.video-container').forEach(container => {
+        container.addEventListener('click', function(e) {
+          // Don't trigger if clicking on control buttons
+          if (e.target.closest('.play-pause-btn, .mute-toggle-btn, .lightbox-trigger-btn, .overlay-button')) {
+            return;
+          }
+
+          // If lightbox is enabled and it has lightbox trigger, open lightbox
+          {% if section.settings.enable_lightbox %}
+            if (this.hasAttribute('data-lightbox-trigger')) {
+              const videoIndex = parseInt(this.dataset.videoIndex);
+              
+              if (lightbox) {
+                const videoData = {
+                  videos: getVideoData(),
+                  startIndex: videoIndex
+                };
+                lightbox.show(this, videoData);
+              }
+              return;
+            }
+          {% endif %}
+          
+          // Otherwise, play/pause video
+          const video = this.querySelector('video');
+          const playPauseBtn = this.querySelector('.play-pause-btn');
+
+          if (video && playPauseBtn) {
+            playPauseBtn.click();
+          }
+        });
+
+        // Add keyboard support for lightbox trigger
+        {% if section.settings.enable_lightbox %}
+          if (container.hasAttribute('data-lightbox-trigger')) {
+            container.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const videoIndex = parseInt(this.dataset.videoIndex);
+                
+                if (lightbox) {
+                  const videoData = {
+                    videos: getVideoData(),
+                    startIndex: videoIndex
+                  };
+                  lightbox.show(this, videoData);
+                }
+              }
+            });
+          }
+        {% endif %}
+      });
+
+      // Update play/pause buttons based on video state
+      videos.forEach(video => {
+        const container = video.closest('.video-container');
+        const playPauseBtn = container.querySelector('.play-pause-btn');
+        const playIcon = playPauseBtn?.querySelector('.play-icon');
+        const pauseIcon = playPauseBtn?.querySelector('.pause-icon');
+
+        // Fix video src if not set but data-video-url exists
+        if ((!video.src || video.src === '') && video.dataset.videoUrl) {
+          console.log('Setting video src from data-video-url:', video.dataset.videoUrl);
+          video.src = video.dataset.videoUrl;
+        }
+
+        // Debug video loading and fix initial states
+        console.log('Video element:', video);
+        console.log('Video src:', video.src);
+        console.log('Video data-video-url:', video.dataset.videoUrl);
+        console.log('Video readyState:', video.readyState);
+        console.log('Video autoplay setting:', {{ section.settings.autoplay }});
+        
+        // Set initial button state based on autoplay setting and video availability
+        if (playIcon && pauseIcon) {
+          // Check for video source in multiple ways
+          let videoSrc = video.src || video.dataset.videoUrl || '';
+          if (!videoSrc) {
+            // Check source elements
+            const sourceElement = video.querySelector('source');
+            if (sourceElement) {
+              videoSrc = sourceElement.src;
+            }
+          }
+          
+          const hasValidSrc = videoSrc && videoSrc !== '';
+          const videoType = video.dataset.videoType || 'file';
+          
+          // Clean up video URL for better validation
+          let cleanSrc = hasValidSrc ? videoSrc.split('?')[0] : '';
+          const isValidVideo = cleanSrc && (
+            cleanSrc.includes('.mp4') || 
+            cleanSrc.includes('.webm') || 
+            cleanSrc.includes('.ogg') || 
+            cleanSrc.includes('.mov') ||
+            cleanSrc.includes('video') || 
+            cleanSrc.includes('cdn.shopify.com/videos') ||
+            videoType === 'url' ||
+            hasValidSrc // If we have a src, assume it's valid
+          );
+          
+          console.log('Video type:', videoType, 'Valid src:', isValidVideo, 'Clean src:', cleanSrc);
+          
+          const shouldAutoplay = {{ section.settings.autoplay }} && isValidVideo;
+          
+          if (shouldAutoplay) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+          } else {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+          }
+        }
+        
+        video.addEventListener('loadstart', () => {
+          console.log('Video loadstart event fired for:', video.src);
+        });
+        
+        video.addEventListener('error', (e) => {
+          console.error('Video error:', e);
+          console.error('Video src that failed:', video.src);
+          // Hide video and show error state
+          video.style.display = 'none';
+          if (playIcon && pauseIcon) {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+          }
+        });
+        
+        video.addEventListener('canplay', () => {
+          console.log('Video can play:', video.src);
+          video.style.display = 'block';
+        });
+
+        video.addEventListener('play', () => {
+          if (playIcon && pauseIcon) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+          }
+        });
+
+        video.addEventListener('pause', () => {
+          if (playIcon && pauseIcon) {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+          }
+        });
+
+        video.addEventListener('ended', () => {
+          if (playIcon && pauseIcon) {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+          }
+        });
+      });
+
+      // Dots functionality
+      const embla = section.querySelector('.embla');
+      if (embla && embla.__embla) {
+        const dotsContainer = section.querySelector('.carousel-dots');
+        if (dotsContainer) {
+          const slides = embla.querySelectorAll('.embla__slide');
+
+          // Create dots
+          slides.forEach((slide, index) => {
+            const dot = document.createElement('button');
+            dot.className = 'dot';
+            dot.addEventListener('click', () => embla.__embla.scrollTo(index));
+            dotsContainer.appendChild(dot);
+          });
+
+          // Update active dot and handle video visibility
+          function updateDots() {
+            const dots = dotsContainer.querySelectorAll('.dot');
+            const selectedIndex = embla.__embla.selectedScrollSnap();
+
+            dots.forEach((dot, index) => {
+              dot.classList.toggle('active', index === selectedIndex);
+            });
+
+            // Handle video visibility on slide change
+            setTimeout(handleVideoVisibility, 100);
+          }
+
+          embla.__embla.on('select', updateDots);
+          embla.__embla.on('scroll', handleVideoVisibility);
+          updateDots();
+        }
+      }
+
+      // Handle scroll for video visibility
+      let scrollTimeout;
+      window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(handleVideoVisibility, 150);
+      });
+
+      // Initial video setup
+      setTimeout(handleVideoVisibility, 500);
+    });
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Video Carousel",
+  "tag": "section",
+  "class": "section video-carousel-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Latest Videos"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container layout",
+      "options": [
+        {"value": "container", "label": "Container (with max width)"},
+        {"value": "full_width", "label": "Full width (edge to edge)"}
+      ],
+      "default": "container",
+      "info": "Choose between contained or full-width layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container max width (px)",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "default": 1200,
+      "info": "Only applies when 'Container' layout is selected"
+    },
+    {
+      "type": "range",
+      "id": "slide_width",
+      "label": "Desktop slide width (%)",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "info": "Width of each video slide on desktop"
+    },
+    {
+      "type": "range",
+      "id": "tablet_width",
+      "label": "Tablet slide width (%)",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 70,
+      "info": "Width of each video slide on tablet devices"
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "label": "Mobile slide width (%)",
+      "min": 70,
+      "max": 100,
+      "step": 5,
+      "default": 85,
+      "info": "Width of each video slide on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "video_max_width",
+      "label": "Maximum video width (px)",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "info": "Maximum width constraint for individual videos"
+    },
+    {
+      "type": "range",
+      "id": "video_min_width",
+      "label": "Minimum video width (px)",
+      "min": 150,
+      "max": 400,
+      "step": 25,
+      "default": 200,
+      "info": "Minimum width constraint for individual videos"
+    },
+    {
+      "type": "range",
+      "id": "video_scale",
+      "label": "Video size scale (%)",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "default": 100,
+      "info": "Scale all videos up or down from their base size"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between slides (px)",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Video aspect ratio",
+      "options": [
+        {"value": "16/9", "label": "16:9 (Standard Video - Widescreen)"},
+        {"value": "9/16", "label": "9:16 (Vertical Video - Mobile/Reel Style)"},
+        {"value": "4/5", "label": "4:5 (Instagram Post Style)"},
+        {"value": "1/1", "label": "1:1 (Square)"}
+      ],
+      "default": "16/9"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay videos",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Mute videos by default",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop videos",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show video controls",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dot indicators",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_pause",
+      "label": "Show play/pause button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mute_toggle",
+      "label": "Show mute toggle",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lightbox",
+      "label": "Enable video lightbox",
+      "info": "Allow videos to be opened in full-screen lightbox",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_cards",
+      "label": "Videos to scroll per click",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size (px)",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding (px)",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Video Source"
+        },
+        {
+          "type": "video",
+          "id": "video_file",
+          "label": "Upload video file",
+          "info": "MP4 format recommended. Leave empty to use video URL instead."
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Direct link to MP4 video file. Used when no file is uploaded above."
+        },
+        {
+          "type": "header",
+          "content": "Overlay Content"
+        },
+        {
+          "type": "text",
+          "id": "overlay_heading",
+          "label": "Overlay heading"
+        },
+        {
+          "type": "textarea",
+          "id": "overlay_text",
+          "label": "Overlay text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "header",
+          "content": "Product Information (for lightbox)"
+        },
+        {
+          "type": "product",
+          "id": "featured_product",
+          "label": "Featured product",
+          "info": "Product to show in video lightbox"
+        },
+        {
+          "type": "text",
+          "id": "product_price_override",
+          "label": "Custom price text",
+          "info": "Override product price with custom text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Video Carousel",
+      "category": "Media",
+      "blocks": [
+        {
+          "type": "video",
+          "settings": {
+            "overlay_heading": "Featured Product",
+            "overlay_text": "Discover our latest collection",
+            "button_label": "Shop Now",
+            "button_url": "/collections/all"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "overlay_heading": "New Arrivals",
+            "overlay_text": "Fresh styles just in",
+            "button_label": "View All",
+            "button_url": "/collections/new"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "overlay_heading": "Best Sellers",
+            "overlay_text": "Customer favorites",
+            "button_label": "Shop Bestsellers",
+            "button_url": "/collections/best-sellers"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
