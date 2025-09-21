@@ -1,0 +1,401 @@
+/* ===============================================
+   Product Variant Showcase Components
+   =============================================== */
+
+.product-variant-showcase__selects {
+  --swatch-size: 4rem;
+  --swatch-border: 2px;
+  --button-padding: 1rem 2rem;
+  --border-radius-small: 8px;
+  --transition-all: all 0.2s ease;
+}
+
+/* ===============================================
+   Enhanced Swatch Styling
+   =============================================== */
+
+.product-variant-showcase__color-swatches .swatch-input__label {
+  --swatch-input--size: var(--swatch-size);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--swatch-input--size);
+  height: var(--swatch-input--size);
+  border: var(--swatch-border) solid rgba(var(--color-foreground), 0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition-all);
+  overflow: hidden;
+}
+
+/* Pattern and image swatches */
+.product-variant-showcase__color-swatches .swatch-input__label[style*="background-image"] {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Solid color swatches */
+.product-variant-showcase__color-swatches .swatch-input__label:not([style*="background-image"]) {
+  background: var(--swatch-background, #f0f0f0) !important;
+}
+
+/* Common color mappings for better swatch display */
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="red" i] {
+  --swatch-background: #dc2626;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="blue" i] {
+  --swatch-background: #2563eb;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="green" i] {
+  --swatch-background: #16a34a;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="yellow" i] {
+  --swatch-background: #facc15;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="purple" i] {
+  --swatch-background: #9333ea;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="pink" i] {
+  --swatch-background: #ec4899;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="orange" i] {
+  --swatch-background: #ea580c;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="black" i] {
+  --swatch-background: #0f0f0f;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="white" i] {
+  --swatch-background: #ffffff;
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="gray" i],
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="grey" i] {
+  --swatch-background: #6b7280;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="brown" i] {
+  --swatch-background: #92400e;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="navy" i] {
+  --swatch-background: #1e3a8a;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="beige" i] {
+  --swatch-background: #f5f5dc;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="gold" i] {
+  --swatch-background: linear-gradient(45deg, #ffd700, #ffed4e);
+}
+
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="silver" i] {
+  --swatch-background: linear-gradient(45deg, #c0c0c0, #e5e5e5);
+}
+
+/* Swatch interactions */
+.product-variant-showcase__color-swatches .swatch-input__label:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.product-variant-showcase__color-swatches .swatch-input__input:checked + .swatch-input__label {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgb(var(--color-background)), 0 0 0 5px rgb(var(--color-foreground));
+  z-index: 3;
+}
+
+/* Checkmark for selected swatches */
+.product-variant-showcase__color-swatches .swatch-input__input:checked + .swatch-input__label::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+/* White swatch needs dark checkmark */
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="white" i].swatch-input__input:checked + .swatch-input__label::after,
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="yellow" i].swatch-input__input:checked + .swatch-input__label::after,
+.product-variant-showcase__color-swatches .swatch-input__label[data-option-value*="beige" i].swatch-input__input:checked + .swatch-input__label::after {
+  color: rgb(var(--color-foreground));
+  text-shadow: none;
+}
+
+/* ===============================================
+   Enhanced Button Styling
+   =============================================== */
+
+.product-variant-showcase__option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.product-variant-showcase__option-button {
+  position: relative;
+  padding: var(--button-padding);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  border: 2px solid rgba(var(--color-foreground), 0.15);
+  border-radius: var(--border-radius-small);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: var(--transition-all);
+  min-width: 5rem;
+  text-align: center;
+  user-select: none;
+}
+
+.product-variant-showcase__option-button:hover {
+  border-color: rgba(var(--color-foreground), 0.4);
+  background: rgba(var(--color-foreground), 0.02);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-variant-showcase__option-input:checked + .product-variant-showcase__option-button {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-foreground));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--color-foreground), 0.25);
+}
+
+/* Size buttons get special styling */
+.product-variant-showcase__size-button {
+  min-width: 6rem;
+  font-weight: 600;
+  position: relative;
+}
+
+/* Unavailable state */
+.product-variant-showcase__option-input:disabled + .product-variant-showcase__option-button,
+.product-variant-showcase__option-button[data-unavailable="true"] {
+  position: relative;
+  color: rgba(var(--color-foreground), 0.3);
+  border-color: rgba(var(--color-foreground), 0.1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.product-variant-showcase__option-input:disabled + .product-variant-showcase__option-button::before,
+.product-variant-showcase__option-button[data-unavailable="true"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: rgba(var(--color-foreground), 0.3);
+  transform: translateY(-50%) rotate(-45deg);
+  pointer-events: none;
+}
+
+/* ===============================================
+   Tooltip Enhancements
+   =============================================== */
+
+.swatch-input__tooltip {
+  position: absolute;
+  bottom: calc(100% + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  padding: 0.6rem 1rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.swatch-input__tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-top-color: rgb(var(--color-foreground));
+}
+
+.product-variant-showcase__swatch-label:hover .swatch-input__tooltip,
+.product-variant-showcase__swatch-label:focus-visible .swatch-input__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-0.5rem);
+}
+
+/* ===============================================
+   Option Group Layout
+   =============================================== */
+
+.product-variant-showcase__option-group {
+  background: rgba(var(--color-foreground), 0.02);
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.2s ease;
+}
+
+.product-variant-showcase__option-group:hover {
+  background: rgba(var(--color-foreground), 0.03);
+  border-color: rgba(var(--color-foreground), 0.12);
+}
+
+.product-variant-showcase__option-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 1.5rem;
+}
+
+.product-variant-showcase__selected-value {
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 0.7);
+  font-style: italic;
+}
+
+/* ===============================================
+   Responsive Adjustments
+   =============================================== */
+
+@media screen and (max-width: 749px) {
+  .product-variant-showcase__selects {
+    --swatch-size: 3.5rem;
+    --button-padding: 0.8rem 1.5rem;
+  }
+  
+  .product-variant-showcase__option-group {
+    padding: 1.5rem;
+  }
+  
+  .product-variant-showcase__option-label {
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .product-variant-showcase__option-buttons {
+    gap: 0.8rem;
+  }
+  
+  .product-variant-showcase__option-button {
+    font-size: 1.3rem;
+    min-width: 4.5rem;
+  }
+  
+  .product-variant-showcase__size-button {
+    min-width: 5.5rem;
+  }
+}
+
+/* ===============================================
+   Loading States
+   =============================================== */
+
+.product-variant-showcase__selects[data-loading="true"] .product-variant-showcase__option-group {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.product-variant-showcase__selects[data-loading="true"] .product-variant-showcase__option-group::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid rgba(var(--color-foreground), 0.3);
+  border-top-color: rgb(var(--color-foreground));
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ===============================================
+   Accessibility Improvements
+   =============================================== */
+
+/* Focus styles */
+.product-variant-showcase__option-input:focus-visible + .product-variant-showcase__option-button {
+  outline: 3px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.swatch-input__input:focus-visible + .product-variant-showcase__swatch-label {
+  outline: 3px solid rgb(var(--color-foreground));
+  outline-offset: 3px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .product-variant-showcase__option-button {
+    border-width: 3px;
+  }
+  
+  .product-variant-showcase__swatch-label {
+    border-width: 3px;
+  }
+  
+  .product-variant-showcase__option-input:checked + .product-variant-showcase__option-button {
+    border-width: 4px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .product-variant-showcase__option-button,
+  .product-variant-showcase__swatch-label,
+  .swatch-input__tooltip {
+    transition: none;
+  }
+  
+  .product-variant-showcase__option-button:hover,
+  .product-variant-showcase__swatch-label:hover {
+    transform: none;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+}

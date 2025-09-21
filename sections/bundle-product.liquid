@@ -1,0 +1,436 @@
+{%- comment -%}
+Bundle Product Section
+Displays bundle offers with quantity discounts inspired by the cupping massager example
+{%- endcomment -%}
+
+<div class="bundle-product-section" data-section-id="{{ section.id }}">
+  {{ 'section-bundle-product.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'bundle-product.js' | asset_url }}" defer="defer"></script>
+
+  <div class="bundle-container">
+    <!-- Bundle Header -->
+    <div class="bundle-header">
+      <h2 class="bundle-title">{{ section.settings.bundle_title | default: 'Choose Your Bundle' }}</h2>
+      <p class="bundle-subtitle">{{ section.settings.bundle_subtitle | default: 'Save more when you buy more!' }}</p>
+    </div>
+
+    <!-- Bundle Options -->
+    <div class="bundle-options" id="bundle-options">
+      <!-- Bundle Option 1 -->
+      <div class="bundle-option" data-bundle="1" data-quantity="1" data-price="{{ product.price | times: 100 }}" data-discount="0">
+        <div class="bundle-badge">
+          {% if section.settings.bundle_1_badge %}
+            <span class="badge">{{ section.settings.bundle_1_badge }}</span>
+          {% endif %}
+        </div>
+        
+        <div class="bundle-content">
+          <div class="bundle-image">
+            <div class="quantity-indicator">{{ section.settings.bundle_1_quantity | default: 1 }}x</div>
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 150 }}" 
+                   alt="{{ product.title | escape }}" 
+                   loading="lazy">
+            {%- endif -%}
+          </div>
+          
+          <div class="bundle-info">
+            <h3 class="bundle-name">{{ section.settings.bundle_1_name | default: 'Buy 1' }}</h3>
+            <div class="bundle-pricing">
+              <span class="bundle-price">${{ product.price | times: section.settings.bundle_1_quantity | default: 1 | divided_by: 100.0 | round: 2 }}</span>
+              <span class="price-per-item">{{ cart.currency.symbol }}{{ product.price | divided_by: 100.0 | round: 2 }} each</span>
+            </div>
+            {% if section.settings.bundle_1_description %}
+              <p class="bundle-description">{{ section.settings.bundle_1_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <div class="bundle-action">
+          <button type="button" class="bundle-select-btn">Select</button>
+        </div>
+      </div>
+
+      <!-- Bundle Option 2 -->
+      <div class="bundle-option popular" data-bundle="2" data-quantity="{{ section.settings.bundle_2_quantity | default: 2 }}" data-price="{{ product.price | times: section.settings.bundle_2_quantity | default: 2 | times: 100 }}" data-discount="{{ section.settings.bundle_2_discount | default: 15 }}">
+        <div class="bundle-badge">
+          <span class="badge popular-badge">{{ section.settings.bundle_2_badge | default: 'Most Popular' }}</span>
+          {% if section.settings.bundle_2_discount > 0 %}
+            <span class="discount-badge">{{ section.settings.bundle_2_discount }}% OFF</span>
+          {% endif %}
+        </div>
+        
+        <div class="bundle-content">
+          <div class="bundle-image">
+            <div class="quantity-indicator">{{ section.settings.bundle_2_quantity | default: 2 }}x</div>
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 150 }}" 
+                   alt="{{ product.title | escape }}" 
+                   loading="lazy">
+            {%- endif -%}
+          </div>
+          
+          <div class="bundle-info">
+            <h3 class="bundle-name">{{ section.settings.bundle_2_name | default: 'Buy 2' }}</h3>
+            <div class="bundle-pricing">
+              {%- assign original_price = product.price | times: section.settings.bundle_2_quantity | default: 2 -%}
+              {%- assign discount_amount = original_price | times: section.settings.bundle_2_discount | default: 15 | divided_by: 100.0 -%}
+              {%- assign discounted_price = original_price | minus: discount_amount -%}
+              <span class="bundle-price">${{ discounted_price | divided_by: 100.0 | round: 2 }}</span>
+              {% if section.settings.bundle_2_discount > 0 %}
+                <span class="original-price">${{ original_price | divided_by: 100.0 | round: 2 }}</span>
+              {% endif %}
+              <span class="price-per-item">{{ cart.currency.symbol }}{{ discounted_price | divided_by: section.settings.bundle_2_quantity | default: 2 | divided_by: 100.0 | round: 2 }} each</span>
+            </div>
+            {% if section.settings.bundle_2_description %}
+              <p class="bundle-description">{{ section.settings.bundle_2_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <div class="bundle-action">
+          <button type="button" class="bundle-select-btn selected">Select</button>
+        </div>
+      </div>
+
+      <!-- Bundle Option 3 -->
+      <div class="bundle-option" data-bundle="3" data-quantity="{{ section.settings.bundle_3_quantity | default: 3 }}" data-price="{{ product.price | times: section.settings.bundle_3_quantity | default: 3 | times: 100 }}" data-discount="{{ section.settings.bundle_3_discount | default: 25 }}">
+        <div class="bundle-badge">
+          {% if section.settings.bundle_3_badge %}
+            <span class="badge">{{ section.settings.bundle_3_badge }}</span>
+          {% endif %}
+          {% if section.settings.bundle_3_discount > 0 %}
+            <span class="discount-badge">{{ section.settings.bundle_3_discount }}% OFF</span>
+          {% endif %}
+        </div>
+        
+        <div class="bundle-content">
+          <div class="bundle-image">
+            <div class="quantity-indicator">{{ section.settings.bundle_3_quantity | default: 3 }}x</div>
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 150 }}" 
+                   alt="{{ product.title | escape }}" 
+                   loading="lazy">
+            {%- endif -%}
+          </div>
+          
+          <div class="bundle-info">
+            <h3 class="bundle-name">{{ section.settings.bundle_3_name | default: 'Buy 3' }}</h3>
+            <div class="bundle-pricing">
+              {%- assign original_price = product.price | times: section.settings.bundle_3_quantity | default: 3 -%}
+              {%- assign discount_amount = original_price | times: section.settings.bundle_3_discount | default: 25 | divided_by: 100.0 -%}
+              {%- assign discounted_price = original_price | minus: discount_amount -%}
+              <span class="bundle-price">${{ discounted_price | divided_by: 100.0 | round: 2 }}</span>
+              {% if section.settings.bundle_3_discount > 0 %}
+                <span class="original-price">${{ original_price | divided_by: 100.0 | round: 2 }}</span>
+              {% endif %}
+              <span class="price-per-item">{{ cart.currency.symbol }}{{ discounted_price | divided_by: section.settings.bundle_3_quantity | default: 3 | divided_by: 100.0 | round: 2 }} each</span>
+            </div>
+            {% if section.settings.bundle_3_description %}
+              <p class="bundle-description">{{ section.settings.bundle_3_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <div class="bundle-action">
+          <button type="button" class="bundle-select-btn">Select</button>
+        </div>
+      </div>
+
+      <!-- Bundle Option 4 -->
+      {%- if section.settings.show_bundle_4 -%}
+      <div class="bundle-option best-value" data-bundle="4" data-quantity="{{ section.settings.bundle_4_quantity | default: 5 }}" data-price="{{ product.price | times: section.settings.bundle_4_quantity | default: 5 | times: 100 }}" data-discount="{{ section.settings.bundle_4_discount | default: 35 }}">
+        <div class="bundle-badge">
+          <span class="badge best-value-badge">{{ section.settings.bundle_4_badge | default: 'Best Value' }}</span>
+          {% if section.settings.bundle_4_discount > 0 %}
+            <span class="discount-badge">{{ section.settings.bundle_4_discount }}% OFF</span>
+          {% endif %}
+        </div>
+        
+        <div class="bundle-content">
+          <div class="bundle-image">
+            <div class="quantity-indicator">{{ section.settings.bundle_4_quantity | default: 5 }}x</div>
+            {%- if product.featured_media -%}
+              <img src="{{ product.featured_media | image_url: width: 150 }}" 
+                   alt="{{ product.title | escape }}" 
+                   loading="lazy">
+            {%- endif -%}
+          </div>
+          
+          <div class="bundle-info">
+            <h3 class="bundle-name">{{ section.settings.bundle_4_name | default: 'Buy 5' }}</h3>
+            <div class="bundle-pricing">
+              {%- assign original_price = product.price | times: section.settings.bundle_4_quantity | default: 5 -%}
+              {%- assign discount_amount = original_price | times: section.settings.bundle_4_discount | default: 35 | divided_by: 100.0 -%}
+              {%- assign discounted_price = original_price | minus: discount_amount -%}
+              <span class="bundle-price">${{ discounted_price | divided_by: 100.0 | round: 2 }}</span>
+              {% if section.settings.bundle_4_discount > 0 %}
+                <span class="original-price">${{ original_price | divided_by: 100.0 | round: 2 }}</span>
+              {% endif %}
+              <span class="price-per-item">{{ cart.currency.symbol }}{{ discounted_price | divided_by: section.settings.bundle_4_quantity | default: 5 | divided_by: 100.0 | round: 2 }} each</span>
+            </div>
+            {% if section.settings.bundle_4_description %}
+              <p class="bundle-description">{{ section.settings.bundle_4_description }}</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <div class="bundle-action">
+          <button type="button" class="bundle-select-btn">Select</button>
+        </div>
+      </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Bundle Summary -->
+    <div class="bundle-summary" id="bundle-summary">
+      <div class="summary-content">
+        <div class="selected-bundle">
+          <span class="selected-text">Selected: <strong id="selected-bundle-name">Buy 2</strong></span>
+          <span class="selected-quantity" id="selected-quantity">Quantity: 2</span>
+        </div>
+        
+        <div class="summary-pricing">
+          <div class="total-price">
+            <span class="total-label">Total:</span>
+            <span class="total-amount" id="total-amount">${{ product.price | times: 2 | times: 0.85 | divided_by: 100.0 | round: 2 }}</span>
+          </div>
+          <div class="savings" id="savings-display">
+            You save: <span class="savings-amount">${{ product.price | times: 2 | times: 0.15 | divided_by: 100.0 | round: 2 }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bundle-cta">
+        <button type="button" class="add-to-cart-btn" id="add-bundle-to-cart">
+          <span class="btn-text">Add to Cart</span>
+          <span class="btn-price" id="btn-price">${{ product.price | times: 2 | times: 0.85 | divided_by: 100.0 | round: 2 }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Trust Indicators -->
+    {%- if section.settings.show_trust_indicators -%}
+    <div class="trust-indicators">
+      <div class="trust-item">
+        <div class="trust-icon">🚚</div>
+        <div class="trust-text">{{ section.settings.trust_1_text | default: 'Free Shipping' }}</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💯</div>
+        <div class="trust-text">{{ section.settings.trust_2_text | default: '30-Day Guarantee' }}</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-text">{{ section.settings.trust_3_text | default: 'Fast Delivery' }}</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🔒</div>
+        <div class="trust-text">{{ section.settings.trust_4_text | default: 'Secure Payment' }}</div>
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bundle Product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Bundle Settings"
+    },
+    {
+      "type": "text",
+      "id": "bundle_title",
+      "label": "Bundle Title",
+      "default": "Choose Your Bundle"
+    },
+    {
+      "type": "text",
+      "id": "bundle_subtitle",
+      "label": "Bundle Subtitle",
+      "default": "Save more when you buy more!"
+    },
+    {
+      "type": "header",
+      "content": "Bundle Option 1"
+    },
+    {
+      "type": "text",
+      "id": "bundle_1_name",
+      "label": "Bundle 1 Name",
+      "default": "Buy 1"
+    },
+    {
+      "type": "number",
+      "id": "bundle_1_quantity",
+      "label": "Bundle 1 Quantity",
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "bundle_1_badge",
+      "label": "Bundle 1 Badge"
+    },
+    {
+      "type": "text",
+      "id": "bundle_1_description",
+      "label": "Bundle 1 Description"
+    },
+    {
+      "type": "header",
+      "content": "Bundle Option 2"
+    },
+    {
+      "type": "text",
+      "id": "bundle_2_name",
+      "label": "Bundle 2 Name",
+      "default": "Buy 2"
+    },
+    {
+      "type": "number",
+      "id": "bundle_2_quantity",
+      "label": "Bundle 2 Quantity",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "bundle_2_discount",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Bundle 2 Discount",
+      "default": 15
+    },
+    {
+      "type": "text",
+      "id": "bundle_2_badge",
+      "label": "Bundle 2 Badge",
+      "default": "Most Popular"
+    },
+    {
+      "type": "text",
+      "id": "bundle_2_description",
+      "label": "Bundle 2 Description"
+    },
+    {
+      "type": "header",
+      "content": "Bundle Option 3"
+    },
+    {
+      "type": "text",
+      "id": "bundle_3_name",
+      "label": "Bundle 3 Name",
+      "default": "Buy 3"
+    },
+    {
+      "type": "number",
+      "id": "bundle_3_quantity",
+      "label": "Bundle 3 Quantity",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "bundle_3_discount",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Bundle 3 Discount",
+      "default": 25
+    },
+    {
+      "type": "text",
+      "id": "bundle_3_badge",
+      "label": "Bundle 3 Badge"
+    },
+    {
+      "type": "text",
+      "id": "bundle_3_description",
+      "label": "Bundle 3 Description"
+    },
+    {
+      "type": "header",
+      "content": "Bundle Option 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bundle_4",
+      "label": "Show Bundle Option 4",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "bundle_4_name",
+      "label": "Bundle 4 Name",
+      "default": "Buy 5"
+    },
+    {
+      "type": "number",
+      "id": "bundle_4_quantity",
+      "label": "Bundle 4 Quantity",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "bundle_4_discount",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Bundle 4 Discount",
+      "default": 35
+    },
+    {
+      "type": "text",
+      "id": "bundle_4_badge",
+      "label": "Bundle 4 Badge",
+      "default": "Best Value"
+    },
+    {
+      "type": "text",
+      "id": "bundle_4_description",
+      "label": "Bundle 4 Description"
+    },
+    {
+      "type": "header",
+      "content": "Trust Indicators"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_indicators",
+      "label": "Show Trust Indicators",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1_text",
+      "label": "Trust Indicator 1",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_text",
+      "label": "Trust Indicator 2",
+      "default": "30-Day Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_text",
+      "label": "Trust Indicator 3",
+      "default": "Fast Delivery"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_text",
+      "label": "Trust Indicator 4",
+      "default": "Secure Payment"
+    }
+  ]
+}
+{% endschema %}
