@@ -297,6 +297,81 @@
         "overlay_color": "",
         "overlay_opacity": 0
       }
+    },
+    "comparison_table_xmXfkH": {
+      "type": "comparison-table",
+      "blocks": {
+        "checklist_item_TCEgTD": {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Quality and performance"
+          }
+        },
+        "checklist_item_4BGzgg": {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Value for money"
+          }
+        },
+        "checklist_item_6r3hDj": {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Customer satisfaction"
+          }
+        },
+        "comparison_row_jm4ic4": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Price",
+            "primary_value_type": "text",
+            "primary_value": "$29.99",
+            "secondary_value_type": "text",
+            "secondary_value": "$39.99"
+          }
+        },
+        "comparison_row_bVRXfA": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Quality Rating",
+            "primary_value_type": "text",
+            "primary_value": "5/5",
+            "secondary_value_type": "text",
+            "secondary_value": "3/5"
+          }
+        },
+        "comparison_row_7RPKdb": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Free Shipping",
+            "primary_value_type": "checkmark",
+            "primary_value": "Value 1",
+            "secondary_value_type": "cross",
+            "secondary_value": "Value 2"
+          }
+        }
+      },
+      "block_order": [
+        "checklist_item_TCEgTD",
+        "checklist_item_4BGzgg",
+        "checklist_item_6r3hDj",
+        "comparison_row_jm4ic4",
+        "comparison_row_bVRXfA",
+        "comparison_row_7RPKdb"
+      ],
+      "name": "Comparison Table",
+      "settings": {
+        "heading": "Not All Protein Is Built Equal",
+        "heading_size": "h0",
+        "description": "<p>some collagen water products claim to support muscle repair and growth, but unless they're fortified with additional amino acids, they simply can't perform.</p>",
+        "checklist_heading": "Key factors to consider:",
+        "button_label": "Learn More",
+        "button_link": "",
+        "column_1_header": "Pea Protein",
+        "column_2_header": "Collagen",
+        "color_scheme": "",
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
@@ -304,6 +379,7 @@
     "hero_2_grid_z46BYi",
     "image_with_overlap_slider_KYgUd3",
     "video_carousel_TW778A",
-    "feature_showcase_7q9V7E"
+    "feature_showcase_7q9V7E",
+    "comparison_table_xmXfkH"
   ]
 }
