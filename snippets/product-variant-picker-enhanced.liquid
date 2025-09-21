@@ -1,0 +1,192 @@
+{%- unless product.has_only_default_variant -%}
+  {%- if block.settings.picker_type == 'button' -%}
+    <variant-selects
+      id="variant-selects-{{ section.id }}"
+      class="no-js-hidden product-variant-showcase__selects"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if block.settings.enable_variant_images %}data-enable-variant-images="true"{% endif %}
+      {% if block.settings.enable_color_swatches %}data-enable-color-swatches="true"{% endif %}
+    >
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign option_index = forloop.index0
+          assign option_name = option.name | downcase
+          assign is_color_option = false
+          assign is_size_option = false
+          
+          if option_name contains 'color' or option_name contains 'colour' or option_name contains 'finish'
+            assign is_color_option = true
+          elsif option_name contains 'size' or option_name contains 'width' or option_name contains 'length'
+            assign is_size_option = true
+          endif
+        -%}
+
+        <div class="product-form__input product-form__input--pill product-variant-showcase__option-group{% if is_color_option and block.settings.enable_color_swatches %} product-form__input--swatch{% endif %}">
+          <fieldset class="js product-form__input">
+            <legend class="form__label product-variant-showcase__option-label">
+              {{ option.name }}:
+              <span class="product-variant-showcase__selected-value" data-option-index="{{ option_index }}">
+                {{ option.selected_value }}
+              </span>
+            </legend>
+            
+            {%- if is_color_option and block.settings.enable_color_swatches -%}
+              <div class="product-variant-showcase__color-swatches">
+                {%- for value in option.values -%}
+                  <input
+                    type="radio"
+                    id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                    name="{{ option.name }}"
+                    value="{{ value | escape }}"
+                    form="{{ product_form_id }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                    class="swatch-input__input"
+                  >
+                  <label
+                    for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                    class="swatch-input__label product-variant-showcase__swatch-label"
+                    title="{{ value | escape }}"
+                    data-option-value="{{ value | escape }}"
+                    style="--swatch-background: {{ value | replace: ' ', '' | downcase }}; --swatch-background-image: url('{{ value | handle | append: '.png' | file_img_url: '50x50' }}')"
+                  >
+                    <span class="swatch-input__tooltip">{{ value }}</span>
+                    <span class="visually-hidden">{{ value }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <div class="product-variant-showcase__option-buttons">
+                {%- for value in option.values -%}
+                  <input
+                    type="radio"
+                    id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                    name="{{ option.name }}"
+                    value="{{ value | escape }}"
+                    form="{{ product_form_id }}"
+                    {% if option.selected_value == value %}checked{% endif %}
+                    class="product-variant-showcase__option-input"
+                  >
+                  <label
+                    for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                    class="product-variant-showcase__option-button{% if is_size_option %} product-variant-showcase__size-button{% endif %}"
+                    data-option-value="{{ value | escape }}"
+                  >
+                    {{ value }}
+                  </label>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </fieldset>
+
+          <script type="application/json">
+            {{ product.variants | where: 'available' | json }}
+          </script>
+        </div>
+      {%- endfor -%}
+
+      {%- if block.settings.show_variant_labels -%}
+        <div class="product-variant-showcase__variant-info">
+          <div class="product-variant-showcase__variant-details" id="variant-details-{{ section.id }}">
+            {%- if product.selected_or_first_available_variant.sku != blank -%}
+              <span class="product-variant-showcase__sku">
+                SKU: {{ product.selected_or_first_available_variant.sku }}
+              </span>
+            {%- endif -%}
+            {%- if product.selected_or_first_available_variant.barcode != blank -%}
+              <span class="product-variant-showcase__barcode">
+                Barcode: {{ product.selected_or_first_available_variant.barcode }}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </variant-selects>
+  {%- else -%}
+    <variant-selects
+      id="variant-selects-{{ section.id }}"
+      class="no-js-hidden"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if block.settings.enable_variant_images %}data-enable-variant-images="true"{% endif %}
+    >
+      {%- for option in product.options_with_values -%}
+        <div class="product-form__input product-form__input--dropdown">
+          <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+          <div class="select">
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {%- for value in option.values -%}
+                <option
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}selected="selected"{% endif %}
+                >
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </div>
+        </div>
+      {%- endfor -%}
+
+      <script type="application/json">
+        {{ product.variants | where: 'available' | json }}
+      </script>
+    </variant-selects>
+  {%- endif -%}
+
+  <noscript class="product-form__noscript-wrapper-{{ section.id }}">
+    <div class="product-form__input{% if product.has_only_default_variant %} hidden{% endif %}">
+      <label class="form__label" for="Variants-{{ section.id }}">
+        {{ 'products.product.product_variants' | t }}
+      </label>
+      <div class="select">
+        <select
+          name="id"
+          id="Variants-{{ section.id }}"
+          class="select__select"
+          form="{{ product_form_id }}"
+        >
+          {%- for variant in product.variants -%}
+            <option
+              {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+              {% if variant.available == false %}disabled{% endif %}
+              value="{{ variant.id }}"
+            >
+              {%- liquid
+                echo variant.title
+                echo variant.price | money | prepend: ' - '
+                if variant.available == false
+                  echo 'products.product.sold_out' | t | prepend: ' - '
+                endif
+                if variant.quantity_rule.increment > 1
+                  echo 'products.product.quantity.multiples_of' | t: quantity: variant.quantity_rule.increment | prepend: ' - '
+                endif
+                if variant.quantity_rule.min > 1
+                  echo 'products.product.quantity.minimum_of' | t: quantity: variant.quantity_rule.min | prepend: ' - '
+                endif
+                if variant.quantity_rule.max != null
+                  echo 'products.product.quantity.maximum_of' | t: quantity: variant.quantity_rule.max | prepend: ' - '
+                endif
+                if variant.unit_price_measurement
+                  echo variant.unit_price_measurement.reference_value
+                  echo variant.unit_price_measurement.reference_unit
+                  echo variant.unit_price | money | prepend: '('
+                  echo variant.unit_price_measurement.measured_type | append: ')' | prepend: '/'
+                endif
+              -%}
+            </option>
+          {%- endfor -%}
+        </select>
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </div>
+    </div>
+  </noscript>
+{%- endunless -%}

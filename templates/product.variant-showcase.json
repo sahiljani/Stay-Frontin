@@ -1,0 +1,131 @@
+{
+    "sections": {
+        "main": {
+            "type": "main-product-variant-showcase",
+            "blocks": {
+                "vendor": {
+                    "type": "text",
+                    "settings": {
+                        "text": "{{ product.vendor }}",
+                        "text_style": "uppercase"
+                    }
+                },
+                "title": {
+                    "type": "title",
+                    "settings": {}
+                },
+                "rating": {
+                    "type": "rating",
+                    "settings": {}
+                },
+                "price": {
+                    "type": "price",
+                    "settings": {}
+                },
+                "variant_picker": {
+                    "type": "variant_picker",
+                    "settings": {
+                        "picker_type": "button",
+                        "swatch_shape": "circle"
+                    }
+                },
+                "inventory": {
+                    "type": "inventory",
+                    "settings": {
+                        "text_style": "body",
+                        "inventory_threshold": 10,
+                        "show_inventory_quantity": true
+                    }
+                },
+                "quantity_selector": {
+                    "type": "quantity_selector",
+                    "settings": {}
+                },
+                "buy_buttons": {
+                    "type": "buy_buttons",
+                    "settings": {
+                        "show_dynamic_checkout": true,
+                        "show_gift_card_recipient": true
+                    }
+                },
+                "description": {
+                    "type": "description",
+                    "settings": {}
+                },
+                "collapsible_tab_1": {
+                    "type": "collapsible_tab",
+                    "settings": {
+                        "heading": "Shipping & Returns",
+                        "icon": "truck",
+                        "content": "<p>Free shipping on orders over $50. Easy 30-day returns.</p>"
+                    }
+                },
+                "collapsible_tab_2": {
+                    "type": "collapsible_tab",
+                    "settings": {
+                        "heading": "Size Guide",
+                        "icon": "ruler",
+                        "content": "<p>Check our comprehensive size guide to find your perfect fit.</p>"
+                    }
+                },
+                "share": {
+                    "type": "share",
+                    "settings": {
+                        "share_label": "Share"
+                    }
+                }
+            },
+            "block_order": [
+                "vendor",
+                "title",
+                "rating",
+                "price",
+                "variant_picker",
+                "inventory",
+                "quantity_selector",
+                "buy_buttons",
+                "description",
+                "collapsible_tab_1",
+                "collapsible_tab_2",
+                "share"
+            ],
+            "settings": {
+                "enable_sticky_info": true,
+                "color_scheme": "scheme-1",
+                "media_size": "large",
+                "constrain_to_viewport": true,
+                "media_fit": "contain",
+                "gallery_layout": "thumbnail_slider",
+                "mobile_thumbnails": "show",
+                "media_position": "left",
+                "image_zoom": "hover",
+                "hide_variants": false,
+                "enable_video_looping": false,
+                "padding_top": 36,
+                "padding_bottom": 12
+            }
+        },
+        "related-products": {
+            "type": "related-products",
+            "settings": {
+                "heading": "You may also like",
+                "heading_size": "h2",
+                "products_to_show": 4,
+                "columns_desktop": 4,
+                "columns_mobile": "2",
+                "color_scheme": "scheme-1",
+                "image_ratio": "square",
+                "image_shape": "default",
+                "show_secondary_image": true,
+                "show_vendor": false,
+                "show_rating": false,
+                "padding_top": 36,
+                "padding_bottom": 28
+            }
+        }
+    },
+    "order": [
+        "main",
+        "related-products"
+    ]
+}

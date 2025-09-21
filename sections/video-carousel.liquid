@@ -16,6 +16,118 @@
       <p class="section-description">{{ section.settings.description }}</p>
     {% endif %}
 
+    {% if section.settings.show_icon_section %}
+      <div class="icon-section">
+        {% comment %} Icon Display {% endcomment %}
+        <div class="icon-wrapper">
+          {% if section.settings.custom_svg != blank %}
+            {% comment %} Custom SVG Upload {% endcomment %}
+            <div class="icon-container custom-svg">
+              {{ section.settings.custom_svg }}
+            </div>
+          {% elsif section.settings.icon_pack != 'none' %}
+            {% comment %} Pre-built Icon Pack {% endcomment %}
+            <div class="icon-container icon-pack">
+              {% case section.settings.icon_pack %}
+                {% when 'play' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                {% when 'video' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+                  </svg>
+                {% when 'camera' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2v11z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                {% when 'film' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2"/>
+                    <line x1="7" y1="3" x2="7" y2="21"/>
+                    <line x1="17" y1="3" x2="17" y2="21"/>
+                    <line x1="2" y1="9" x2="22" y2="9"/>
+                    <line x1="2" y1="15" x2="22" y2="15"/>
+                  </svg>
+                {% when 'monitor' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
+                  </svg>
+                {% when 'tv' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/>
+                    <polyline points="17,2 12,7 7,2"/>
+                  </svg>
+                {% when 'smartphone' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                    <line x1="12" y1="18" x2="12.01" y2="18"/>
+                  </svg>
+                {% when 'youtube' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                    <polygon points="9.75,15.02 15.5,11.75 9.75,8.48"/>
+                  </svg>
+                {% when 'instagram' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                  </svg>
+                {% when 'tiktok' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                  </svg>
+                {% when 'star' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                  </svg>
+                {% when 'heart' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                {% when 'trending' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                    <polyline points="17,6 23,6 23,12"/>
+                  </svg>
+                {% when 'fire' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                  </svg>
+                {% when 'crown' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2 19h20v2H2v-2zm1.15-12.5L4 9l4-7 3.47 4.86L16 2l3.47 9.86L24 9l.85-2.5L20.5 15h-17L2.15 6.5z"/>
+                  </svg>
+                {% when 'gift' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <polyline points="20,12 20,22 4,22 4,12"/>
+                    <rect x="2" y="7" width="20" height="5"/>
+                    <line x1="12" y1="22" x2="12" y2="7"/>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                  </svg>
+                {% when 'diamond' %}
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>
+                  </svg>
+              {% endcase %}
+            </div>
+          {% endif %}
+        </div>
+
+        {% comment %} Label Text {% endcomment %}
+        {% if section.settings.icon_label != blank %}
+          <div class="icon-label">
+            <{{ section.settings.label_tag }}>{{ section.settings.icon_label }}</{{ section.settings.label_tag }}>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
     <div class="video-carousel-wrapper">
       <div class="embla" id="video-carousel-{{ section.id }}" aria-label="Video carousel" data-embla-init data-section-id="{{ section.id }}" data-scroll-cards="{{ section.settings.scroll_cards | default: 1 }}">
         <div class="embla__viewport">
@@ -234,6 +346,92 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    /* Icon Section Styles */
+    #section-{{ section.id }} .icon-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: {{ section.settings.icon_section_margin }}px;
+      text-align: center;
+    }
+
+    #section-{{ section.id }} .icon-wrapper {
+      margin-bottom: {{ section.settings.icon_label_spacing }}px;
+    }
+
+    #section-{{ section.id }} .icon-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: {{ section.settings.icon_size }}px;
+      height: {{ section.settings.icon_size }}px;
+      background: {{ section.settings.icon_background_color }};
+      border-radius: {{ section.settings.icon_border_radius }}px;
+      padding: {{ section.settings.icon_padding }}px;
+      box-shadow: {{ section.settings.icon_shadow_intensity }}px {{ section.settings.icon_shadow_intensity }}px {{ section.settings.icon_shadow_blur }}px rgba(0,0,0,{{ section.settings.icon_shadow_opacity | divided_by: 100.0 }});
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      {% if section.settings.icon_border_width > 0 %}
+        border: {{ section.settings.icon_border_width }}px solid {{ section.settings.icon_border_color }};
+      {% endif %}
+    }
+
+    #section-{{ section.id }} .icon-container:hover {
+      transform: translateY(-{{ section.settings.icon_hover_lift }}px) scale({{ section.settings.icon_hover_scale | divided_by: 100.0 }});
+      box-shadow: {{ section.settings.icon_shadow_intensity | times: 2 }}px {{ section.settings.icon_shadow_intensity | times: 2 }}px {{ section.settings.icon_shadow_blur | times: 1.5 }}px rgba(0,0,0,{{ section.settings.icon_shadow_opacity | divided_by: 100.0 | times: 1.2 }});
+    }
+
+    #section-{{ section.id }} .icon-container svg {
+      width: 100%;
+      height: 100%;
+      color: {{ section.settings.icon_color }};
+      display: block;
+    }
+
+    #section-{{ section.id }} .icon-container.custom-svg svg {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+    }
+
+    #section-{{ section.id }} .icon-label h1,
+    #section-{{ section.id }} .icon-label h2,
+    #section-{{ section.id }} .icon-label h3,
+    #section-{{ section.id }} .icon-label h4,
+    #section-{{ section.id }} .icon-label h5,
+    #section-{{ section.id }} .icon-label h6,
+    #section-{{ section.id }} .icon-label p,
+    #section-{{ section.id }} .icon-label div {
+      margin: 0;
+      font-size: {{ section.settings.label_font_size }}px;
+      font-weight: {{ section.settings.label_font_weight }};
+      color: {{ section.settings.label_color }};
+      letter-spacing: {{ section.settings.label_letter_spacing }}em;
+      text-transform: {{ section.settings.label_text_transform }};
+      line-height: 1.3;
+    }
+
+    /* Responsive adjustments for icon section */
+    @media (max-width: 768px) {
+      #section-{{ section.id }} .icon-container {
+        width: {{ section.settings.icon_size | times: 0.8 }}px;
+        height: {{ section.settings.icon_size | times: 0.8 }}px;
+        padding: {{ section.settings.icon_padding | times: 0.8 }}px;
+      }
+
+      #section-{{ section.id }} .icon-label h1,
+      #section-{{ section.id }} .icon-label h2,
+      #section-{{ section.id }} .icon-label h3,
+      #section-{{ section.id }} .icon-label h4,
+      #section-{{ section.id }} .icon-label h5,
+      #section-{{ section.id }} .icon-label h6,
+      #section-{{ section.id }} .icon-label p,
+      #section-{{ section.id }} .icon-label div {
+        font-size: {{ section.settings.label_font_size | times: 0.9 }}px;
+      }
     }
 
     #section-{{ section.id }} .video-carousel-wrapper {
@@ -1173,6 +1371,254 @@
       "type": "textarea",
       "id": "description",
       "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Icon Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon_section",
+      "label": "Show icon section",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon_pack",
+      "label": "Choose icon",
+      "options": [
+        {"value": "none", "label": "No icon"},
+        {"value": "play", "label": "▶️ Play"},
+        {"value": "video", "label": "📹 Video Camera"},
+        {"value": "camera", "label": "📷 Camera"},
+        {"value": "film", "label": "🎬 Film Strip"},
+        {"value": "monitor", "label": "🖥️ Monitor"},
+        {"value": "tv", "label": "📺 TV"},
+        {"value": "smartphone", "label": "📱 Smartphone"},
+        {"value": "youtube", "label": "📺 YouTube"},
+        {"value": "instagram", "label": "📷 Instagram"},
+        {"value": "tiktok", "label": "🎵 TikTok"},
+        {"value": "star", "label": "⭐ Star"},
+        {"value": "heart", "label": "❤️ Heart"},
+        {"value": "trending", "label": "📈 Trending"},
+        {"value": "fire", "label": "🔥 Fire"},
+        {"value": "crown", "label": "👑 Crown"},
+        {"value": "gift", "label": "🎁 Gift"},
+        {"value": "diamond", "label": "💎 Diamond"}
+      ],
+      "default": "video",
+      "info": "Choose from pre-built icon pack or upload custom SVG below"
+    },
+    {
+      "type": "html",
+      "id": "custom_svg",
+      "label": "Custom SVG code",
+      "info": "Paste your custom SVG code here. This will override the icon pack selection above."
+    },
+    {
+      "type": "text",
+      "id": "icon_label",
+      "label": "Icon label text",
+      "default": "Featured Videos"
+    },
+    {
+      "type": "select",
+      "id": "label_tag",
+      "label": "Label HTML tag",
+      "options": [
+        {"value": "h1", "label": "H1"},
+        {"value": "h2", "label": "H2"},
+        {"value": "h3", "label": "H3"},
+        {"value": "h4", "label": "H4"},
+        {"value": "h5", "label": "H5"},
+        {"value": "h6", "label": "H6"},
+        {"value": "p", "label": "Paragraph"},
+        {"value": "div", "label": "Div"}
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "Icon Styling"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size (px)",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "icon_padding",
+      "label": "Icon padding (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_background_color",
+      "label": "Icon background color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "icon_border_radius",
+      "label": "Icon border radius (px)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "icon_border_width",
+      "label": "Icon border width (px)",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Icon border color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "header",
+      "content": "Icon Effects"
+    },
+    {
+      "type": "range",
+      "id": "icon_shadow_intensity",
+      "label": "Shadow intensity (px)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "icon_shadow_blur",
+      "label": "Shadow blur (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "icon_shadow_opacity",
+      "label": "Shadow opacity (%)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_hover_lift",
+      "label": "Hover lift effect (px)",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "icon_hover_scale",
+      "label": "Hover scale effect (%)",
+      "min": 90,
+      "max": 120,
+      "step": 2,
+      "default": 105
+    },
+    {
+      "type": "header",
+      "content": "Label Styling"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size (px)",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Label font weight",
+      "options": [
+        {"value": "300", "label": "Light"},
+        {"value": "400", "label": "Normal"},
+        {"value": "500", "label": "Medium"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "700", "label": "Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "label": "Label letter spacing (em)",
+      "min": -0.1,
+      "max": 0.5,
+      "step": 0.01,
+      "default": 0.02
+    },
+    {
+      "type": "select",
+      "id": "label_text_transform",
+      "label": "Label text transform",
+      "options": [
+        {"value": "none", "label": "None"},
+        {"value": "uppercase", "label": "UPPERCASE"},
+        {"value": "lowercase", "label": "lowercase"},
+        {"value": "capitalize", "label": "Capitalize"}
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Icon Section Layout"
+    },
+    {
+      "type": "range",
+      "id": "icon_section_margin",
+      "label": "Section bottom margin (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "icon_label_spacing",
+      "label": "Icon to label spacing (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
     },
     {
       "type": "header",

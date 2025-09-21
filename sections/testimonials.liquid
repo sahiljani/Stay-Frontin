@@ -1,0 +1,494 @@
+{%- comment -%}
+Testimonials Section
+Social proof section with customer reviews and ratings
+{%- endcomment -%}
+
+<div class="testimonials-section" data-section-id="{{ section.id }}">
+  {{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'testimonials.js' | asset_url }}" defer="defer"></script>
+
+  <div class="testimonials-container">
+    <!-- Section Header -->
+    <div class="testimonials-header">
+      <div class="header-content">
+        <h2 class="testimonials-title">{{ section.settings.title | default: 'What Our Customers Say' }}</h2>
+        {% if section.settings.subtitle %}
+          <p class="testimonials-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+        
+        <!-- Overall Rating -->
+        <div class="overall-rating">
+          <div class="rating-stars">
+            {%- for i in (1..5) -%}
+              <span class="star filled">★</span>
+            {%- endfor -%}
+          </div>
+          <div class="rating-text">
+            <span class="rating-number">{{ section.settings.overall_rating | default: '4.8' }}</span>
+            <span class="rating-count">based on {{ section.settings.review_count | default: '2,847' }} reviews</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials Grid -->
+    <div class="testimonials-grid" id="testimonials-grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'testimonial' -%}
+            <div class="testimonial-card" data-block-id="{{ block.id }}">
+              <div class="testimonial-content">
+                <div class="testimonial-header">
+                  <div class="customer-info">
+                    {% if block.settings.customer_avatar %}
+                      <div class="customer-avatar">
+                        <img src="{{ block.settings.customer_avatar | image_url: width: 60 }}" 
+                             alt="{{ block.settings.customer_name | escape }}" 
+                             loading="lazy">
+                      </div>
+                    {% else %}
+                      <div class="customer-avatar placeholder">
+                        <span>{{ block.settings.customer_name | slice: 0 | upcase }}</span>
+                      </div>
+                    {% endif %}
+                    
+                    <div class="customer-details">
+                      <h4 class="customer-name">{{ block.settings.customer_name | default: 'Verified Customer' }}</h4>
+                      {% if block.settings.customer_location %}
+                        <p class="customer-location">{{ block.settings.customer_location }}</p>
+                      {% endif %}
+                      {% if block.settings.verified_purchase %}
+                        <span class="verified-badge">✓ Verified Purchase</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                  
+                  <div class="testimonial-rating">
+                    {%- assign rating = block.settings.rating | default: 5 -%}
+                    {%- for i in (1..5) -%}
+                      <span class="star {% if i <= rating %}filled{% endif %}">★</span>
+                    {%- endfor -%}
+                  </div>
+                </div>
+                
+                <div class="testimonial-body">
+                  {% if block.settings.testimonial_title %}
+                    <h5 class="testimonial-title">"{{ block.settings.testimonial_title }}"</h5>
+                  {% endif %}
+                  
+                  <blockquote class="testimonial-text">
+                    {{ block.settings.testimonial_text | newline_to_br }}
+                  </blockquote>
+                  
+                  {% if block.settings.product_used %}
+                    <div class="product-context">
+                      <span class="context-label">Used for:</span>
+                      <span class="context-value">{{ block.settings.product_used }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+                
+                <div class="testimonial-footer">
+                  {% if block.settings.review_date %}
+                    <time class="review-date">{{ block.settings.review_date | date: '%B %d, %Y' }}</time>
+                  {% endif %}
+                  
+                  <div class="testimonial-actions">
+                    <button class="helpful-btn" type="button" data-testimonial="{{ block.id }}">
+                      <span class="thumbs-up">👍</span>
+                      <span class="helpful-text">Helpful</span>
+                      <span class="helpful-count">({{ block.settings.helpful_count | default: 0 }})</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {%- when 'photo_review' -%}
+            <div class="testimonial-card photo-review" data-block-id="{{ block.id }}">
+              <div class="photo-review-content">
+                {% if block.settings.review_photo %}
+                  <div class="review-photo">
+                    <img src="{{ block.settings.review_photo | image_url: width: 300 }}" 
+                         alt="Customer photo review" 
+                         loading="lazy">
+                    <div class="photo-overlay">
+                      <button class="expand-photo-btn" type="button">
+                        <span>🔍</span>
+                      </button>
+                    </div>
+                  </div>
+                {% endif %}
+                
+                <div class="photo-review-info">
+                  <div class="customer-info">
+                    <h4 class="customer-name">{{ block.settings.customer_name | default: 'Verified Customer' }}</h4>
+                    <div class="review-rating">
+                      {%- assign rating = block.settings.rating | default: 5 -%}
+                      {%- for i in (1..5) -%}
+                        <span class="star {% if i <= rating %}filled{% endif %}">★</span>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                  
+                  {% if block.settings.photo_caption %}
+                    <p class="photo-caption">{{ block.settings.photo_caption }}</p>
+                  {% endif %}
+                  
+                  {% if block.settings.review_date %}
+                    <time class="review-date">{{ block.settings.review_date | date: '%B %d, %Y' }}</time>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+          {%- when 'video_review' -%}
+            <div class="testimonial-card video-review" data-block-id="{{ block.id }}">
+              <div class="video-review-content">
+                {% if block.settings.video_thumbnail %}
+                  <div class="video-thumbnail">
+                    <img src="{{ block.settings.video_thumbnail | image_url: width: 300 }}" 
+                         alt="Video review thumbnail" 
+                         loading="lazy">
+                    <button class="play-video-btn" type="button" data-video-url="{{ block.settings.video_url }}">
+                      <span class="play-icon">▶️</span>
+                    </button>
+                    <div class="video-duration">{{ block.settings.video_duration | default: '0:45' }}</div>
+                  </div>
+                {% endif %}
+                
+                <div class="video-review-info">
+                  <h4 class="customer-name">{{ block.settings.customer_name | default: 'Verified Customer' }}</h4>
+                  <div class="review-rating">
+                    {%- assign rating = block.settings.rating | default: 5 -%}
+                    {%- for i in (1..5) -%}
+                      <span class="star {% if i <= rating %}filled{% endif %}">★</span>
+                    {%- endfor -%}
+                  </div>
+                  
+                  {% if block.settings.video_title %}
+                    <p class="video-title">{{ block.settings.video_title }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Load More Button -->
+    {% if section.settings.show_load_more %}
+      <div class="testimonials-actions">
+        <button class="load-more-btn" type="button" id="load-more-testimonials">
+          <span class="btn-text">Load More Reviews</span>
+          <span class="btn-icon">↓</span>
+        </button>
+      </div>
+    {% endif %}
+
+    <!-- Trust Badges -->
+    {% if section.settings.show_trust_badges %}
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <div class="badge-icon">🏆</div>
+          <div class="badge-text">
+            <strong>{{ section.settings.award_title | default: '2024 Award Winner' }}</strong>
+            <span>{{ section.settings.award_subtitle | default: 'Best Product Innovation' }}</span>
+          </div>
+        </div>
+        
+        <div class="trust-badge">
+          <div class="badge-icon">📦</div>
+          <div class="badge-text">
+            <strong>{{ section.settings.orders_title | default: '50K+ Orders' }}</strong>
+            <span>{{ section.settings.orders_subtitle | default: 'Happy Customers' }}</span>
+          </div>
+        </div>
+        
+        <div class="trust-badge">
+          <div class="badge-icon">🌟</div>
+          <div class="badge-text">
+            <strong>{{ section.settings.satisfaction_title | default: '98% Satisfaction' }}</strong>
+            <span>{{ section.settings.satisfaction_subtitle | default: 'Rate' }}</span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Photo Modal -->
+  <div class="photo-modal" id="photo-modal" style="display: none;">
+    <div class="modal-backdrop" onclick="closePhotoModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closePhotoModal()" type="button">×</button>
+      <img class="modal-image" id="modal-image" alt="Customer photo">
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="video-modal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeVideoModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeVideoModal()" type="button">×</button>
+      <div class="video-container" id="video-container">
+        <!-- Video iframe will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "overall_rating",
+      "label": "Overall Rating",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count",
+      "default": "2,847"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_load_more",
+      "label": "Show Load More Button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "award_title",
+      "label": "Award Title",
+      "default": "2024 Award Winner"
+    },
+    {
+      "type": "text",
+      "id": "award_subtitle",
+      "label": "Award Subtitle",
+      "default": "Best Product Innovation"
+    },
+    {
+      "type": "text",
+      "id": "orders_title",
+      "label": "Orders Title",
+      "default": "50K+ Orders"
+    },
+    {
+      "type": "text",
+      "id": "orders_subtitle",
+      "label": "Orders Subtitle",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "satisfaction_title",
+      "label": "Satisfaction Title",
+      "default": "98% Satisfaction"
+    },
+    {
+      "type": "text",
+      "id": "satisfaction_subtitle",
+      "label": "Satisfaction Subtitle",
+      "default": "Rate"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Text Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "customer_location",
+          "label": "Customer Location"
+        },
+        {
+          "type": "image_picker",
+          "id": "customer_avatar",
+          "label": "Customer Avatar"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "testimonial_title",
+          "label": "Review Title"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Review Text",
+          "info": "Customer's testimonial"
+        },
+        {
+          "type": "text",
+          "id": "product_used",
+          "label": "Product Context"
+        },
+        {
+          "type": "text",
+          "id": "review_date",
+          "label": "Review Date",
+          "info": "Format: YYYY-MM-DD"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified_purchase",
+          "label": "Verified Purchase",
+          "default": true
+        },
+        {
+          "type": "number",
+          "id": "helpful_count",
+          "label": "Helpful Count",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "photo_review",
+      "name": "Photo Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Maria K."
+        },
+        {
+          "type": "image_picker",
+          "id": "review_photo",
+          "label": "Review Photo"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "photo_caption",
+          "label": "Photo Caption"
+        },
+        {
+          "type": "text",
+          "id": "review_date",
+          "label": "Review Date",
+          "info": "Format: YYYY-MM-DD"
+        }
+      ]
+    },
+    {
+      "type": "video_review",
+      "name": "Video Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Jennifer L."
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Video Thumbnail"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "YouTube or Vimeo URL"
+        },
+        {
+          "type": "text",
+          "id": "video_duration",
+          "label": "Video Duration",
+          "default": "0:45"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Video Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "photo_review"
+        },
+        {
+          "type": "video_review"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
