@@ -1,0 +1,374 @@
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-{{ section.id }}-padding">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-center">
+      
+      {%- comment -%} Left Content Column {%- endcomment -%}
+      <div class="space-y-8">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="text-4xl lg:text-6xl font-bold leading-tight tracking-tighter {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+        
+        {%- if section.settings.description != blank -%}
+          <div class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed rte">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+        
+        {%- if section.settings.checklist_heading != blank -%}
+          <p class="font-semibold text-gray-900 dark:text-white">{{ section.settings.checklist_heading }}</p>
+        {%- endif -%}
+        
+        {%- if section.blocks.size > 0 -%}
+          <ul class="space-y-3">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'checklist_item' -%}
+                <li class="flex items-center space-x-3" {{ block.shopify_attributes }}>
+                  <svg class="w-5 h-5 text-green-500 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  <span class="text-gray-900 dark:text-white">{{ block.settings.text | escape }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        
+        {%- if section.settings.button_label != blank -%}
+          <a 
+            class="inline-block bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold py-3 px-8 rounded-lg shadow-md hover:opacity-90 transition-opacity mt-4"
+            {% if section.settings.button_link == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.button_link }}"
+            {% endif %}
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+      
+      {%- comment -%} Right Table Column {%- endcomment -%}
+      <div class="w-full">
+        <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+          <table class="w-full text-center bg-white dark:bg-gray-800">
+            <thead>
+              <tr>
+                <th class="p-4 bg-transparent dark:bg-transparent"></th>
+                <th class="p-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold">
+                  {{ section.settings.column_1_header | default: 'Option 1' }}
+                </th>
+                <th class="p-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold">
+                  {{ section.settings.column_2_header | default: 'Option 2' }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'comparison_row' -%}
+                  <tr class="{% cycle 'bg-white dark:bg-gray-800', 'bg-gray-50 dark:bg-gray-750' %}" {{ block.shopify_attributes }}>
+                    <td class="p-4 text-left font-medium text-gray-900 dark:text-white">
+                      {{ block.settings.label }}
+                    </td>
+                    <td class="p-4 bg-gray-50 dark:bg-gray-700 font-medium text-gray-900 dark:text-white">
+                      {%- if block.settings.primary_value_type == 'text' -%}
+                        {{ block.settings.primary_value }}
+                      {%- elsif block.settings.primary_value_type == 'checkmark' -%}
+                        <svg class="w-5 h-5 text-green-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                      {%- endif -%}
+                    </td>
+                    <td class="p-4 text-gray-900 dark:text-white">
+                      {%- if block.settings.secondary_value_type == 'text' -%}
+                        {{ block.settings.secondary_value }}
+                      {%- elsif block.settings.secondary_value_type == 'checkmark' -%}
+                        <svg class="w-5 h-5 text-green-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                      {%- elsif block.settings.secondary_value_type == 'cross' -%}
+                        <svg class="w-5 h-5 text-red-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                      {%- endif -%}
+                    </td>
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Comparison Table",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Compare Your Options",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "XX-Large"
+        }
+      ],
+      "default": "h0",
+      "label": "Heading size"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "default": "<p>Make informed decisions with our detailed comparison table. See all the key features and benefits side by side.</p>",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "checklist_heading",
+      "default": "Key factors to consider:",
+      "label": "Checklist heading"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Learn More",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Table headers"
+    },
+    {
+      "type": "text",
+      "id": "column_1_header",
+      "default": "Option 1",
+      "label": "First column header"
+    },
+    {
+      "type": "text",
+      "id": "column_2_header",
+      "default": "Option 2",
+      "label": "Second column header"
+    },
+    {
+      "type": "header",
+      "content": "Section colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "checklist_item",
+      "name": "Checklist item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Important feature to consider",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "comparison_row",
+      "name": "Comparison row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "default": "Feature name",
+          "label": "Row label"
+        },
+        {
+          "type": "select",
+          "id": "primary_value_type",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text"
+            },
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            }
+          ],
+          "default": "text",
+          "label": "First column value type"
+        },
+        {
+          "type": "text",
+          "id": "primary_value",
+          "default": "Value 1",
+          "label": "First column value",
+          "info": "Only used when value type is 'Text'"
+        },
+        {
+          "type": "select",
+          "id": "secondary_value_type",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text"
+            },
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "cross",
+              "label": "Cross"
+            }
+          ],
+          "default": "text",
+          "label": "Second column value type"
+        },
+        {
+          "type": "text",
+          "id": "secondary_value",
+          "default": "Value 2",
+          "label": "Second column value",
+          "info": "Only used when value type is 'Text'"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Table",
+      "blocks": [
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Quality and performance"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Value for money"
+          }
+        },
+        {
+          "type": "checklist_item",
+          "settings": {
+            "text": "Customer satisfaction"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Price",
+            "primary_value_type": "text",
+            "primary_value": "$29.99",
+            "secondary_value_type": "text",
+            "secondary_value": "$39.99"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Quality Rating",
+            "primary_value_type": "text",
+            "primary_value": "5/5",
+            "secondary_value_type": "text",
+            "secondary_value": "3/5"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Free Shipping",
+            "primary_value_type": "checkmark",
+            "secondary_value_type": "cross"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
