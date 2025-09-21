@@ -272,7 +272,8 @@
         "feature_CtLzdy"
       ],
       "custom_css": [
-        "h2,h3,p {color: white;}"
+        "h2,h3,p {color: white;}",
+        "h2 {font-size: 40px;}"
       ],
       "name": "Feature showcase",
       "settings": {
