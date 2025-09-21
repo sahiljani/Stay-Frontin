@@ -10,12 +10,14 @@
         var embla = EmblaCarousel(viewport, {
           align: 'start',
           containScroll: 'trimSnaps',
-          dragFree: false,
+          dragFree: true,
           skipSnaps: false,
-          dragThreshold: 10,
+          dragThreshold: 8,
           watchDrag: true,
           watchResize: true,
-          watchSlides: true
+          watchSlides: true,
+          loop: false,
+          startIndex: 0
         });
         root.__embla = embla;
         var sectionId = root.getAttribute('data-section-id');
