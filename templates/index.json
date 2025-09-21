@@ -211,32 +211,54 @@
         "feature_RwPhrY": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/drop.svg",
             "title": "SWEAT + WATER RESISTANT",
-            "text": "Organize your tasks with our intuitive drag-and-drop interface.",
+            "text": "",
             "column": "left"
           }
         },
         "feature_p48xbV": {
           "type": "feature",
           "settings": {
-            "title": "Team Collaboration",
-            "text": "Work seamlessly with your team, assign tasks, and track progress in real-time.",
+            "icon": "shopify://shop_images/dema.svg",
+            "title": "DERMATOLOGICALLY TESTED",
+            "text": "",
             "column": "right"
           }
         },
         "feature_BTHjrQ": {
           "type": "feature",
           "settings": {
-            "title": "Time Tracking",
-            "text": "Understand where your time goes with detailed reports and analytics.",
+            "icon": "shopify://shop_images/time.svg",
+            "title": "MULTI - WEEK HOLD",
+            "text": "",
+            "column": "left"
+          }
+        },
+        "feature_TtPYGT": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/star.svg",
+            "title": "NO LATEX",
+            "text": "",
             "column": "left"
           }
         },
         "feature_hbajEk": {
           "type": "feature",
           "settings": {
-            "title": "Progress Analytics",
-            "text": "Visualize your progress with beautiful charts and get insights to optimize your workflow.",
+            "icon": "shopify://shop_images/clap.svg",
+            "title": "SIMPLE APPLICATION",
+            "text": "",
+            "column": "right"
+          }
+        },
+        "feature_CtLzdy": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/star_2.svg",
+            "title": "Rated 4.9 out of 5.0",
+            "text": "",
             "column": "right"
           }
         }
@@ -245,10 +267,12 @@
         "feature_RwPhrY",
         "feature_p48xbV",
         "feature_BTHjrQ",
-        "feature_hbajEk"
+        "feature_TtPYGT",
+        "feature_hbajEk",
+        "feature_CtLzdy"
       ],
       "custom_css": [
-        "h2,h3,p{color: white;}"
+        "h2,h3,p {color: white;}"
       ],
       "name": "Feature showcase",
       "settings": {
