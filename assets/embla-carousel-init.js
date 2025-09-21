@@ -11,7 +11,11 @@
           align: 'start',
           containScroll: 'trimSnaps',
           dragFree: false,
-          skipSnaps: false
+          skipSnaps: false,
+          dragThreshold: 10,
+          watchDrag: true,
+          watchResize: true,
+          watchSlides: true
         });
         root.__embla = embla;
         var sectionId = root.getAttribute('data-section-id');
@@ -31,6 +35,13 @@
         }
         embla.on('select', update);
         embla.on('reInit', update);
+        var container = viewport.querySelector('.embla__container');
+        embla.on('pointerDown', function() {
+          if(container) container.classList.add('is-dragging');
+        });
+        embla.on('pointerUp', function() {
+          if(container) container.classList.remove('is-dragging');
+        });
         update();
         root.addEventListener('keydown', function(e){
           if(e.key === 'ArrowRight') scrollByGroup(1);
