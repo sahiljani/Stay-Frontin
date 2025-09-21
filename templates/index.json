@@ -150,13 +150,27 @@
             "featured_product": "",
             "product_price_override": ""
           }
+        },
+        "video_TCkNWq": {
+          "type": "video",
+          "settings": {
+            "video_url": "",
+            "overlay_heading": "",
+            "overlay_text": "",
+            "button_label": "",
+            "button_url": "",
+            "featured_product": "",
+            "product_price_override": ""
+          }
         }
       },
       "block_order": [
         "video_7eMy48",
         "video_h6RQkr",
-        "video_DWam9Y"
+        "video_DWam9Y",
+        "video_TCkNWq"
       ],
+      "custom_css": [],
       "name": "Video Carousel",
       "settings": {
         "heading": "Our Latest Videos",
@@ -190,12 +204,79 @@
         "heading_size": 40,
         "padding_vertical": 60
       }
+    },
+    "feature_showcase_7q9V7E": {
+      "type": "feature-showcase",
+      "blocks": {
+        "feature_RwPhrY": {
+          "type": "feature",
+          "settings": {
+            "title": "SWEAT + WATER RESISTANT",
+            "text": "Organize your tasks with our intuitive drag-and-drop interface.",
+            "column": "left"
+          }
+        },
+        "feature_p48xbV": {
+          "type": "feature",
+          "settings": {
+            "title": "Team Collaboration",
+            "text": "Work seamlessly with your team, assign tasks, and track progress in real-time.",
+            "column": "right"
+          }
+        },
+        "feature_BTHjrQ": {
+          "type": "feature",
+          "settings": {
+            "title": "Time Tracking",
+            "text": "Understand where your time goes with detailed reports and analytics.",
+            "column": "left"
+          }
+        },
+        "feature_hbajEk": {
+          "type": "feature",
+          "settings": {
+            "title": "Progress Analytics",
+            "text": "Visualize your progress with beautiful charts and get insights to optimize your workflow.",
+            "column": "right"
+          }
+        }
+      },
+      "block_order": [
+        "feature_RwPhrY",
+        "feature_p48xbV",
+        "feature_BTHjrQ",
+        "feature_hbajEk"
+      ],
+      "custom_css": [
+        "h2,h3,p{color: white;}"
+      ],
+      "name": "Feature showcase",
+      "settings": {
+        "heading": "Stayfrontin Is Designed To Give Your Wig or Hair System An Undetectable, Multi-Week Hold",
+        "subheading": "Designed to help you focus on what's important and get more done in less time.",
+        "main_image": "shopify://shop_images/untitled-design-2025-05-11t064913826.webp",
+        "layout_variant": "centered",
+        "heading_align": "center",
+        "container_width": "full",
+        "background_style": "none",
+        "section_padding_y": 6,
+        "auto_distribute": false,
+        "icon_size": "md",
+        "icon_shape": "none",
+        "background_color": "#000000",
+        "background_size": "cover",
+        "background_position": "center",
+        "background_repeat": "no-repeat",
+        "overlay_color": "",
+        "overlay_opacity": 0
+      }
     }
   },
   "order": [
     "featured_collection",
     "hero_2_grid_z46BYi",
     "image_with_overlap_slider_KYgUd3",
-    "video_carousel_TW778A"
+    "video_carousel_TW778A",
+    "feature_showcase_7q9V7E"
   ]
 }
