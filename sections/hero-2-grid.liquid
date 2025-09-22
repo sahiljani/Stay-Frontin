@@ -26,6 +26,8 @@
     display: grid;
     grid-template-columns: 1fr;
     min-height: var(--hero2-min-h, auto);
+    position: relative;
+    background: #000;
   }
   @media (min-width: 768px) {
     #shopify-section-{{ section.id }} .hero2-grid {
@@ -39,6 +41,8 @@
     flex-direction: column;
     justify-content: center;
     padding: 2rem;
+    position: relative; /* Ensure text is on top of media */
+    z-index: 2;
   }
   @media (min-width: 768px) {
     #shopify-section-{{ section.id }} .hero2-left { padding: 4rem; }
@@ -70,14 +74,30 @@
   #shopify-section-{{ section.id }} .hero2-right {
     background: #e5e7eb;
     min-height: 320px;
+    position: relative; /* Use relative positioning for the media */
+    overflow: hidden;
   }
-  /* --- Combined styles for responsive image and video --- */
+  /* For mobile view, make media sit behind the text content */
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .hero2-right {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.3; /* Optional: dim the background media */
+    }
+  }
   #shopify-section-{{ section.id }} .hero2-right img,
   #shopify-section-{{ section.id }} .hero2-right video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    position: absolute; /* Fill the parent container */
+    top: 0;
+    left: 0;
   }
   
   /* Ticker */
