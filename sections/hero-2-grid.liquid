@@ -72,61 +72,27 @@
   }
   #shopify-section-{{ section.id }} .hero2-button:hover { background: color-mix(in oklab, var(--hero2-primary) 80%, #000); }
   #shopify-section-{{ section.id }} .hero2-right {
-    background: #e5e7eb;
-    min-height: 320px;
-    position: relative; /* Use relative positioning for the media */
-    overflow: hidden;
-  }
-  /* For mobile view, make media sit behind the text content */
-  @media (max-width: 767px) {
-    #shopify-section-{{ section.id }} .hero2-right {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        opacity: 0.3; /* Optional: dim the background media */
-    }
-  }
-  #shopify-section-{{ section.id }} .hero2-right img,
-  #shopify-section-{{ section.id }} .hero2-right video {
+    position: relative;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-    position: absolute; /* Fill the parent container */
-    top: 0;
-    left: 0;
+    min-height: 320px;
+    overflow: hidden;
+    background: #000;
   }
-  
   #shopify-section-{{ section.id }} .video-wrapper {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
   #shopify-section-{{ section.id }} .hero2-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-  }
-
-  #shopify-section-{{ section.id }} iframe.hero2-video {
     width: 100%;
     height: 100%;
-    transform: none;
-    top: 0;
-    left: 0;
+    object-fit: cover;
+    object-position: center;
   }
   
   /* Ticker */
@@ -162,28 +128,28 @@
 
     <div class="hero2-right">
       {%- if section.settings.media_type == 'video' and section.settings.video != blank -%}
-        <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+        <div class="video-wrapper">
           {{ section.settings.video | video_tag: 
+            class: 'hero2-video',
             autoplay: true,
             loop: true,
             muted: true,
             playsinline: true,
-            controls: false,
-            class: 'hero2-video'
+            controls: false
           }}
         </div>
       {%- elsif section.settings.media_type == 'external_video' and section.settings.video_url != blank -%}
         {%- assign video_url = section.settings.video_url | strip -%}
         {%- if video_url contains 'youtube.com' or video_url contains 'youtu.be' -%}
-          {%- # Extract YouTube ID properly -%}
+          {%- # Extract YouTube ID -%}
           {%- assign youtube_id = video_url | split: 'v=' | last | split: '&' | first -%}
           {%- if youtube_id == video_url -%}
             {%- assign youtube_id = video_url | split: '/' | last -%}
           {%- endif -%}
-          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+          <div class="video-wrapper">
             <iframe 
-              src="https://www.youtube.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&rel=0&showinfo=0&modestbranding=1"
               class="hero2-video"
+              src="https://www.youtube.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&rel=0&showinfo=0&modestbranding=1&playsinline=1&enablejsapi=1"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen>
@@ -191,43 +157,29 @@
           </div>
         {%- elsif video_url contains 'vimeo.com' -%}
           {%- assign vimeo_id = video_url | split: '/' | last -%}
-          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+          <div class="video-wrapper">
             <iframe 
-              src="https://player.vimeo.com/video/{{ vimeo_id }}?autoplay=1&loop=1&background=1&autopause=0"
               class="hero2-video"
+              src="https://player.vimeo.com/video/{{ vimeo_id }}?autoplay=1&loop=1&background=1&autopause=0&quality=1080p"
               frameborder="0"
               allow="autoplay; picture-in-picture"
               allowfullscreen>
             </iframe>
           </div>
         {%- else -%}
-          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+          <div class="video-wrapper">
             <video
-              src="{{ video_url }}"
               class="hero2-video"
+              src="{{ video_url }}"
               autoplay
               loop
               muted
               playsinline
               webkit-playsinline
-              x5-playsinline
-              controlsList="nodownload">
+              x5-playsinline>
             </video>
           </div>
         {%- endif -%}
-      {%- elsif section.settings.media_type == 'image' and section.settings.image != blank -%}
-        {% assign widths = '750|1100|1500|1780|2000' | split: '|' %}
-        <img
-          srcset="{%- for w in widths -%}{{ section.settings.image | image_url: width: w | escape }} {{ w }}w{%- unless forloop.last -%}, {%- endunless -%}{%- endfor -%}"
-          sizes="(min-width: 992px) 50vw, 100vw"
-          src="{{ section.settings.image | image_url: width: 1500 }}"
-          alt="{{ section.settings.image.alt | escape }}"
-          loading="lazy"
-          width="{{ section.settings.image.width }}"
-          height="{{ section.settings.image.height }}"
-        >
-      {%- else -%}
-        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
     </div>
   </div>
