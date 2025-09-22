@@ -284,7 +284,7 @@
         "main_image": "shopify://shop_images/untitled-design-2025-05-11t064913826.webp",
         "layout_variant": "centered",
         "heading_align": "center",
-        "container_width": "lg",
+        "container_width": "xl",
         "background_style": "none",
         "section_padding_y": 3,
         "auto_distribute": false,
