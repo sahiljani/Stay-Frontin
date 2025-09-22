@@ -91,7 +91,7 @@
         "button_label": "SHOP NOW",
         "button_link": "",
         "image": "shopify://shop_images/Gemini_Generated_Image_4z67pq4z67pq4z67_3.png",
-        "min_height": "auto",
+        "min_height": "screen",
         "show_ticker": true,
         "dark_background_color": "#121212",
         "text_color": "#ffffff",
