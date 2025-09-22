@@ -88,11 +88,13 @@
     #section-{{ section.id }} .placeholder svg { width: 64px; height: 64px; opacity: 0.5; }
   #section-{{ section.id }} .carousel-outer { position:relative; flex:1; margin-left: calc(-1 * {{ section.settings.carousel_overlap_x }}px); margin-top: {{ section.settings.carousel_overlap_y }}px; }
   #section-{{ section.id }} .embla { position:relative; }
-  #section-{{ section.id }} .embla__viewport { overflow:hidden; width:100%; }
-  #section-{{ section.id }} .embla__container { display:flex; gap:1.5rem; touch-action: pan-y pinch-zoom; }
+  #section-{{ section.id }} .embla__viewport { overflow:hidden; width:100%; cursor: grab; }
+  #section-{{ section.id }} .embla__viewport:active { cursor: grabbing; }
+  #section-{{ section.id }} .embla__container { display:flex; gap:1.5rem; touch-action: pan-y pinch-zoom; transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); }
+  #section-{{ section.id }} .embla__container.is-dragging { transition: none; }
     #section-{{ section.id }} .card { background:#fff; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding:1rem; flex: 0 0 calc(33% - 1rem); display:flex; flex-direction:column; position:relative; transition: box-shadow .25s ease, transform .25s ease; cursor: grab; user-select: none; }
-    #section-{{ section.id }} .embla__container.is-dragging .card { cursor: grabbing; }
-    #section-{{ section.id }} .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.14); transform: translateY(-4px); }
+    #section-{{ section.id }} .embla__container.is-dragging .card { cursor: grabbing; transform: scale(0.98); }
+    #section-{{ section.id }} .embla__container:not(.is-dragging) .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.14); transform: translateY(-4px); }
     #section-{{ section.id }} .card-image-wrapper { display:block; position:relative; margin-bottom: 0.75rem; }
     
     {% comment %} Default aspect ratio (4:3) {% endcomment %}
