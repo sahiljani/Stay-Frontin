@@ -100,6 +100,35 @@
     left: 0;
   }
   
+  #shopify-section-{{ section.id }} .video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .hero2-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} iframe.hero2-video {
+    width: 100%;
+    height: 100%;
+    transform: none;
+    top: 0;
+    left: 0;
+  }
+  
   /* Ticker */
   #shopify-section-{{ section.id }} .hero2-ticker { width: 100%; overflow: hidden; border-top: 1px solid #374151; border-bottom: 1px solid #374151; }
   #shopify-section-{{ section.id }} .hero2-marquee { display: flex; white-space: nowrap; animation: hero2-marquee 25s linear infinite; }
@@ -133,15 +162,59 @@
 
     <div class="hero2-right">
       {%- if section.settings.media_type == 'video' and section.settings.video != blank -%}
-        <video
-          src="{{ section.settings.video | video_url }}"
-          autoplay
-          muted
-          loop
-          playsinline
-          width="100%"
-          height="100%"
-        ></video>
+        <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+          {{ section.settings.video | video_tag: 
+            autoplay: true,
+            loop: true,
+            muted: true,
+            playsinline: true,
+            controls: false,
+            class: 'hero2-video'
+          }}
+        </div>
+      {%- elsif section.settings.media_type == 'external_video' and section.settings.video_url != blank -%}
+        {%- assign video_url = section.settings.video_url | strip -%}
+        {%- if video_url contains 'youtube.com' or video_url contains 'youtu.be' -%}
+          {%- # Extract YouTube ID properly -%}
+          {%- assign youtube_id = video_url | split: 'v=' | last | split: '&' | first -%}
+          {%- if youtube_id == video_url -%}
+            {%- assign youtube_id = video_url | split: '/' | last -%}
+          {%- endif -%}
+          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+            <iframe 
+              src="https://www.youtube.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&controls=0&rel=0&showinfo=0&modestbranding=1"
+              class="hero2-video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        {%- elsif video_url contains 'vimeo.com' -%}
+          {%- assign vimeo_id = video_url | split: '/' | last -%}
+          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+            <iframe 
+              src="https://player.vimeo.com/video/{{ vimeo_id }}?autoplay=1&loop=1&background=1&autopause=0"
+              class="hero2-video"
+              frameborder="0"
+              allow="autoplay; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        {%- else -%}
+          <div class="video-wrapper" style="width: 100%; height: 100%; position: absolute;">
+            <video
+              src="{{ video_url }}"
+              class="hero2-video"
+              autoplay
+              loop
+              muted
+              playsinline
+              webkit-playsinline
+              x5-playsinline
+              controlsList="nodownload">
+            </video>
+          </div>
+        {%- endif -%}
       {%- elsif section.settings.media_type == 'image' and section.settings.image != blank -%}
         {% assign widths = '750|1100|1500|1780|2000' | split: '|' %}
         <img
@@ -213,15 +286,35 @@
       "label": "Media type",
       "options": [
         { "value": "image", "label": "Image" },
-        { "value": "video", "label": "Video" }
+        { "value": "video", "label": "Video Upload" },
+        { "value": "external_video", "label": "External Video URL" }
       ],
       "default": "image"
     },
-    { "type": "image_picker", "id": "image", "label": "Image" },
     {
-       "type": "video",
-       "id": "video",
-       "label": "Video"
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video Upload"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "External Video URL",
+      "info": "Paste YouTube, Vimeo, or direct MP4 link"
+    },
+    {
+      "type": "range",
+      "id": "video_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Video Opacity",
+      "default": 100
     },
     {
       "type": "header",
