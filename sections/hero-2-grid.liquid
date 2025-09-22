@@ -71,7 +71,7 @@
     background: #e5e7eb;
     min-height: 320px;
   }
-  /* --- MODIFICATION START: Combined styles for responsive image and video --- */
+  /* --- Combined styles for responsive image and video --- */
   #shopify-section-{{ section.id }} .hero2-right img,
   #shopify-section-{{ section.id }} .hero2-right video {
     width: 100%;
@@ -79,7 +79,6 @@
     object-fit: cover;
     display: block;
   }
-  /* --- MODIFICATION END --- */
   
   /* Ticker */
   #shopify-section-{{ section.id }} .hero2-ticker { width: 100%; overflow: hidden; border-top: 1px solid #374151; border-bottom: 1px solid #374151; }
@@ -113,7 +112,6 @@
     </div>
 
     <div class="hero2-right">
-      {%- comment -%} --- MODIFICATION START: Logic to show video or image --- {%- endcomment -%}
       {%- if section.settings.media_type == 'video' and section.settings.video != blank -%}
         <video
           src="{{ section.settings.video | video_url }}"
@@ -138,7 +136,6 @@
       {%- else -%}
         {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
-      {%- comment -%} --- MODIFICATION END --- {%- endcomment -%}
     </div>
   </div>
 
