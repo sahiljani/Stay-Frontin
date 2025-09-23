@@ -92,6 +92,8 @@
         "button_link": "",
         "media_type": "video",
         "video": "shopify://files/videos/video 4.mp4",
+        "video_url": "",
+        "video_opacity": 100,
         "min_height": "screen",
         "show_ticker": true,
         "dark_background_color": "#121212",
@@ -305,45 +307,87 @@
         "checklist_item_TCEgTD": {
           "type": "checklist_item",
           "settings": {
-            "text": "Quality and performance"
+            "text": "protein digestibility corrected amino acid score"
           }
         },
         "checklist_item_4BGzgg": {
           "type": "checklist_item",
           "settings": {
-            "text": "Value for money"
+            "text": "leucine levels"
           }
         },
         "checklist_item_6r3hDj": {
           "type": "checklist_item",
           "settings": {
-            "text": "Customer satisfaction"
+            "text": "isoleucine levels"
+          }
+        },
+        "checklist_item_TmmLag": {
+          "type": "checklist_item",
+          "settings": {
+            "text": "valine levels"
+          }
+        },
+        "checklist_item_QTmwrR": {
+          "type": "checklist_item",
+          "settings": {
+            "text": "tryptophan levels"
           }
         },
         "comparison_row_jm4ic4": {
           "type": "comparison_row",
           "settings": {
-            "label": "Price",
+            "label": "pdcaas (egg being 100)",
             "primary_value_type": "text",
-            "primary_value": "$29.99",
+            "primary_value": "0.89",
             "secondary_value_type": "text",
-            "secondary_value": "$39.99"
+            "secondary_value": "0.00"
           }
         },
         "comparison_row_bVRXfA": {
           "type": "comparison_row",
           "settings": {
-            "label": "Quality Rating",
+            "label": "leucine %",
             "primary_value_type": "text",
-            "primary_value": "5/5",
+            "primary_value": "9.25",
             "secondary_value_type": "text",
-            "secondary_value": "3/5"
+            "secondary_value": "2.1"
           }
         },
         "comparison_row_7RPKdb": {
           "type": "comparison_row",
           "settings": {
-            "label": "Free Shipping",
+            "label": "isolucine %",
+            "primary_value_type": "text",
+            "primary_value": "4.28",
+            "secondary_value_type": "text",
+            "secondary_value": "1.1"
+          }
+        },
+        "comparison_row_iYqDPW": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "valine %",
+            "primary_value_type": "text",
+            "primary_value": "5.93",
+            "secondary_value_type": "text",
+            "secondary_value": "1.9"
+          }
+        },
+        "comparison_row_7LfCLk": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "tryptophan",
+            "primary_value_type": "text",
+            "primary_value": "~0.8",
+            "secondary_value_type": "text",
+            "secondary_value": "0.00"
+          }
+        },
+        "comparison_row_G6mPbd": {
+          "type": "comparison_row",
+          "settings": {
+            "label": "plant-based",
             "primary_value_type": "checkmark",
             "primary_value": "Value 1",
             "secondary_value_type": "cross",
@@ -355,9 +399,14 @@
         "checklist_item_TCEgTD",
         "checklist_item_4BGzgg",
         "checklist_item_6r3hDj",
+        "checklist_item_TmmLag",
+        "checklist_item_QTmwrR",
         "comparison_row_jm4ic4",
         "comparison_row_bVRXfA",
-        "comparison_row_7RPKdb"
+        "comparison_row_7RPKdb",
+        "comparison_row_iYqDPW",
+        "comparison_row_7LfCLk",
+        "comparison_row_G6mPbd"
       ],
       "name": "Comparison Table",
       "settings": {
@@ -365,7 +414,7 @@
         "heading_size": "h0",
         "description": "<p>some collagen water products claim to support muscle repair and growth, but unless they're fortified with additional amino acids, they simply can't perform.</p>",
         "checklist_heading": "Key factors to consider:",
-        "button_label": "Learn More",
+        "button_label": "Shop Now",
         "button_link": "",
         "column_1_header": "Pea Protein",
         "column_2_header": "Collagen",
