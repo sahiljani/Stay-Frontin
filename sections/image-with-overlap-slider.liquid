@@ -20,50 +20,64 @@
   #shopify-section-{{ section.id }} .io-grid{
     display:grid;
     grid-template-columns: 35% 65%;
-    align-items: center!important;    
+    align-items: center!important;
     position: relative;
   }
-
   @media (max-width: 990px){
     #shopify-section-{{ section.id }} .io-grid{
       grid-template-columns: 1fr;
     }
   }
 
-  /* Desktop: hard height */
-  @media (min-width: 991px){
+    /* Desktop: hard height */
+    @media (min-width: 991px){
     #shopify-section-{{ section.id }} .io-image{
-      border-radius: var(--radius);
-      overflow: hidden;
-      height: 550px; /* <- set the exact height you want */
+        border-radius: var(--radius);
+        overflow: hidden;
+        height: 550px;        /* <- set the exact height you want */
     }
-  }
+    }
 
-  /* Mobile: let it auto or use a ratio so it doesn’t look squashed */
-  @media (max-width: 990px){
+    /* Mobile: let it auto or use a ratio so it doesn’t look squashed */
+    @media (max-width: 990px){
     #shopify-section-{{ section.id }} .io-image{
-      aspect-ratio: 4 / 5;  /* or set a smaller fixed height if you prefer */
-      height: auto;
+        aspect-ratio: 4 / 5;  /* or set a smaller fixed height if you prefer */
+        height: auto;
+        border-radius: var(--radius);
+        overflow: hidden;
     }
-  }
+    }
 
-  #shopify-section-{{ section.id }} .io-image img{
+    #shopify-section-{{ section.id }} .io-image img{
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    }
+
+  #shopify-section-{{ section.id }} .io-image img{
+    width:100%; height:100%; object-fit:cover; display:block;
   }
 
   /* Right panel (overlaps ~5%) */
   #shopify-section-{{ section.id }} .io-panel{
+    {% comment %} background: var(--panel-bg); {% endcomment %}
+    border-radius: var(--radius);
+    {% comment %} box-shadow: 0 25px 60px rgba(0,0,0,.12); {% endcomment %}
     padding: clamp(18px, 2vw, 28px);
     position: relative;
     z-index: 2;
   }
-
   @media (min-width: 991px){
     #shopify-section-{{ section.id }} .io-panel{
       margin-left: calc(-1 * var(--overlap));
+    }
+  }
+  @media (max-width: 990px){
+    #shopify-section-{{ section.id }} .io-panel{
+      margin-top: -80px;
+      background: var(--panel-bg);
+      box-shadow: 0 15px 40px rgba(0,0,0,.08);
     }
   }
 
@@ -73,17 +87,14 @@
     padding: 4px 48px 18px 48px;
     text-align:center;
   }
-
   #shopify-section-{{ section.id }} .io-title{
     margin:0; letter-spacing:.01em;
     font-size: clamp(22px, 2.7vw, 36px);
     line-height:1.2;
   }
-
   #shopify-section-{{ section.id }} .io-nav{
     position:absolute; top:0; right:0; display:flex; gap:8px;
   }
-
   #shopify-section-{{ section.id }} .io-btn{
     width:38px; height:38px; border-radius:999px; border:1px solid rgba(0,0,0,.12);
     display:grid; place-items:center; background:#fff; cursor:pointer;
@@ -92,33 +103,28 @@
   /* 3-up carousel */
   #shopify-section-{{ section.id }} .io-window{ overflow:hidden; }
   #shopify-section-{{ section.id }} .io-track{
-    display:flex; transition:transform .45s ease;
+    display:flex;
     cursor: grab;
     user-select: none;
+    touch-action: pan-y;
   }
-
   #shopify-section-{{ section.id }} .io-track.dragging {
     cursor: grabbing;
   }
-
   #shopify-section-{{ section.id }} .io-card{
     flex: 0 0 calc(100% / 3);
     padding: 0 clamp(8px, 1vw, 12px);
     box-sizing: border-box;
   }
-
   @media (max-width: 990px){
     #shopify-section-{{ section.id }} .io-card{ flex: 0 0 80%; }
   }
-
   #shopify-section-{{ section.id }} .io-card-inner{
     border: var(--border); border-radius: var(--card-radius); overflow:hidden; background:#fff;
   }
-
   #shopify-section-{{ section.id }} .io-media{
     position:relative; background:#f4f4f4;
   }
-
   #shopify-section-{{ section.id }} .io-media img{ width:100%; aspect-ratio: 1/1; object-fit:contain; display:block; }
 
   /* SALE pill + % OFF chip */
@@ -127,7 +133,6 @@
     background:#ff3ea5; color:#fff; font-weight:700;
     padding:.35rem .6rem; border-radius:999px; font-size:12px;
   }
-
   #shopify-section-{{ section.id }} .chip{
     position:absolute; bottom:12px; left:12px;
     background:#ff6ea1; color:#fff; font-weight:700;
@@ -138,25 +143,16 @@
   #shopify-section-{{ section.id }} .vendor{
     font-size:12px; color:#999; letter-spacing:.08em; text-transform:uppercase;
   }
-
   #shopify-section-{{ section.id }} .title{
     font-size:14px; color:#111; line-height:1.35; margin:.35rem 0 .45rem 0;
     min-height: 2.6em;
   }
-
   #shopify-section-{{ section.id }} .price{
     display:flex; gap:8px; align-items:baseline;
   }
-
   #shopify-section-{{ section.id }} .price .now{ font-weight:700; }
   #shopify-section-{{ section.id }} .price s{ color:#888; }
-
-  #shopify-section-{{ section.id }} .io-track {
-    will-change: transform;
-    touch-action: pan-y pinch-zoom;
-    transform: translate3d(0, 0, 0);
-  }
-
+  
   #shopify-section-{{ section.id }} .io-track * {
     -webkit-user-drag: none;
     -webkit-touch-callout: none;
@@ -164,9 +160,8 @@
   }
 </style>
 
-<section class="io-wrap">
+<section class="io-wrap" id="shopify-section-{{ section.id }}">
   <div class="io-grid">
-    <!-- 40% image -->
     <div class="io-image">
       {%- if section.settings.left_image != blank -%}
         {{ section.settings.left_image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.left_image.alt }}
@@ -175,7 +170,6 @@
       {%- endif -%}
     </div>
 
-    <!-- 60% panel -->
     <div class="io-panel">
       <div class="io-head">
         <h2 class="io-title">{{ section.settings.heading }}</h2>
@@ -213,19 +207,29 @@
                     </div>
                     <div class="io-body">
                         <div class="vendor">{{ product.vendor }}</div>
-                        <h3 class="title">{{ product.title }}</h3>
+                        <div class="title">{{ product.title }}</div>
                         <div class="price">
                         <span class="now">{{ product.price | money }}</span>
-                        {%- if has_discount -%}
-                        <s>{{ product.compare_at_price_max | money }}</s>
-                        {%- endif -%}
+                        {%- if has_discount -%}<s>{{ product.compare_at_price_max | money }}</s>{%- endif -%}
                         </div>
                     </div>
                     </div>
                 </a>
-            {%- endfor -%}
+                {%- endfor -%}
+
           {%- else -%}
-            <div>No products available.</div>
+            {%- for i in (1..6) -%}
+              <div class="io-card">
+                <div class="io-card-inner">
+                  <div class="io-media"><div style="aspect-ratio:1/1;background:#f2f2f2;"></div></div>
+                  <div class="io-body">
+                    <div class="vendor">ANUA</div>
+                    <div class="title">Product title</div>
+                    <div class="price"><span class="now">$24.00</span></div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
           {%- endif -%}
         </div>
       </div>
@@ -234,155 +238,179 @@
 </section>
 
 <script>
-(function(){
-  const track = document.getElementById('track-{{ section.id }}');
-  if(!track) return;
+  (function(){
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+    
+    const track = section.querySelector('#track-{{ section.id }}');
+    if (!track) return;
 
-  const btns = track.closest('.io-panel').querySelectorAll('[data-dir]');
-  const cards = track.querySelectorAll('.io-card');
-  const visible = window.matchMedia('(max-width:990px)').matches ? 1 : 3;
-  
-  let isDragging = false;
-  let startX;
-  let scrollLeft;
-  let currentX;
-  let initialX;
-  let xOffset = 0;
-  let dragStartTime;
-  let dragDistance = 0;
-
-  // Initialize the slider
-  function init() {
-    xOffset = 0;
-    track.style.transform = `translateX(0)`;
-    addEventListeners();
-  }
-
-  // Get the x position for the event
-  function getXPosition(event) {
-    return event.type.includes('mouse') ? event.pageX : event.touches[0].pageX;
-  }
-
-  // Handle the drag start event
-  function handleDragStart(e) {
-    if (e.target.closest('a')) {
-      e.target.closest('a').onclick = (clickEvent) => clickEvent.preventDefault();
+    const btns = section.querySelectorAll('[data-dir]');
+    const cards = track.querySelectorAll('.io-card');
+    
+    let visible = window.matchMedia('(max-width: 990px)').matches ? 1 : 3;
+    const totalSlides = cards.length;
+    if (totalSlides <= visible) {
+      if (btns.length > 0) {
+        btns.forEach(btn => btn.style.display = 'none');
+      }
+      return; // Not enough slides to scroll, so exit.
     }
 
-    isDragging = true;
-    dragStartTime = Date.now();
-    startX = getXPosition(e);
-    initialX = xOffset;
-    scrollLeft = track.scrollLeft;
-    currentX = startX - xOffset;
-    dragDistance = 0;
+    let isDragging = false;
+    let startX;
+    let initialX = 0;
+    let xOffset = 0;
+    let dragDistance = 0;
+    let clickedLink = null;
 
-    track.classList.add('dragging');
-    track.style.transition = 'none';
-    track.style.cursor = 'grabbing';
+    // --- Core Dragging Functions ---
 
-    document.addEventListener('mousemove', handleDragMove);
-    document.addEventListener('touchmove', handleDragMove, { passive: false });
-    document.addEventListener('mouseup', handleDragEnd);
-    document.addEventListener('touchend', handleDragEnd);
-  }
-
-  // Handle the drag move event
-  function handleDragMove(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-
-    const x = getXPosition(e);
-    const step = 100 / visible;
-    const walk = (startX - x) / track.offsetWidth * 100;
-    
-    dragDistance = x - startX;
-    xOffset = initialX - walk;
-
-    // Add resistance at edges
-    const maxScroll = -(cards.length - visible) * step;
-    if (xOffset > 0) {
-      xOffset = xOffset / 3; // resistance at left edge
-    } else if (xOffset < maxScroll) {
-      const overscroll = xOffset - maxScroll;
-      xOffset = maxScroll + (overscroll / 3); // resistance at right edge
+    function getXPosition(e) {
+      return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
     }
 
-    track.style.transform = `translateX(${xOffset}%)`;
-  }
+    function dragStart(e) {
+      // Don't drag if it's not the primary mouse button
+      if (e.type.includes('mouse') && e.which !== 1) return;
 
-  // Handle the drag end event
-  function handleDragEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
+      isDragging = true;
+      startX = getXPosition(e);
+      initialX = xOffset;
+      dragDistance = 0;
+      clickedLink = e.target.closest('a'); // Keep track of the link being interacted with
 
-    const dragEndTime = Date.now();
-    const dragDuration = dragEndTime - dragStartTime;
-    const velocity = Math.abs(dragDistance / dragDuration);
-    const step = 100 / visible;
-    
-    // Calculate momentum
-    let momentum = 0;
-    if (velocity > 0.5) {
-      momentum = Math.sign(dragDistance) * Math.min(2, Math.floor(velocity * 2));
+      track.style.transition = 'none'; // Remove transition for instant feedback
+      track.classList.add('dragging');
+      
+      document.addEventListener('mousemove', dragging, { passive: false });
+      document.addEventListener('touchmove', dragging, { passive: false });
+      document.addEventListener('mouseup', dragEnd, { once: true });
+      document.addEventListener('touchend', dragEnd, { once: true });
     }
 
-    // Snap to nearest position
-    let snapPoint = Math.round(-xOffset / step);
-    snapPoint = Math.max(0, Math.min(cards.length - visible, snapPoint - momentum));
-    
-    const targetOffset = -snapPoint * step;
+    function dragging(e) {
+      if (!isDragging) return;
+      e.preventDefault(); // Prevent page scroll on touch devices
 
-    // Animate to final position
-    track.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    xOffset = targetOffset;
-    track.style.transform = `translateX(${targetOffset}%)`;
+      const currentX = getXPosition(e);
+      dragDistance = currentX - startX;
+      xOffset = initialX + dragDistance;
 
-    // Cleanup
-    track.classList.remove('dragging');
-    track.style.cursor = 'grab';
-    
-    setTimeout(() => {
-      track.style.transition = '';
-    }, 300);
+      // Add resistance at the edges for a "gummy" feel
+      const maxScroll = 0;
+      const minScroll = -(totalSlides - visible) * (track.offsetWidth / visible);
+      
+      if (xOffset > maxScroll) {
+        xOffset = maxScroll + (xOffset - maxScroll) / 3;
+      } else if (xOffset < minScroll) {
+        xOffset = minScroll + (xOffset - minScroll) / 3;
+      }
+      
+      setTranslate(xOffset);
+    }
 
-    document.removeEventListener('mousemove', handleDragMove);
-    document.removeEventListener('touchmove', handleDragMove);
-    document.removeEventListener('mouseup', handleDragEnd);
-    document.removeEventListener('touchend', handleDragEnd);
-  }
+    function dragEnd(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('dragging');
+      
+      // --- Differentiate Click vs. Drag ---
+      // If the drag distance is small, it was a click, not a drag.
+      // Otherwise, prevent the link from navigating.
+      if (Math.abs(dragDistance) > 10 && clickedLink) {
+        clickedLink.addEventListener('click', preventGhostClick, { once: true, capture: true });
+      }
 
-  // Add event listeners to the track
-  function addEventListeners() {
-    track.addEventListener('mousedown', handleDragStart);
-    track.addEventListener('touchstart', handleDragStart, { passive: true });
+      // --- Snapping Logic ---
+      const cardWidth = track.offsetWidth / visible;
+      let targetIndex = Math.round(xOffset / cardWidth); // Find nearest slide index
 
-    // Button navigation (next and previous)
-    btns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const dir = parseInt(btn.dataset.dir, 10);
-        const step = 100 / visible;
-        const currentPos = -xOffset / step;
-        const targetPos = Math.max(0, Math.min(cards.length - visible, currentPos + dir));
-        
-        track.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        xOffset = -targetPos * step;
-        track.style.transform = `translateX(${xOffset}%)`;
-        
-        setTimeout(() => {
-          track.style.transition = '';
-        }, 300);
-      });
-    });
+      // Add a small "flick" based on drag distance
+      const flickThreshold = cardWidth / 4;
+      if (dragDistance < -flickThreshold) {
+        targetIndex = Math.floor(xOffset / cardWidth);
+      } else if (dragDistance > flickThreshold) {
+        targetIndex = Math.ceil(xOffset / cardWidth);
+      }
 
-    // Handle window resize to reset the dragging
-    window.addEventListener('resize', () => {
+      // Clamp the index within valid bounds
+      targetIndex = Math.max(-(totalSlides - visible), Math.min(0, targetIndex));
+      
+      xOffset = targetIndex * cardWidth;
+      
+      track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      setTranslate(xOffset);
+
+      // Cleanup
+      document.removeEventListener('mousemove', dragging);
+      document.removeEventListener('touchmove', dragging);
+      clickedLink = null;
+    }
+
+    function setTranslate(xPos) {
+      track.style.transform = `translateX(${xPos}px)`;
+    }
+
+    function preventGhostClick(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // --- Navigation & Initialization ---
+
+    function handleNavClick(e) {
+      const dir = parseInt(e.currentTarget.dataset.dir, 10);
+      const cardWidth = track.offsetWidth / visible;
+      let targetIndex = Math.round(xOffset / cardWidth) + dir;
+
+      // Clamp index
+      targetIndex = Math.max(-(totalSlides - visible), Math.min(0, targetIndex));
+
+      xOffset = targetIndex * cardWidth;
+      track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      setTranslate(xOffset);
+    }
+
+    function init() {
+      // Reset position and recalculate `visible` count
+      visible = window.matchMedia('(max-width: 990px)').matches ? 1 : 3;
+      xOffset = 0;
       track.style.transition = 'none';
-      init();
-    });
-  }
+      setTranslate(0);
+      
+      // Add initial event listeners
+      track.addEventListener('mousedown', dragStart);
+      track.addEventListener('touchstart', dragStart, { passive: true });
+      btns.forEach(btn => btn.addEventListener('click', handleNavClick));
+    }
+    
+    // Recalculate on resize
+    window.addEventListener('resize', init);
 
-  // Initialize the slider on page load
-  init();
-})();
+    // Initial setup
+    init();
+
+  })();
 </script>
+
+{% schema %}
+{
+  "name": "Image + Overlap (40/60)",
+  "tag": "section",
+  "class": "section image-overlap-4060",
+  "settings": [
+    { "type": "image_picker", "id": "left_image", "label": "Left image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "NEW SKIN & HAIR CARE PRODUCTS" },
+    { "type": "collection", "id": "collection", "label": "Product collection" },
+    { "type": "range", "id": "max_items", "label": "Max products", "min": 3, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "overlap", "label": "Overlap onto image (%)", "min": 0, "max": 12, "step": 1, "default": 5 },
+    { "type": "range", "id": "radius", "label": "Corner radius (px)", "min": 0, "max": 28, "step": 1, "default": 18 },
+    { "type": "color", "id": "panel_bg", "label": "Panel background", "default": "#ffffff" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#f6f2ef" }
+  ],
+  "presets": [
+    { "name": "Image + Overlap (40/60)" }
+  ]
+}
+{% endschema %}
