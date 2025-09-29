@@ -1,0 +1,546 @@
+/* Enhanced Header Styles - Modern Interactive Navigation */
+
+/* ===========================
+   ENHANCED HEADER BASE STYLES
+   =========================== */
+
+.header-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Glassmorphism effect when sticky */
+.shopify-section-header-sticky .header-wrapper {
+  background: rgba(var(--color-background), 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.06);
+}
+
+.scrolled-past-header .header-wrapper {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.header {
+  transition: padding 0.3s ease;
+}
+
+/* Smooth header reveal animation */
+.shopify-section-header-sticky.animate .header-wrapper {
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===========================
+   LOGO ENHANCEMENTS
+   =========================== */
+
+.header__heading-link {
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header__heading-link:hover {
+  transform: scale(1.03);
+}
+
+.header__heading-logo {
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.header__heading-link:hover .header__heading-logo {
+  filter: brightness(1.1);
+}
+
+/* ===========================
+   NAVIGATION MENU ENHANCEMENTS
+   =========================== */
+
+.header__inline-menu {
+  position: relative;
+}
+
+/* Enhanced menu item styling */
+.header__menu-item {
+  position: relative;
+  padding: 1rem 1.6rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Animated underline effect */
+.header__menu-item::before {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgb(var(--color-foreground)) 0%,
+    rgba(var(--color-foreground), 0.7) 100%);
+  transform: translateX(-50%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header__menu-item:hover::before,
+.header__menu-item.active::before,
+.header__active-menu-item::before {
+  width: 80%;
+}
+
+/* Enhanced hover effects */
+.header__menu-item:hover {
+  color: rgb(var(--color-foreground));
+  transform: translateY(-2px);
+}
+
+.header__menu-item span {
+  transition: all 0.3s ease;
+}
+
+/* Active menu item styling */
+.header__active-menu-item {
+  font-weight: 600;
+  position: relative;
+}
+
+/* Enhanced dropdown indicator */
+.header__menu-item .icon-caret {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0.4rem;
+}
+
+details[open] > .header__menu-item .icon-caret {
+  transform: rotate(180deg);
+}
+
+.header__menu-item:hover .icon-caret {
+  transform: translateY(2px);
+}
+
+details[open] > .header__menu-item:hover .icon-caret {
+  transform: rotate(180deg) translateY(-2px);
+}
+
+/* ===========================
+   DROPDOWN SUBMENU ENHANCEMENTS
+   =========================== */
+
+.header__submenu {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeInSlideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+
+@keyframes fadeInSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Submenu arrow pointer */
+.header__submenu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgb(var(--color-background));
+  filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.05));
+}
+
+/* Enhanced submenu items */
+.header__submenu .header__menu-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  padding: 1.2rem 2rem;
+}
+
+.header__submenu .header__menu-item::before {
+  display: none;
+}
+
+.header__submenu .header__menu-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg,
+    rgb(var(--color-foreground)) 0%,
+    rgba(var(--color-foreground), 0.5) 100%);
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 2px 2px 0;
+}
+
+.header__submenu .header__menu-item:hover::after {
+  height: 70%;
+}
+
+.header__submenu .header__menu-item:hover {
+  background: rgba(var(--color-foreground), 0.04);
+  padding-left: 2.5rem;
+  transform: none;
+}
+
+/* Staggered animation for submenu items */
+.header__submenu .header__menu-item:nth-child(1) { animation-delay: 0.05s; }
+.header__submenu .header__menu-item:nth-child(2) { animation-delay: 0.1s; }
+.header__submenu .header__menu-item:nth-child(3) { animation-delay: 0.15s; }
+.header__submenu .header__menu-item:nth-child(4) { animation-delay: 0.2s; }
+.header__submenu .header__menu-item:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===========================
+   HEADER ICONS ENHANCEMENTS
+   =========================== */
+
+.header__icons {
+  gap: 0.4rem;
+}
+
+.header__icon {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+}
+
+.header__icon:hover {
+  background: rgba(var(--color-foreground), 0.06);
+  transform: translateY(-2px);
+}
+
+.header__icon:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Icon ripple effect */
+.header__icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.1);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+}
+
+.header__icon:active::before {
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 0;
+}
+
+/* Enhanced cart icon */
+.header__icon--cart {
+  position: relative;
+}
+
+.cart-count-bubble {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(238, 90, 111, 0.4);
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border: 2px solid rgb(var(--color-background));
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Cart icon shake animation when item added */
+@keyframes cartShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-5deg); }
+  75% { transform: translateX(5px) rotate(5deg); }
+}
+
+.header__icon--cart.item-added {
+  animation: cartShake 0.5s ease;
+}
+
+/* Enhanced account icon */
+.header__icon--account {
+  overflow: hidden;
+}
+
+.header__icon--account shop-user-avatar img {
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.header__icon--account:hover shop-user-avatar img {
+  transform: scale(1.1);
+}
+
+/* ===========================
+   SEARCH ENHANCEMENTS
+   =========================== */
+
+.header__search {
+  transition: all 0.3s ease;
+}
+
+/* Search icon pulse effect */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.header__icon--search:hover {
+  animation: pulse 1s ease infinite;
+}
+
+/* ===========================
+   MOBILE RESPONSIVE ENHANCEMENTS
+   =========================== */
+
+@media screen and (max-width: 989px) {
+  .header__menu-item {
+    padding: 1.2rem 2rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+  }
+
+  .header__menu-item:hover {
+    background: rgba(var(--color-foreground), 0.04);
+    transform: translateX(5px);
+  }
+
+  .header__menu-item::before {
+    display: none;
+  }
+
+  .header__submenu {
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ===========================
+   MEGA MENU ENHANCEMENTS
+   =========================== */
+
+@media screen and (min-width: 990px) {
+  .header__inline-menu {
+    gap: 0.5rem;
+  }
+
+  /* Mega menu specific styles */
+  .mega-menu__content {
+    animation: fadeInSlideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mega-menu__link {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+  }
+
+  .mega-menu__link:hover {
+    background: rgba(var(--color-foreground), 0.04);
+    transform: translateX(5px);
+  }
+}
+
+/* ===========================
+   UTILITY ANIMATIONS
+   =========================== */
+
+/* Smooth color transitions */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Focus styles for accessibility */
+.header__menu-item:focus-visible,
+.header__icon:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===========================
+   ENHANCED ANNOUNCEMENT BAR
+   =========================== */
+
+.announcement-bar {
+  transition: all 0.3s ease;
+}
+
+.announcement-bar:hover {
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+/* ===========================
+   DESKTOP SPECIFIC ENHANCEMENTS
+   =========================== */
+
+@media screen and (min-width: 990px) {
+  /* Larger hover areas for better UX */
+  .header__menu-item {
+    margin: 0 0.2rem;
+  }
+
+  /* Enhanced spacing */
+  .list-menu--inline {
+    gap: 0.8rem;
+  }
+
+  /* Smooth menu item appearance */
+  .list-menu--inline > li {
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  }
+
+  .list-menu--inline > li:nth-child(1) { animation-delay: 0.1s; }
+  .list-menu--inline > li:nth-child(2) { animation-delay: 0.15s; }
+  .list-menu--inline > li:nth-child(3) { animation-delay: 0.2s; }
+  .list-menu--inline > li:nth-child(4) { animation-delay: 0.25s; }
+  .list-menu--inline > li:nth-child(5) { animation-delay: 0.3s; }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ===========================
+   SCROLLBAR STYLING FOR DROPDOWNS
+   =========================== */
+
+.header__submenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.header__submenu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.header__submenu::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-foreground), 0.2);
+  border-radius: 3px;
+}
+
+.header__submenu::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-foreground), 0.3);
+}
+
+/* ===========================
+   LOADING STATE STYLES
+   =========================== */
+
+.header--loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.header--loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--color-foreground), 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
