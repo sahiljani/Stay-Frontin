@@ -14,110 +14,159 @@
     --border: 1px solid rgba(0,0,0,.06);
     background: var(--section-bg);
     padding: clamp(22px, 3vw, 36px);
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
 
-  /* 40 / 60 split */
+  /* Simple grid layout */
   #shopify-section-{{ section.id }} .io-grid{
-    display:grid;
-    grid-template-columns: 35% 65%;
-    align-items: center!important;
-    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 2rem;
   }
-  @media (max-width: 990px){
+  
+  @media (min-width: 768px) {
     #shopify-section-{{ section.id }} .io-grid{
-      grid-template-columns: 1fr;
+      grid-template-columns: 40% 60%;
     }
   }
 
-    /* Desktop: hard height */
-    @media (min-width: 991px){
-    #shopify-section-{{ section.id }} .io-image{
-        border-radius: var(--radius);
-        overflow: hidden;
-        height: 550px;        /* <- set the exact height you want */
-    }
-    }
+  #shopify-section-{{ section.id }} .io-image{
+    border-radius: var(--radius);
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
 
-    /* Mobile: let it auto or use a ratio so it doesn’t look squashed */
-    @media (max-width: 990px){
+  /* Desktop: hard height */
+  @media (min-width: 991px){
     #shopify-section-{{ section.id }} .io-image{
-        aspect-ratio: 4 / 5;  /* or set a smaller fixed height if you prefer */
-        height: auto;
-        border-radius: var(--radius);
-        overflow: hidden;
+      height: 550px;
     }
-    }
+  }
 
-    #shopify-section-{{ section.id }} .io-image img{
+  /* Mobile: let it auto or use a ratio so it doesn't look squashed */
+  @media (max-width: 990px){
+    #shopify-section-{{ section.id }} .io-image{
+      aspect-ratio: 4 / 5;
+      height: auto;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .io-image img{
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    }
+  }
 
   #shopify-section-{{ section.id }} .io-image img{
     width:100%; height:100%; object-fit:cover; display:block;
   }
 
-  /* Right panel (overlaps ~5%) */
+  /* Panel styling */
   #shopify-section-{{ section.id }} .io-panel{
-    {% comment %} background: var(--panel-bg); {% endcomment %}
+    background: var(--panel-bg);
     border-radius: var(--radius);
-    {% comment %} box-shadow: 0 25px 60px rgba(0,0,0,.12); {% endcomment %}
-    padding: clamp(18px, 2vw, 28px);
+    padding: 1.5rem;
     position: relative;
     z-index: 2;
   }
-  @media (min-width: 991px){
+  
+  @media (max-width: 767px){
     #shopify-section-{{ section.id }} .io-panel{
-      margin-left: calc(-1 * var(--overlap));
+      margin-top: -3rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
     }
   }
-  @media (max-width: 990px){
+  
+  @media (min-width: 768px){
     #shopify-section-{{ section.id }} .io-panel{
-      margin-top: -80px;
-      background: var(--panel-bg);
-      box-shadow: 0 15px 40px rgba(0,0,0,.08);
+      margin-left: calc(-1 * var(--overlap));
     }
   }
 
   /* Header */
   #shopify-section-{{ section.id }} .io-head{
     position: relative;
-    padding: 4px 48px 18px 48px;
-    text-align:center;
+    padding: 1rem 3rem 1rem 1rem;
+    text-align: center;
   }
+  
   #shopify-section-{{ section.id }} .io-title{
-    margin:0; letter-spacing:.01em;
-    font-size: clamp(22px, 2.7vw, 36px);
-    line-height:1.2;
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.2;
   }
+  
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .io-title{
+      font-size: 2rem;
+    }
+  }
+  
   #shopify-section-{{ section.id }} .io-nav{
-    position:absolute; top:0; right:0; display:flex; gap:8px;
+    position: absolute; 
+    top: 1rem; 
+    right: 1rem; 
+    display: none;
+    gap: 0.5rem;
   }
+  
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .io-nav{
+      display: flex;
+    }
+  }
+  
   #shopify-section-{{ section.id }} .io-btn{
-    width:38px; height:38px; border-radius:999px; border:1px solid rgba(0,0,0,.12);
-    display:grid; place-items:center; background:#fff; cursor:pointer;
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    border: 1px solid rgba(0,0,0,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff; 
+    cursor: pointer;
   }
 
-  /* 3-up carousel */
-  #shopify-section-{{ section.id }} .io-window{ overflow:hidden; }
+  /* Responsive carousel */
+  #shopify-section-{{ section.id }} .io-window{ 
+    overflow: hidden; 
+    border-radius: var(--radius);
+  }
+  
   #shopify-section-{{ section.id }} .io-track{
-    display:flex;
+    display: flex;
     cursor: grab;
     user-select: none;
     touch-action: pan-y;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+  
   #shopify-section-{{ section.id }} .io-track.dragging {
     cursor: grabbing;
   }
+  
+  /* Card sizing */
   #shopify-section-{{ section.id }} .io-card{
-    flex: 0 0 calc(100% / 3);
-    padding: 0 clamp(8px, 1vw, 12px);
-    box-sizing: border-box;
+    flex: 0 0 80%;
+    padding: 0 0.5rem;
   }
-  @media (max-width: 990px){
-    #shopify-section-{{ section.id }} .io-card{ flex: 0 0 80%; }
+  
+  @media (min-width: 576px) {
+    #shopify-section-{{ section.id }} .io-card{
+      flex: 0 0 50%;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .io-card{
+      flex: 0 0 33.333%;
+    }
   }
   #shopify-section-{{ section.id }} .io-card-inner{
     border: var(--border); border-radius: var(--card-radius); overflow:hidden; background:#fff;
@@ -139,19 +188,42 @@
     padding:.35rem .6rem; border-radius:999px; font-size:12px;
   }
 
-  #shopify-section-{{ section.id }} .io-body{ padding: 12px 14px 16px; }
+  /* Card content */
+  #shopify-section-{{ section.id }} .io-body{ 
+    padding: 1rem;
+  }
+  
   #shopify-section-{{ section.id }} .vendor{
-    font-size:12px; color:#999; letter-spacing:.08em; text-transform:uppercase;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
   }
+
   #shopify-section-{{ section.id }} .title{
-    font-size:14px; color:#111; line-height:1.35; margin:.35rem 0 .45rem 0;
-    min-height: 2.6em;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin: 0.5rem 0;
+    min-height: 2.5em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
+  
   #shopify-section-{{ section.id }} .price{
-    display:flex; gap:8px; align-items:baseline;
+    display: flex; 
+    gap: 0.5rem; 
+    align-items: baseline;
   }
-  #shopify-section-{{ section.id }} .price .now{ font-weight:700; }
-  #shopify-section-{{ section.id }} .price s{ color:#888; }
+  
+  #shopify-section-{{ section.id }} .price .now{ 
+    font-weight: 700;
+  }
+  
+  #shopify-section-{{ section.id }} .price s{
+    opacity: 0.5;
+  }
   
   #shopify-section-{{ section.id }} .io-track * {
     -webkit-user-drag: none;
@@ -248,7 +320,7 @@
     const btns = section.querySelectorAll('[data-dir]');
     const cards = track.querySelectorAll('.io-card');
     
-    let visible = window.matchMedia('(max-width: 990px)').matches ? 1 : 3;
+    let visible = getVisibleCards();
     const totalSlides = cards.length;
     if (totalSlides <= visible) {
       if (btns.length > 0) {
@@ -372,12 +444,30 @@
       setTranslate(xOffset);
     }
 
+    function getVisibleCards() {
+      const width = window.innerWidth;
+      if (width < 576) return 1.25; // Show 1 card + 25% of next
+      if (width < 1024) return 2;
+      return 3;
+    }
+
     function init() {
       // Reset position and recalculate `visible` count
-      visible = window.matchMedia('(max-width: 990px)').matches ? 1 : 3;
+      visible = getVisibleCards();
       xOffset = 0;
       track.style.transition = 'none';
       setTranslate(0);
+      
+      // Hide navigation if not enough slides
+      if (totalSlides <= visible) {
+        if (btns.length > 0) {
+          btns.forEach(btn => btn.style.display = 'none');
+        }
+      } else {
+        if (btns.length > 0) {
+          btns.forEach(btn => btn.style.display = 'grid');
+        }
+      }
       
       // Add initial event listeners
       track.addEventListener('mousedown', dragStart);

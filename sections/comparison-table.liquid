@@ -1,5 +1,3 @@
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -12,39 +10,291 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Comprehensive responsive styles for comparison table */
+  .comparison-section-{{ section.id }} {
+    background: #ffffff;
+    color: #111827;
+  }
+  
+  .comparison-container-{{ section.id }} {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .comparison-container-{{ section.id }} {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .comparison-container-{{ section.id }} {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  .comparison-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  
+  @media (min-width: 1024px) {
+    .comparison-grid-{{ section.id }} {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .comparison-grid-{{ section.id }} {
+      gap: 6rem;
+    }
+  }
+  
+  /* Left content column styles */
+  .comparison-content-{{ section.id }} {
+    margin-bottom: 2rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .comparison-content-{{ section.id }} {
+      margin-bottom: 0;
+    }
+  }
+  
+  .comparison-heading-{{ section.id }} {
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 2rem;
+  }
+
+  .comparison-description-{{ section.id }} {
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .comparison-checklist-heading-{{ section.id }} {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .comparison-checklist-{{ section.id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+
+  .comparison-checklist-item-{{ section.id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .comparison-check-icon-{{ section.id }} {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #10b981;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+  
+  .comparison-button-{{ section.id }} {
+    display: inline-block;
+    background: #111827;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .comparison-button-{{ section.id }}:hover {
+    opacity: 0.9;
+  }
+  
+  /* Table styles - Mobile first */
+  .comparison-table-wrapper-{{ section.id }} {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+  }
+  
+  .comparison-table-{{ section.id }} {
+    width: 100%;
+    min-width: 400px; /* Minimum width for readability */
+    border-collapse: collapse;
+    text-align: center;
+  }
+  
+  /* Table header */
+  .comparison-table-{{ section.id }} thead th {
+    padding: 1rem 0.5rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 640px) {
+    .comparison-table-{{ section.id }} thead th {
+      padding: 1rem;
+    }
+  }
+  
+  .comparison-table-{{ section.id }} thead th:first-child {
+    background: transparent;
+  }
+  
+  .comparison-table-{{ section.id }} thead th:nth-child(2) {
+    background: #111827;
+    color: #ffffff;
+  }
+  
+  .comparison-table-{{ section.id }} thead th:nth-child(3) {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  /* Table body */
+  .comparison-table-{{ section.id }} tbody tr {
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .comparison-table-{{ section.id }} tbody tr:nth-child(even) {
+    background: #f9fafb;
+  }
+  
+  .comparison-table-{{ section.id }} tbody td {
+    padding: 0.75rem 0.5rem;
+    vertical-align: middle;
+  }
+
+  @media (min-width: 640px) {
+    .comparison-table-{{ section.id }} tbody td {
+      padding: 1rem;
+    }
+  }
+  
+  .comparison-table-{{ section.id }} tbody td:first-child {
+    text-align: left;
+    font-weight: 500;
+    padding-left: 0.75rem;
+  }
+  
+  @media (min-width: 640px) {
+    .comparison-table-{{ section.id }} tbody td:first-child {
+      padding-left: 1rem;
+    }
+  }
+  
+  .comparison-table-{{ section.id }} tbody td:nth-child(2) {
+    background: #f9fafb;
+    font-weight: 500;
+  }
+  
+  /* Icons in table */
+  .comparison-icon-{{ section.id }} {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .comparison-icon-green-{{ section.id }} {
+    color: #10b981;
+  }
+  
+  .comparison-icon-red-{{ section.id }} {
+    color: #ef4444;
+  }
+  
+  /* Mobile table adjustments */
+  @media (max-width: 639px) {
+    .comparison-table-{{ section.id }} tbody td:first-child {
+      max-width: 120px;
+      word-wrap: break-word;
+    }
+  }
+  
+  /* Dark mode support (if needed) */
+  @media (prefers-color-scheme: dark) {
+    .comparison-section-{{ section.id }} {
+      background: #111827;
+      color: #ffffff;
+    }
+    
+    .comparison-table-wrapper-{{ section.id }} {
+      border-color: #374151;
+      background: #1f2937;
+    }
+    
+    .comparison-table-{{ section.id }} thead th:nth-child(3) {
+      background: #374151;
+      color: #ffffff;
+    }
+    
+    .comparison-table-{{ section.id }} tbody tr {
+      border-color: #374151;
+    }
+    
+    .comparison-table-{{ section.id }} tbody tr:nth-child(even) {
+      background: #1f2937;
+    }
+    
+    .comparison-table-{{ section.id }} tbody td:nth-child(2) {
+      background: #374151;
+    }
+    
+    .comparison-button-{{ section.id }} {
+      background: #ffffff;
+      color: #111827;
+    }
+  }
 {%- endstyle -%}
 
-<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-{{ section.id }}-padding">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-center">
+<div class="comparison-section section-{{ section.id }}-padding">
+  <div class="comparison-container">
+    <div class="comparison-grid">
       
       {%- comment -%} Left Content Column {%- endcomment -%}
-      <div class="space-y-8">
+      <div class="comparison-content">
         {%- if section.settings.heading != blank -%}
-          <h2 class="text-4xl lg:text-6xl font-bold leading-tight tracking-tighter {{ section.settings.heading_size }}">
+          <h2 class="comparison-heading">
             {{ section.settings.heading }}
           </h2>
         {%- endif -%}
         
         {%- if section.settings.description != blank -%}
-          <div class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed rte">
+          <div class="comparison-description">
             {{ section.settings.description }}
           </div>
         {%- endif -%}
         
         {%- if section.settings.checklist_heading != blank -%}
-          <p class="font-semibold text-gray-900 dark:text-white">{{ section.settings.checklist_heading }}</p>
+          <p class="comparison-checklist-heading">{{ section.settings.checklist_heading }}</p>
         {%- endif -%}
         
         {%- if section.blocks.size > 0 -%}
-          <ul class="space-y-3">
+          <ul class="comparison-checklist">
             {%- for block in section.blocks -%}
               {%- if block.type == 'checklist_item' -%}
-                <li class="flex items-center space-x-3" {{ block.shopify_attributes }}>
-                  <svg class="w-5 h-5 text-green-500 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <li class="comparison-checklist-item" {{ block.shopify_attributes }}>
+                  <svg class="comparison-check-icon" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                   </svg>
-                  <span class="text-gray-900 dark:text-white">{{ block.settings.text | escape }}</span>
+                  <span>{{ block.settings.text | escape }}</span>
                 </li>
               {%- endif -%}
             {%- endfor -%}
@@ -53,7 +303,7 @@
         
         {%- if section.settings.button_label != blank -%}
           <a 
-            class="inline-block bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold py-3 px-8 rounded-lg shadow-md hover:opacity-90 transition-opacity mt-4"
+            class="comparison-button"
             {% if section.settings.button_link == blank %}
               role="link" aria-disabled="true"
             {% else %}
@@ -66,45 +316,45 @@
       </div>
       
       {%- comment -%} Right Table Column {%- endcomment -%}
-      <div class="w-full">
-        <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
-          <table class="w-full text-center bg-white dark:bg-gray-800">
+      <div class="comparison-table-container">
+        <div class="comparison-table-wrapper">
+          <table class="comparison-table">
             <thead>
               <tr>
-                <th class="p-4 bg-transparent dark:bg-transparent"></th>
-                <th class="p-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold">
+                <th></th>
+                <th class="primary-column">
                   {{ section.settings.column_1_header | default: 'Option 1' }}
                 </th>
-                <th class="p-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold">
+                <th class="secondary-column">
                   {{ section.settings.column_2_header | default: 'Option 2' }}
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody>
               {%- for block in section.blocks -%}
                 {%- if block.type == 'comparison_row' -%}
-                  <tr class="{% cycle 'bg-white dark:bg-gray-800', 'bg-gray-50 dark:bg-gray-750' %}" {{ block.shopify_attributes }}>
-                    <td class="p-4 text-left font-medium text-gray-900 dark:text-white">
+                  <tr {{ block.shopify_attributes }}>
+                    <td class="label-column">
                       {{ block.settings.label }}
                     </td>
-                    <td class="p-4 bg-gray-50 dark:bg-gray-700 font-medium text-gray-900 dark:text-white">
+                    <td class="primary-value">
                       {%- if block.settings.primary_value_type == 'text' -%}
                         {{ block.settings.primary_value }}
                       {%- elsif block.settings.primary_value_type == 'checkmark' -%}
-                        <svg class="w-5 h-5 text-green-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                        <svg class="comparison-icon check-icon" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
                       {%- endif -%}
                     </td>
-                    <td class="p-4 text-gray-900 dark:text-white">
+                    <td class="secondary-value">
                       {%- if block.settings.secondary_value_type == 'text' -%}
                         {{ block.settings.secondary_value }}
                       {%- elsif block.settings.secondary_value_type == 'checkmark' -%}
-                        <svg class="w-5 h-5 text-green-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                        <svg class="comparison-icon check-icon" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
                       {%- elsif block.settings.secondary_value_type == 'cross' -%}
-                        <svg class="w-5 h-5 text-red-500 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                        <svg class="comparison-icon cross-icon" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                         </svg>
                       {%- endif -%}
@@ -119,6 +369,149 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* Simple comparison table styles */
+  .comparison-section {
+    background: #fff;
+    color: #111;
+  }
+  
+  .comparison-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  @media (min-width: 768px) {
+    .comparison-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+  
+  /* Content styles */
+  .comparison-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .comparison-heading {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .comparison-description {
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+  
+  .comparison-checklist-heading {
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .comparison-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .comparison-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .comparison-check-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #10b981;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+  
+  .comparison-button {
+    display: inline-block;
+    background: #111;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .comparison-button:hover {
+    opacity: 0.9;
+  }
+  
+  /* Table styles */
+  .comparison-table-wrapper {
+    overflow: auto;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .comparison-table th {
+    font-weight: 600;
+    background: #f9fafb;
+  }
+  
+  .comparison-table .primary-column {
+    background: #111;
+    color: #fff;
+  }
+  
+  .comparison-table .label-column {
+    text-align: left;
+    font-weight: 500;
+  }
+  
+  .comparison-table .primary-value {
+    background: #f9fafb;
+    font-weight: 500;
+  }
+  
+  .comparison-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 auto;
+  }
+  
+  .check-icon {
+    color: #10b981;
+  }
+  
+  .cross-icon {
+    color: #ef4444;
+  }
+</style>
 
 {% schema %}
 {

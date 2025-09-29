@@ -21,19 +21,19 @@
 -%}
 
 <style>
-  /* Scoped styles for this section */
+  /* Simple responsive grid */
   #shopify-section-{{ section.id }} .hero2-grid {
     display: grid;
     grid-template-columns: 1fr;
-    min-height: var(--hero2-min-h, auto);
-    position: relative;
     background: #000;
-  }
+    }
+  
   @media (min-width: 768px) {
     #shopify-section-{{ section.id }} .hero2-grid {
       grid-template-columns: 1fr 1fr;
     }
   }
+  
   #shopify-section-{{ section.id }} .hero2-left {
     background: var(--hero2-bg, #000);
     color: var(--hero2-text, #fff);
@@ -41,66 +41,124 @@
     flex-direction: column;
     justify-content: center;
     padding: 2rem;
-    position: relative; /* Ensure text is on top of media */
-    z-index: 2;
+    text-align: center;
+    min-height: 400px;
   }
+  
   @media (min-width: 768px) {
-    #shopify-section-{{ section.id }} .hero2-left { padding: 4rem; }
+    #shopify-section-{{ section.id }} .hero2-left {
+      padding: 4rem 3rem;
+      text-align: left;
+      min-height: 100%;
+    }
   }
+  
   @media (min-width: 1024px) {
-    #shopify-section-{{ section.id }} .hero2-left { padding: 6rem; }
+    #shopify-section-{{ section.id }} .hero2-left {
+      padding: 6rem 4rem;
+    }
   }
+  
   #shopify-section-{{ section.id }} .hero2-title {
-    line-height: 1.05;
+    font-size: 2rem;
+    line-height: 1.1;
     font-weight: 700;
     margin: 0 0 1rem 0;
   }
+  
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .hero2-title {
+      font-size: 3rem;
+    }
+  }
+  
   #shopify-section-{{ section.id }} .hero2-p {
+    font-size: 1rem;
     line-height: 1.6;
     margin: 0 0 1rem 0;
-    opacity: .92;
+    opacity: .9;
   }
+  
   #shopify-section-{{ section.id }} .hero2-button {
     display: inline-block;
     background: var(--hero2-primary, #e5e7eb);
     color: #000;
     font-weight: 700;
-    padding: .75rem 2rem;
-    border-radius: .125rem;
+    padding: 12px 24px;
     text-decoration: none;
-    transition: background .2s ease;
+    border-radius: 4px;
+    transition: opacity 0.2s;
+    margin-top: 1rem;
   }
-  #shopify-section-{{ section.id }} .hero2-button:hover { background: color-mix(in oklab, var(--hero2-primary) 80%, #000); }
+  
+  #shopify-section-{{ section.id }} .hero2-button:hover {
+    opacity: 0.9;
+  }
+  
   #shopify-section-{{ section.id }} .hero2-right {
+    min-height: 400px;
+    background: #000;
+    order: 1;
+  }
+  
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .hero2-right {
+      order: 0;
+      height: 500px;
+      min-height: 100%;
+    }
+  }
+  
+  #shopify-section-{{ section.id }} .video-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 320px;
-    overflow: hidden;
-    background: #000;
   }
-  #shopify-section-{{ section.id }} .video-wrapper {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  
   #shopify-section-{{ section.id }} .hero2-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
   }
   
   /* Ticker */
-  #shopify-section-{{ section.id }} .hero2-ticker { width: 100%; overflow: hidden; border-top: 1px solid #374151; border-bottom: 1px solid #374151; }
-  #shopify-section-{{ section.id }} .hero2-marquee { display: flex; white-space: nowrap; animation: hero2-marquee 25s linear infinite; }
-  #shopify-section-{{ section.id }} .hero2-chip { display:flex; align-items:center; padding: 1rem 2rem; flex-shrink: 0; color: #6b7280; font-weight: 700; letter-spacing: .08em; }
-  #shopify-section-{{ section.id }} .hero2-chip .emoji { margin-right: .5rem; }
-  @keyframes hero2-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  #shopify-section-{{ section.id }} .hero2-ticker { 
+    overflow: hidden; 
+    border-top: 1px solid #374151; 
+    border-bottom: 1px solid #374151;
+  }
+  
+  #shopify-section-{{ section.id }} .hero2-marquee { 
+    display: flex; 
+    animation: hero2-marquee 25s linear infinite;
+  }
+  
+  #shopify-section-{{ section.id }} .hero2-chip { 
+    display: flex; 
+    align-items: center; 
+    padding: 1rem 2rem; 
+    flex-shrink: 0; 
+    color: #6b7280; 
+    font-weight: 700; 
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+  }
+  
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .hero2-chip {
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+    }
+  }
+  
+  #shopify-section-{{ section.id }} .hero2-chip .emoji { 
+    margin-right: 0.5rem;
+  }
+  
+  @keyframes hero2-marquee { 
+    0% { transform: translateX(0); } 
+    100% { transform: translateX(-50%); } 
+  }
 </style>
 
 <section

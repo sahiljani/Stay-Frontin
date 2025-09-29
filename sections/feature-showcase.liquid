@@ -118,7 +118,7 @@
       </p>
     {%- endif -%}
 
-    <div class="feature-grid grid lg:grid-cols-12 gap-10 lg:gap-8 items-start lg:items-center {% if section.settings.layout_variant == 'stacked' %}lg:grid-cols-1{% endif %}">
+    <div class="feature-grid {% if section.settings.layout_variant == 'stacked' %}stacked-layout{% endif %}">
       {% if section.settings.layout_variant == 'image_left' %}
         {% assign left_order = 'order-2 lg:order-1' %}
         {% assign image_order = 'order-1 lg:order-2' %}
@@ -137,7 +137,7 @@
         {% assign right_order = 'order-3' %}
       {% endif %}
 
-      <div class="space-y-10 lg:col-span-3 {{ left_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+      <div class="feature-column feature-left {{ left_order }}">
         {%- assign idx = 0 -%}
         {%- for block in section.blocks -%}
           {%- assign show_left = false -%}
@@ -148,18 +148,18 @@
             {%- assign show_left = true -%}
           {%- endif -%}
           {%- if show_left -%}
-          <div class="flex items-start gap-4" {{ block.shopify_attributes }}>
+          <div class="flex" {{ block.shopify_attributes }}>
             {%- if block.settings.icon != blank -%}
-              <div class="shrink-0 {{ icon_wrapper_size }} flex items-center justify-center {{ icon_shape_class }}">
-                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" class="w-auto {{ icon_image_class }}" loading="lazy" />
+              <div class="shrink-0 {{ icon_shape_class }}">
+                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" loading="lazy" />
               </div>
             {%- endif -%}
             <div>
               {%- if block.settings.title != blank -%}
-                <h3 class="font-semibold text-gray-900 text-lg mb-1">{{ block.settings.title | escape }}</h3>
+                <h3>{{ block.settings.title | escape }}</h3>
               {%- endif -%}
               {%- if block.settings.text != blank -%}
-                <p class="text-sm leading-relaxed text-gray-600">{{ block.settings.text }}</p>
+                <p>{{ block.settings.text }}</p>
               {%- endif -%}
             </div>
           </div>
@@ -167,19 +167,17 @@
         {%- endfor -%}
       </div>
 
-      <div class="relative lg:col-span-6 flex justify-center lg:justify-center items-center {{ image_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+      <div class="feature-image-container {{ image_order }}">
         {%- if section.settings.main_image != blank -%}
-          <div class="relative w-full flex justify-center">
-            <img src="{{ section.settings.main_image | image_url: width: 900 }}" alt="{{ section.settings.heading | escape }} image" class="w-full max-w-md mx-auto drop-shadow-xl rounded-lg" loading="lazy" />
-          </div>
+          <img src="{{ section.settings.main_image | image_url: width: 900 }}" alt="{{ section.settings.heading | escape }} image" loading="lazy" />
         {%- else -%}
-          <div class="w-full max-w-md aspect-[3/5] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-            {{ 'image' | placeholder_svg_tag: 'w-16 h-16' }}
+          <div class="placeholder-image">
+            {{ 'image' | placeholder_svg_tag }}
           </div>
         {%- endif -%}
       </div>
 
-      <div class="space-y-10 lg:col-span-3 {{ right_order }} {% if section.settings.layout_variant == 'stacked' %}lg:col-span-12{% endif %}">
+      <div class="feature-column feature-right {{ right_order }}">
         {%- for block in section.blocks -%}
           {%- assign show_right = false -%}
           {%- if section.settings.auto_distribute -%}
@@ -189,18 +187,18 @@
             {%- assign show_right = true -%}
           {%- endif -%}
           {%- if show_right -%}
-          <div class="flex items-start gap-4" {{ block.shopify_attributes }}>
+          <div class="flex" {{ block.shopify_attributes }}>
             {%- if block.settings.icon != blank -%}
-              <div class="shrink-0 {{ icon_wrapper_size }} flex items-center justify-center {{ icon_shape_class }}">
-                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" class="w-auto {{ icon_image_class }}" loading="lazy" />
+              <div class="shrink-0 {{ icon_shape_class }}">
+                <img src="{{ block.settings.icon | image_url: width: 120 }}" alt="{{ block.settings.title | escape }} icon" loading="lazy" />
               </div>
             {%- endif -%}
             <div>
               {%- if block.settings.title != blank -%}
-                <h3 class="font-semibold text-gray-900 text-lg mb-1">{{ block.settings.title | escape }}</h3>
+                <h3>{{ block.settings.title | escape }}</h3>
               {%- endif -%}
               {%- if block.settings.text != blank -%}
-                <p class="text-sm leading-relaxed text-gray-600">{{ block.settings.text }}</p>
+                <p>{{ block.settings.text }}</p>
               {%- endif -%}
             </div>
           </div>
@@ -211,14 +209,96 @@
   </div>
 
   <style>
-    /* Fallback minimal styling if Tailwind not present or purged classes */
-    #feature-showcase-{{ section.id }} .feature-grid { }
+    /* Simple responsive layout */
+    #feature-showcase-{{ section.id }} .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
     @media (min-width: 1024px) {
-      #feature-showcase-{{ section.id }} .feature-grid { display: grid; grid-template-columns: repeat(12, 1fr); }
-      #feature-showcase-{{ section.id }} .feature-grid > * { grid-column: span 12; }
-      #feature-showcase-{{ section.id }} .feature-grid > .space-y-10:first-of-type { grid-column: span 3; }
-      #feature-showcase-{{ section.id }} .feature-grid > .relative { grid-column: span 6; }
-      #feature-showcase-{{ section.id }} .feature-grid > .space-y-10:last-of-type { grid-column: span 3; }
+      #feature-showcase-{{ section.id }} .feature-grid {
+        grid-template-columns: 1fr 1.5fr 1fr;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      #feature-showcase-{{ section.id }} .feature-grid.stacked-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Feature columns */
+    #feature-showcase-{{ section.id }} .feature-column {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    #feature-showcase-{{ section.id }} .feature-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    #feature-showcase-{{ section.id }} .feature-image-container img {
+      width: 100%;
+      max-width: 28rem;
+      height: auto;
+      display: block;
+      border-radius: 0.5rem;
+    }
+
+    /* Feature items */
+    #feature-showcase-{{ section.id }} .flex {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    /* Icons */
+    #feature-showcase-{{ section.id }} .shrink-0 {
+      width: 3rem;
+      height: 3rem;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #feature-showcase-{{ section.id }} .shrink-0 img {
+      max-width: 2rem;
+      max-height: 2rem;
+    }
+    
+    /* Typography - use theme defaults */
+    #feature-showcase-{{ section.id }} h3 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    #feature-showcase-{{ section.id }} .text-sm {
+      line-height: 1.5;
+      opacity: 0.8;
+    }
+    
+    /* Main image */
+    #feature-showcase-{{ section.id }} .relative img {
+      width: 100%;
+      max-width: 28rem;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      border-radius: 0.5rem;
+    }
+    
+    /* Mobile order - image first */
+    @media (max-width: 1023px) {
+      #feature-showcase-{{ section.id }} .feature-image-container {
+        order: -1;
+      }
     }
   </style>
 </section>

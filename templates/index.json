@@ -115,99 +115,6 @@
         "section_bg": "#f6f2ef"
       }
     },
-    "video_carousel_TW778A": {
-      "type": "video-carousel",
-      "blocks": {
-        "video_7eMy48": {
-          "type": "video",
-          "settings": {
-            "video_url": "https://cdn.shopify.com/videos/c/o/v/6bd7a7ccf9014446bea10d42aecec4ee.mp4",
-            "overlay_heading": "Featured Product",
-            "overlay_text": "Discover our latest collection",
-            "button_label": "Shop Now",
-            "button_url": "/collections/all",
-            "featured_product": "",
-            "product_price_override": ""
-          }
-        },
-        "video_h6RQkr": {
-          "type": "video",
-          "settings": {
-            "video_url": "",
-            "overlay_heading": "New Arrivals",
-            "overlay_text": "Fresh styles just in",
-            "button_label": "View All",
-            "button_url": "/collections/new",
-            "featured_product": "",
-            "product_price_override": ""
-          }
-        },
-        "video_DWam9Y": {
-          "type": "video",
-          "settings": {
-            "video_url": "",
-            "overlay_heading": "Best Sellers",
-            "overlay_text": "Customer favorites",
-            "button_label": "Shop Bestsellers",
-            "button_url": "/collections/best-sellers",
-            "featured_product": "",
-            "product_price_override": ""
-          }
-        },
-        "video_TCkNWq": {
-          "type": "video",
-          "settings": {
-            "video_url": "",
-            "overlay_heading": "",
-            "overlay_text": "",
-            "button_label": "",
-            "button_url": "",
-            "featured_product": "",
-            "product_price_override": ""
-          }
-        }
-      },
-      "block_order": [
-        "video_7eMy48",
-        "video_h6RQkr",
-        "video_DWam9Y",
-        "video_TCkNWq"
-      ],
-      "custom_css": [],
-      "name": "Video Carousel",
-      "settings": {
-        "heading": "Our Latest Videos",
-        "description": "",
-        "container_type": "container",
-        "container_width": 1200,
-        "slide_width": 30,
-        "tablet_width": 70,
-        "mobile_width": 85,
-        "video_max_width": 500,
-        "video_min_width": 200,
-        "video_scale": 100,
-        "gap": 15,
-        "aspect_ratio": "4/5",
-        "border_radius": 12,
-        "autoplay": true,
-        "muted": true,
-        "loop": true,
-        "show_controls": false,
-        "show_overlay": true,
-        "show_navigation": true,
-        "show_dots": true,
-        "show_play_pause": true,
-        "show_mute_toggle": true,
-        "enable_lightbox": true,
-        "scroll_cards": 1,
-        "background_color": "#ffffff",
-        "heading_color": "#000000",
-        "text_color": "#666666",
-        "accent_color": "#000000",
-        "heading_size": 40,
-        "padding_vertical": 60
-      }
-    },
     "feature_showcase_7q9V7E": {
       "type": "feature-showcase",
       "blocks": {
@@ -428,7 +335,6 @@
     "featured_collection",
     "hero_2_grid_z46BYi",
     "image_with_overlap_slider_KYgUd3",
-    "video_carousel_TW778A",
     "feature_showcase_7q9V7E",
     "comparison_table_xmXfkH"
   ]
