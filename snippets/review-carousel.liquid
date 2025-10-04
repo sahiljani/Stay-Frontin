@@ -4,15 +4,19 @@
   Displays customer reviews in an auto-rotating carousel
 
   Accepts:
-  - reviews: {Array} Array of review objects (optional, uses default reviews if not provided)
+  - reviews: {Array} Array of review objects (optional, uses metafield or defaults if not provided)
+  - product_reviews_metafield: {String} Namespace.key for product metafield holding review metaobjects (default: custom.review_carousel)
   - autoplay: {Boolean} Enable auto-rotation (default: true)
   - autoplay_speed: {Number} Milliseconds between slides (default: 5000)
   - show_stars: {Boolean} Show star ratings (default: true)
   - show_date: {Boolean} Show review dates (default: true)
+  - show_default_reviews: {Boolean} Show built-in placeholder reviews when no data (default: true)
+  - review_date_format: {String} Optional Liquid date format string for metafield dates
 
   Usage:
   {% render 'review-carousel' %}
   {% render 'review-carousel', autoplay: true, autoplay_speed: 4000 %}
+  {% render 'review-carousel', show_default_reviews: false, product_reviews_metafield: 'custom.review_carousel' %}
 {% endcomment %}
 
 {%- liquid
@@ -20,143 +24,153 @@
   assign autoplay_speed = autoplay_speed | default: 5000
   assign show_stars = show_stars | default: true
   assign show_date = show_date | default: true
+  assign show_default_reviews_value = show_default_reviews
+  if show_default_reviews_value == blank and show_default_reviews_value != false and show_default_reviews_value != 'false' and show_default_reviews_value != 0
+    assign show_default_reviews = true
+  else
+    assign show_default_reviews = show_default_reviews_value
+  endif
+  assign review_date_format = review_date_format | default: ''
   assign section_id = section.id | default: 'default'
+
+  assign resolved_reviews = reviews
+
+  assign product_reviews_metafield = product_reviews_metafield | default: 'custom.review_carousel'
+  if resolved_reviews == blank and product and product_reviews_metafield != blank
+    assign metafield_parts = product_reviews_metafield | split: '.'
+    if metafield_parts.size == 2
+      assign metafield_namespace = metafield_parts[0]
+      assign metafield_key = metafield_parts[1]
+      assign product_metafield_namespace_ref = product.metafields[metafield_namespace]
+      if product_metafield_namespace_ref
+        assign product_reviews_candidate = product_metafield_namespace_ref[metafield_key]
+        if product_reviews_candidate != blank
+          if product_reviews_candidate.value != blank
+            assign resolved_reviews = product_reviews_candidate.value
+          elsif product_reviews_candidate.references != blank
+            assign resolved_reviews = product_reviews_candidate.references
+          else
+            assign resolved_reviews = product_reviews_candidate
+          endif
+        endif
+      endif
+    endif
+  endif
+
+  assign reviews = resolved_reviews
+  assign has_reviews = false
+  if reviews != blank
+    if reviews.size and reviews.size > 0
+      assign has_reviews = true
+    elsif reviews != empty
+      assign has_reviews = true
+    endif
+  endif
+  assign should_render = false
+  if has_reviews
+    assign should_render = true
+  elsif show_default_reviews
+    assign should_render = true
+  endif
 -%}
+
+{%- if should_render -%}
 
 <div class="review-carousel" data-review-carousel>
   <div class="review-carousel__inner">
     <div class="embla embla--reviews" data-embla-init data-section-id="reviews-{{ section_id }}" data-scroll-cards="1" {% if autoplay %}data-autoplay="{{ autoplay_speed }}"{% endif %}>
       <div class="embla__viewport">
         <div class="embla__container">
-          {%- if reviews and reviews.size > 0 -%}
+          {%- if has_reviews -%}
             {%- for review in reviews -%}
+              {%- liquid
+                assign review_author = review.author | default: review.reviewer | default: review.name | default: review.title
+                assign review_author = review_author | strip
+                assign review_text = review.text | default: review.body | default: review.review | default: review.quote | default: review.content | default: review.description
+                assign review_text = review_text | strip
+                assign review_image = review.image | default: review.photo | default: review.avatar_image | default: review.avatar
+                assign review_rating = review.rating | default: review.score | default: review.stars | default: review.rating_value
+                if review_rating != blank
+                  assign review_rating = review_rating | plus: 0
+                endif
+                assign review_date_value = review.date | default: review.review_date | default: review.published_at | default: review.created_at
+                assign review_verified_raw = review.verified | default: review.is_verified | default: review.verified_buyer
+                assign review_status = review.status | default: review.badge | default: review.metadata | default: review_verified_raw
+                if review_author == blank and review_text == blank
+                  continue
+                endif
+                if review_status == blank and review_verified_raw != blank
+                  if review_verified_raw == true or review_verified_raw == 'true'
+                    assign review_status = 'verified buyer'
+                  elsif review_verified_raw == false or review_verified_raw == 'false'
+                    assign review_status = ''
+                  else
+                    assign review_status = review_verified_raw
+                  endif
+                endif
+                if review_status == blank
+                  assign review_status = 'verified buyer'
+                endif
+              -%}
               <div class="embla__slide review-carousel__slide">
                 <div class="review-carousel__card">
-                  {%- if review.image -%}
+                  {%- if review_image -%}
                     <div class="review-carousel__image">
-                      {{ review.image | image_url: width: 80 | image_tag: loading: 'lazy', alt: review.author }}
+                      {%- assign review_image_url = review_image | image_url: width: 80 -%}
+                      {%- if review_image_url != blank -%}
+                        {{ review_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: review_author | default: 'Customer avatar' }}
+                      {%- else -%}
+                        <img src="{{ review_image }}" alt="{{ review_author | default: 'Customer' }}" loading="lazy" width="80" height="80">
+                      {%- endif -%}
                     </div>
-                  {%- elsif review.author -%}
+                  {%- elsif review_author -%}
                     <div class="review-carousel__avatar">
-                      {{ review.author | slice: 0 }}
+                      {{ review_author | slice: 0 }}
                     </div>
                   {%- endif -%}
 
                   <div class="review-carousel__content">
-                    <blockquote class="review-carousel__text">
-                      {{ review.text }}
-                    </blockquote>
+                    {%- if review_text != blank -%}
+                      <blockquote class="review-carousel__text">
+                        {{ review_text }}
+                      </blockquote>
+                    {%- endif -%}
 
                     {%- liquid
-                      assign review_status = review.status | default: review.badge | default: review.metadata
-                      if review_status == blank and review.verified
-                        if review.verified == true or review.verified == 'true'
-                          assign review_status = 'verified buyer'
-                        else
-                          assign review_status = review.verified
+                      assign review_date_display = review_date_value
+                      assign review_date_machine = ''
+                      if review_date_value != blank and review_date_format != blank
+                        assign review_date_formatted = review_date_value | date: review_date_format
+                        if review_date_formatted != blank
+                          assign review_date_display = review_date_formatted
                         endif
-                      endif
-                      if review_status == blank
-                        assign review_status = 'verified buyer'
+                        assign review_date_iso = review_date_value | date: '%Y-%m-%d'
+                        if review_date_iso != blank
+                          assign review_date_machine = review_date_iso
+                        endif
                       endif
                     -%}
 
                     <div class="review-carousel__meta">
-                      <cite class="review-carousel__author">{{ review.author }}</cite>
-                      <span class="review-carousel__verified">{{ review_status | strip }}</span>
-                      {%- if show_stars and review.rating -%}
-                        <div class="review-carousel__rating" aria-label="Rated {{ review.rating }} out of 5 stars">
+                      <cite class="review-carousel__author">{{ review_author | default: 'Customer' }}</cite>
+                      {%- if review_status != blank -%}
+                        <span class="review-carousel__verified">{{ review_status | strip }}</span>
+                      {%- endif -%}
+                      {%- if show_stars and review_rating != blank -%}
+                        <div class="review-carousel__rating" aria-label="Rated {{ review_rating }} out of 5 stars">
                           {%- for i in (1..5) -%}
-                            <span class="review-carousel__star{% if i <= review.rating %} review-carousel__star--filled{% endif %}">★</span>
+                            <span class="review-carousel__star{% if i <= review_rating %} review-carousel__star--filled{% endif %}">★</span>
                           {%- endfor -%}
                         </div>
                       {%- endif -%}
-                      {%- if show_date and review.date -%}
-                        <time class="review-carousel__date">{{ review.date }}</time>
+                      {%- if show_date and review_date_value != blank -%}
+                        <time class="review-carousel__date"{% if review_date_machine != blank %} datetime="{{ review_date_machine }}"{% endif %}>{{ review_date_display }}</time>
                       {%- endif -%}
                     </div>
                   </div>
                 </div>
               </div>
             {%- endfor -%}
-          {%- else -%}
-            {%- comment -%} Default reviews if none provided {%- endcomment -%}
-            <div class="embla__slide review-carousel__slide">
-              <div class="review-carousel__card">
-                <div class="review-carousel__content">
-                  <blockquote class="review-carousel__text">
-                    by far the best tasting protein water i've tried. i can't believe it has 20g of protein in.
-                  </blockquote>
-                  <div class="review-carousel__meta">
-                    <cite class="review-carousel__author">charlie linford</cite>
-                    <span class="review-carousel__verified">verified buyer</span>
-                    {%- if show_stars -%}
-                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="embla__slide review-carousel__slide">
-              <div class="review-carousel__card">
-                <div class="review-carousel__avatar">S</div>
-                <div class="review-carousel__content">
-                  <blockquote class="review-carousel__text">
-                    Amazing product! Helps relieve tension after long hours at the desk. The quality is exceptional and I've noticed a significant improvement in my muscle recovery.
-                  </blockquote>
-                  <div class="review-carousel__meta">
-                    <cite class="review-carousel__author">Sarah</cite>
-                    <span class="review-carousel__verified">verified buyer</span>
-                    {%- if show_stars -%}
-                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      </div>
-                    {%- endif -%}
-                    {%- if show_date -%}
-                      <time class="review-carousel__date">October 12th</time>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="embla__slide review-carousel__slide">
-              <div class="review-carousel__card">
-                <div class="review-carousel__avatar">M</div>
-                <div class="review-carousel__content">
-                  <blockquote class="review-carousel__text">
-                    Best purchase I've made this year! Works exactly as described. My shoulder pain is gone and I feel so much more relaxed. Highly recommend to anyone with muscle tension!
-                  </blockquote>
-                  <div class="review-carousel__meta">
-                    <cite class="review-carousel__author">Michael</cite>
-                    <span class="review-carousel__verified">verified buyer</span>
-                    {%- if show_stars -%}
-                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                        <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      </div>
-                    {%- endif -%}
-                    {%- if show_date -%}
-                      <time class="review-carousel__date">October 8th</time>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </div>
-            </div>
           {%- endif -%}
         </div>
       </div>
@@ -169,3 +183,4 @@
 
 {{ 'component-review-carousel.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'review-carousel.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

@@ -196,16 +196,23 @@
                   {%- endif -%}
                 </p>
               {%- when 'description' -%}
-                {%- comment -%} Review Carousel above description {%- endcomment -%}
-                <div class="product__reviews-section">
-                  {% render 'review-carousel' %}
-                </div>
-
                 {%- if product.description != blank -%}
                   <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                     {{ product.description }}
                   </div>
                 {%- endif -%}
+              {%- when 'review_carousel' -%}
+                <div class="product__reviews-section" {{ block.shopify_attributes }}>
+                  {% render 'review-carousel',
+                    product_reviews_metafield: block.settings.product_reviews_metafield,
+                    show_default_reviews: block.settings.show_default_reviews,
+                    autoplay: block.settings.autoplay,
+                    autoplay_speed: block.settings.autoplay_speed,
+                    show_stars: block.settings.show_stars,
+                    show_date: block.settings.show_date,
+                    review_date_format: block.settings.review_date_format
+                  %}
+                </div>
               {%- when 'sku' -%}
                 <p
                   class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -2093,6 +2100,67 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "review_carousel",
+      "name": "Review Carousel",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Display customer reviews in an auto-rotating carousel. Reviews can be sourced from product metafields or use built-in defaults."
+        },
+        {
+          "type": "text",
+          "id": "product_reviews_metafield",
+          "label": "Product Reviews Metafield",
+          "default": "custom.review_carousel",
+          "info": "Metafield namespace.key containing review metaobjects (e.g., custom.review_carousel)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_default_reviews",
+          "label": "Show Default Reviews",
+          "default": true,
+          "info": "Display built-in placeholder reviews when no metafield data is available"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Enable Autoplay",
+          "default": true,
+          "info": "Automatically rotate through reviews"
+        },
+        {
+          "type": "range",
+          "id": "autoplay_speed",
+          "label": "Autoplay Speed (ms)",
+          "min": 2000,
+          "max": 9500,
+          "step": 500,
+          "default": 5000,
+          "info": "Time between automatic slide transitions in milliseconds"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Show Star Ratings",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_date",
+          "label": "Show Review Dates",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "review_date_format",
+          "label": "Date Format",
+          "default": "%B %-d, %Y",
+          "info": "Liquid date format string (e.g., %B %-d, %Y for 'October 3, 2025')"
         }
       ]
     }

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Carousel Preview</title>
+    <style>
+        /* Embedded CSS from component-review-carousel.css */
+        .review-carousel {
+          position: relative;
+          width: 100%;
+          padding: 2.5rem 0;
+        }
+
+        .review-carousel__inner {
+          position: relative;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        }
+
+        .embla--reviews {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .embla--reviews .embla__viewport {
+          overflow: hidden;
+        }
+
+        .embla--reviews .embla__container {
+          display: flex;
+          touch-action: pan-y;
+          user-select: none;
+        }
+
+        .embla--reviews .embla__slide {
+          flex: 0 0 100%;
+          min-width: 0;
+          padding: 0;
+        }
+
+        .review-carousel__card {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          padding: 1.5rem 0;
+          text-align: left;
+          transition: all 0.3s ease;
+          min-height: auto;
+          display: block;
+        }
+
+        .review-carousel__content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .review-carousel__avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #111111;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          margin-bottom: 0.75rem;
+        }
+
+        .review-carousel__rating {
+          display: flex;
+          gap: 0.25rem;
+          align-items: center;
+          margin: 0;
+        }
+
+        .review-carousel__star {
+          font-size: 0.85rem;
+          color: rgba(17, 17, 17, 0.25);
+          transition: all 0.2s ease;
+        }
+
+        .review-carousel__star--filled {
+          color: #111111;
+        }
+
+        .review-carousel__text {
+          font-size: 1rem;
+          line-height: 1.7;
+          color: #111111;
+          margin: 0 0 0.75rem 0;
+          font-style: normal;
+          max-width: 80ch;
+          font-weight: 400;
+        }
+
+        .review-carousel__meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          align-items: center;
+          justify-content: flex-start;
+          font-size: 0.85rem;
+          color: rgba(17, 17, 17, 0.65);
+        }
+
+        .review-carousel__author {
+          font-weight: 400;
+          font-size: 0.9rem;
+          color: rgba(17, 17, 17, 0.8);
+          font-style: normal;
+          text-transform: lowercase;
+          letter-spacing: 0.01em;
+        }
+
+        .review-carousel__date {
+          font-weight: 400;
+          color: rgba(17, 17, 17, 0.45);
+          font-style: normal;
+        }
+
+        .review-carousel__verified {
+          font-size: 0.85rem;
+          text-transform: lowercase;
+          color: rgba(17, 17, 17, 0.6);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+        }
+
+        .review-carousel__dots {
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+          margin-top: 1.5rem;
+        }
+
+        .review-carousel__dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 999px;
+          background: rgba(17, 17, 17, 0.2);
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .review-carousel__dot:hover {
+          background: rgba(17, 17, 17, 0.35);
+          transform: translateY(-2px);
+        }
+
+        .review-carousel__dot.is-active {
+          background: #111111;
+          width: 16px;
+        }
+
+        body {
+          font-family: system-ui, -apple-system, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background: #f9f9f9;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          background: white;
+          padding: 40px;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 2rem;
+          color: #111111;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review Carousel Preview</h1>
+        
+        <!-- Review Carousel HTML Structure -->
+        <div class="review-carousel" data-review-carousel>
+          <div class="review-carousel__inner">
+            <div class="embla embla--reviews" data-embla-init data-section-id="reviews-preview" data-scroll-cards="1" data-autoplay="5000">
+              <div class="embla__viewport">
+                <div class="embla__container">
+                  <!-- Review 1 -->
+                  <div class="embla__slide review-carousel__slide">
+                    <div class="review-carousel__card">
+                      <div class="review-carousel__content">
+                        <blockquote class="review-carousel__text">
+                          Amazing product! The quality exceeded my expectations and I've seen great results. Highly recommend to anyone looking for this type of product.
+                        </blockquote>
+                        <div class="review-carousel__meta">
+                          <cite class="review-carousel__author">Alex J.</cite>
+                          <span class="review-carousel__verified">verified buyer</span>
+                          <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Review 2 -->
+                  <div class="embla__slide review-carousel__slide">
+                    <div class="review-carousel__card">
+                      <div class="review-carousel__avatar">S</div>
+                      <div class="review-carousel__content">
+                        <blockquote class="review-carousel__text">
+                          Amazing product! Helps relieve tension after long hours at the desk. The quality is exceptional and I've noticed a significant improvement in my muscle recovery.
+                        </blockquote>
+                        <div class="review-carousel__meta">
+                          <cite class="review-carousel__author">Sarah</cite>
+                          <span class="review-carousel__verified">verified buyer</span>
+                          <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                          </div>
+                          <time class="review-carousel__date">October 12th</time>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Review 3 -->
+                  <div class="embla__slide review-carousel__slide">
+                    <div class="review-carousel__card">
+                      <div class="review-carousel__avatar">M</div>
+                      <div class="review-carousel__content">
+                        <blockquote class="review-carousel__text">
+                          Best purchase I've made this year! Works exactly as described. My shoulder pain is gone and I feel so much more relaxed. Highly recommend to anyone with muscle tension!
+                        </blockquote>
+                        <div class="review-carousel__meta">
+                          <cite class="review-carousel__author">Michael</cite>
+                          <span class="review-carousel__verified">verified buyer</span>
+                          <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                            <span class="review-carousel__star review-carousel__star--filled">★</span>
+                          </div>
+                          <time class="review-carousel__date">October 8th</time>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dots indicator -->
+              <div class="review-carousel__dots" data-carousel-dots>
+                <button class="review-carousel__dot is-active" aria-label="Go to review 1"></button>
+                <button class="review-carousel__dot" aria-label="Go to review 2"></button>
+                <button class="review-carousel__dot" aria-label="Go to review 3"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Embla Carousel Script -->
+    <script src="https://cdn.jsdelivr.net/npm/embla-carousel@8.0.0/embla-carousel.umd.js"></script>
+    
+    <!-- Simplified Review Carousel Script for Preview -->
+    <script>
+        (function() {
+            function initReviewCarousels() {
+                if (!window.EmblaCarousel) return;
+
+                document.querySelectorAll('[data-review-carousel]').forEach(function(carouselElement) {
+                    const emblaRoot = carouselElement.querySelector('.embla--reviews');
+                    if (!emblaRoot || emblaRoot.__embla) return;
+
+                    const viewport = emblaRoot.querySelector('.embla__viewport');
+                    if (!viewport) return;
+
+                    const autoplaySpeed = 5000;
+
+                    // Initialize Embla
+                    const embla = window.EmblaCarousel(viewport, {
+                        loop: true,
+                        align: 'center',
+                        skipSnaps: false,
+                        dragFree: false,
+                        containScroll: 'trimSnaps'
+                    });
+
+                    emblaRoot.__embla = embla;
+
+                    // Setup dots
+                    const dotsContainer = emblaRoot.querySelector('[data-carousel-dots]');
+                    if (dotsContainer) {
+                        const slides = embla.slideNodes();
+                        const dots = Array.from(dotsContainer.querySelectorAll('.review-carousel__dot'));
+
+                        dots.forEach(function(dot, index) {
+                            dot.addEventListener('click', function() {
+                                embla.scrollTo(index);
+                            });
+                        });
+
+                        const updateDots = function() {
+                            const selectedIndex = embla.selectedScrollSnap();
+                            dots.forEach(function(dot, index) {
+                                if (index === selectedIndex) {
+                                    dot.classList.add('is-active');
+                                } else {
+                                    dot.classList.remove('is-active');
+                                }
+                            });
+                        };
+
+                        embla.on('select', updateDots);
+                        updateDots();
+                    }
+
+                    // Autoplay
+                    let autoplayInterval = setInterval(function() {
+                        if (embla.canScrollNext()) {
+                            embla.scrollNext();
+                        } else {
+                            embla.scrollTo(0);
+                        }
+                    }, autoplaySpeed);
+
+                    // Pause on hover
+                    emblaRoot.addEventListener('mouseenter', function() {
+                        clearInterval(autoplayInterval);
+                    });
+                    emblaRoot.addEventListener('mouseleave', function() {
+                        autoplayInterval = setInterval(function() {
+                            if (embla.canScrollNext()) {
+                                embla.scrollNext();
+                            } else {
+                                embla.scrollTo(0);
+                            }
+                        }, autoplaySpeed);
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initReviewCarousels);
+            } else {
+                initReviewCarousels();
+            }
+        })();
+    </script>
+</body>
+</html>

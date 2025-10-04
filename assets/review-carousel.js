@@ -5,9 +5,13 @@
 
 (function() {
   function initReviewCarousels() {
-    if (!window.EmblaCarousel) return;
+    if (!window.EmblaCarousel) {
+      console.log('EmblaCarousel not loaded yet for review carousel');
+      return;
+    }
 
     document.querySelectorAll('[data-review-carousel]').forEach(function(carouselElement) {
+      console.log('Initializing review carousel:', carouselElement);
       const emblaRoot = carouselElement.querySelector('.embla--reviews');
       if (!emblaRoot || emblaRoot.__embla) return;
 
@@ -156,31 +160,44 @@
     });
   }
 
-  // Load Embla if not already loaded
+  // Load Embla if not already loaded - work with existing embla-carousel-init.js
   function loadEmbla() {
     if (window.EmblaCarousel) {
       initReviewCarousels();
       return;
     }
 
-    if (document.getElementById('embla-carousel-lib')) {
-      document.getElementById('embla-carousel-lib').addEventListener('load', initReviewCarousels, { once: true });
+    // Check if embla-carousel-lib already exists (from embla-carousel-init.js)
+    const existingScript = document.getElementById('embla-carousel-lib');
+    if (existingScript) {
+      // If script exists but EmblaCarousel isn't loaded yet, wait for it
+      if (existingScript.readyState && existingScript.readyState !== 'complete') {
+        existingScript.addEventListener('load', initReviewCarousels, { once: true });
+      } else {
+        // Script might already be loaded, try initialization after a short delay
+        setTimeout(initReviewCarousels, 100);
+      }
       return;
     }
 
+    // Create script if it doesn't exist
     const script = document.createElement('script');
-    script.id = 'embla-carousel-lib';
+    script.id = 'embla-carousel-lib-reviews'; // Different ID to avoid conflicts
     script.src = 'https://cdn.jsdelivr.net/npm/embla-carousel@8.0.0/embla-carousel.umd.js';
     script.async = true;
     script.onload = initReviewCarousels;
     document.head.appendChild(script);
   }
 
-  // Initialize on page load
+  // Initialize on page load with delay to let other scripts load first
+  function delayedInit() {
+    setTimeout(loadEmbla, 200);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadEmbla);
+    document.addEventListener('DOMContentLoaded', delayedInit);
   } else {
-    loadEmbla();
+    delayedInit();
   }
 
   // Reinitialize on section load (Shopify theme editor)
