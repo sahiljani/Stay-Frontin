@@ -331,7 +331,6 @@
 
     #section-{{ section.id }} .section-heading {
       text-align: center;
-      font-size: clamp(1.75rem, 4vw, {{ section.settings.heading_size }}px);
       font-weight: 700;
       margin-bottom: 1rem;
       color: {{ section.settings.heading_color }};
@@ -340,7 +339,6 @@
 
     #section-{{ section.id }} .section-description {
       text-align: center;
-      font-size: 1.1rem;
       color: {{ section.settings.text_color }};
       margin-bottom: 2.5rem;
       max-width: 600px;
@@ -406,7 +404,6 @@
     #section-{{ section.id }} .icon-label p,
     #section-{{ section.id }} .icon-label div {
       margin: 0;
-      font-size: {{ section.settings.label_font_size }}px;
       font-weight: {{ section.settings.label_font_weight }};
       color: {{ section.settings.label_color }};
       letter-spacing: {{ section.settings.label_letter_spacing }}em;
@@ -430,7 +427,6 @@
       #section-{{ section.id }} .icon-label h6,
       #section-{{ section.id }} .icon-label p,
       #section-{{ section.id }} .icon-label div {
-        font-size: {{ section.settings.label_font_size | times: 0.9 }}px;
       }
     }
 
@@ -548,7 +544,6 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: #6c757d;
-      font-size: 0.9rem;
       text-align: center;
     }
 
@@ -587,21 +582,18 @@
     }
 
     #section-{{ section.id }} .placeholder-title {
-      font-size: 1.25rem;
       font-weight: 600;
       margin: 0 0 0.5rem;
       color: #495057;
     }
 
     #section-{{ section.id }} .placeholder-text {
-      font-size: 0.95rem;
       margin: 0 0 1.5rem;
       color: #6c757d;
       line-height: 1.4;
     }
 
     #section-{{ section.id }} .placeholder-instructions {
-      font-size: 0.85rem;
       color: #868e96;
       line-height: 1.5;
     }
@@ -636,13 +628,11 @@
     }
 
     #section-{{ section.id }} .overlay-heading {
-      font-size: 1.25rem;
       font-weight: 600;
       margin: 0 0 0.5rem;
     }
 
     #section-{{ section.id }} .overlay-text {
-      font-size: 0.9rem;
       margin: 0 0 1rem;
       opacity: 0.9;
     }
@@ -655,7 +645,6 @@
       border-radius: 25px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.85rem;
       transition: background 0.2s ease;
     }
 
