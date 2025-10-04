@@ -1,0 +1,44 @@
+{% comment %}
+  Product Status Badge Component
+
+  Displays HOT PRODUCT and/or LOW STOCK badges above product title
+
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - show_hot: {Boolean} Enable hot product badge (default: true)
+  - show_low_stock: {Boolean} Enable low stock badge (default: true)
+  - low_stock_threshold: {Number} Inventory threshold for low stock (default: 10)
+
+  Usage:
+  {% render 'product-status-badge', product: product %}
+  {% render 'product-status-badge', product: product, low_stock_threshold: 5 %}
+{% endcomment %}
+
+{%- liquid
+  assign show_hot = show_hot | default: true
+  assign show_low_stock = show_low_stock | default: true
+  assign low_stock_threshold = low_stock_threshold | default: 10
+
+  assign is_hot_product = false
+  assign is_low_stock = false
+  assign inventory_quantity = product.selected_or_first_available_variant.inventory_quantity
+
+  if show_hot and product.tags contains 'hot' or product.tags contains 'hot-product'
+    assign is_hot_product = true
+  endif
+
+  if show_low_stock and inventory_quantity <= low_stock_threshold and inventory_quantity > 0
+    assign is_low_stock = true
+  endif
+-%}
+
+{%- if is_hot_product or is_low_stock -%}
+  <div class="product__status-badge">
+    {%- if is_hot_product -%}
+      <span class="status-badge status-badge--hot">{{ 'products.product.hot_product' | t | default: 'HOT PRODUCT' }}</span>
+    {%- endif -%}
+    {%- if is_low_stock -%}
+      <span class="status-badge status-badge--low-stock">{{ 'products.product.low_stock' | t | default: 'LOW STOCK' }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

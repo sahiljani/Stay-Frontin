@@ -38,6 +38,11 @@
   if target == product and product.price_varies
     assign money_price = 'products.product.price.from_price_html' | t: price: money_price
   endif
+
+  if compare_at_price > price
+    assign savings = compare_at_price | minus: price
+    assign savings_percentage = savings | times: 100.0 | divided_by: compare_at_price | round
+  endif
 -%}
 
 {%- unless target == null and placeholder == null -%}
@@ -116,6 +121,21 @@
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
         {{ 'products.product.on_sale' | t }}
       </span>
+
+      {%- if savings_percentage > 0 -%}
+        <span class="badge price__badge-save">
+          <svg aria-hidden="true" focusable="false" class="icon icon-discount" viewBox="0 0 12 12">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path>
+          </svg>
+          {%- liquid
+            assign save_text = 'products.product.save_percent' | t: percentage: savings_percentage
+            if save_text contains 'Translation missing'
+              assign save_text = 'SAVE ' | append: savings_percentage | append: '%'
+            endif
+          -%}
+          {{ save_text }}
+        </span>
+      {%- endif -%}
 
       <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">
         {{ 'products.product.sold_out' | t }}

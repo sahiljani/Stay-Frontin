@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Badge Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .example {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .example h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Status Badges */
+        .product__status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2px;
+            border: 2px solid;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .status-badge--hot {
+            background: #FF3B3B;
+            color: white;
+            border-color: #FF3B3B;
+        }
+
+        .status-badge--low-stock {
+            background: white;
+            color: #FF3B3B;
+            border-color: #FF3B3B;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        /* Price Styling */
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .price-sale {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF3B3B;
+        }
+
+        .price-compare {
+            font-size: 1.5rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price__badge-save {
+            background: #FF3B3B;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .price__badge-save svg {
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: currentColor;
+        }
+
+        .features {
+            margin-top: 30px;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #FF3B3B;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 4px rgba(255, 59, 59, 0);
+            }
+        }
+
+        .status-badge--hot {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Badge Examples</h1>
+
+        <!-- Example 1: Hot Product Only -->
+        <div class="example">
+            <h2>Example 1: Hot Product with Save Percentage</h2>
+            <div class="product__status-badge">
+                <span class="status-badge status-badge--hot">HOT PRODUCT</span>
+            </div>
+            <div class="product-title">RENOHEAL CUPPING MASSAGER</div>
+            <div class="price-container">
+                <span class="price-sale">€59,00</span>
+                <span class="price-compare">€99,00</span>
+                <span class="price__badge-save">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 12 12">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path>
+                    </svg>
+                    SAVE 40%
+                </span>
+            </div>
+            <div class="features">
+                <ul>
+                    <li>Relieve painful knots & aches</li>
+                    <li>Increase blood flow & joint mobility</li>
+                    <li>Improve muscle recovery</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Example 2: Low Stock Only -->
+        <div class="example">
+            <h2>Example 2: Low Stock with Discount</h2>
+            <div class="product__status-badge">
+                <span class="status-badge status-badge--low-stock">LOW STOCK</span>
+            </div>
+            <div class="product-title">PREMIUM WELLNESS SET</div>
+            <div class="price-container">
+                <span class="price-sale">€149,00</span>
+                <span class="price-compare">€199,00</span>
+                <span class="price__badge-save"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path></svg>SAVE 25%</span>
+            </div>
+        </div>
+
+        <!-- Example 3: Both Badges -->
+        <div class="example">
+            <h2>Example 3: Hot Product + Low Stock (Combined)</h2>
+            <div class="product__status-badge">
+                <span class="status-badge status-badge--hot">HOT PRODUCT</span>
+                <span class="status-badge status-badge--low-stock">LOW STOCK</span>
+            </div>
+            <div class="product-title">SHRINE THEME</div>
+            <div class="price-container">
+                <span class="price-sale">$149</span>
+                <span class="price-compare">$199</span>
+                <span class="price__badge-save"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path></svg>SAVE $50</span>
+            </div>
+            <div class="features">
+                <ul>
+                    <li>Bundle Deals</li>
+                    <li>Comparison Tables</li>
+                    <li>Before & After Slider</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Example 4: Save Badge Only (No Status Badge) -->
+        <div class="example">
+            <h2>Example 4: Regular Sale (No Status Badge)</h2>
+            <div class="product-title">WELLNESS KIT</div>
+            <div class="price-container">
+                <span class="price-sale">€89,00</span>
+                <span class="price-compare">€120,00</span>
+                <span class="price__badge-save"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path></svg>SAVE 26%</span>
+            </div>
+        </div>
+
+        <!-- Example 5: Mobile View -->
+        <div class="example" style="max-width: 375px;">
+            <h2>Example 5: Mobile View</h2>
+            <div class="product__status-badge">
+                <span class="status-badge status-badge--hot" style="font-size: 1rem; padding: 0.4rem 0.8rem;">HOT PRODUCT</span>
+                <span class="status-badge status-badge--low-stock" style="font-size: 1rem; padding: 0.4rem 0.8rem;">LOW STOCK</span>
+            </div>
+            <div class="product-title" style="font-size: 1.8rem;">PRODUCT NAME</div>
+            <div class="price-container" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="price-sale">€59,00</span>
+                    <span class="price-compare" style="font-size: 1.2rem;">€99,00</span>
+                </div>
+                <span class="price__badge-save" style="font-size: 1rem; padding: 0.3rem 0.6rem;"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12" style="width: 1rem; height: 1rem;"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 0h3a2 2 0 012 2v3a1 1 0 01-.3.7l-6 6a1 1 0 01-1.4 0l-4-4a1 1 0 010-1.4l6-6A1 1 0 017 0zm2 2a1 1 0 102 0 1 1 0 00-2 0z" fill="currentColor"></path></svg>SAVE 40%</span>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="example" style="background: #fffbea; border-left: 4px solid #FF3B3B;">
+            <h2>How to Enable These Badges</h2>
+            <div style="color: #555; line-height: 1.6;">
+                <p style="margin-bottom: 15px;"><strong>For HOT PRODUCT badge:</strong></p>
+                <p style="margin-bottom: 15px;">Add the tag <code style="background: #fff; padding: 2px 6px; border-radius: 3px; color: #FF3B3B;">hot</code> or <code style="background: #fff; padding: 2px 6px; border-radius: 3px; color: #FF3B3B;">hot-product</code> to your product in Shopify admin.</p>
+
+                <p style="margin-bottom: 15px; margin-top: 20px;"><strong>For LOW STOCK badge:</strong></p>
+                <p style="margin-bottom: 15px;">Automatically shows when inventory is ≤ 10 items (configurable).</p>
+
+                <p style="margin-bottom: 15px; margin-top: 20px;"><strong>For SAVE % badge:</strong></p>
+                <p>Set a "Compare at price" higher than the regular price in Shopify admin. The percentage is calculated automatically.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
