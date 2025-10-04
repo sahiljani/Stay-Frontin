@@ -43,20 +43,34 @@
                   {%- endif -%}
 
                   <div class="review-carousel__content">
-                    {%- if show_stars and review.rating -%}
-                      <div class="review-carousel__rating">
-                        {%- for i in (1..5) -%}
-                          <span class="review-carousel__star{% if i <= review.rating %} review-carousel__star--filled{% endif %}">★</span>
-                        {%- endfor -%}
-                      </div>
-                    {%- endif -%}
-
                     <blockquote class="review-carousel__text">
                       {{ review.text }}
                     </blockquote>
 
+                    {%- liquid
+                      assign review_status = review.status | default: review.badge | default: review.metadata
+                      if review_status == blank and review.verified
+                        if review.verified == true or review.verified == 'true'
+                          assign review_status = 'verified buyer'
+                        else
+                          assign review_status = review.verified
+                        endif
+                      endif
+                      if review_status == blank
+                        assign review_status = 'verified buyer'
+                      endif
+                    -%}
+
                     <div class="review-carousel__meta">
                       <cite class="review-carousel__author">{{ review.author }}</cite>
+                      <span class="review-carousel__verified">{{ review_status | strip }}</span>
+                      {%- if show_stars and review.rating -%}
+                        <div class="review-carousel__rating" aria-label="Rated {{ review.rating }} out of 5 stars">
+                          {%- for i in (1..5) -%}
+                            <span class="review-carousel__star{% if i <= review.rating %} review-carousel__star--filled{% endif %}">★</span>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
                       {%- if show_date and review.date -%}
                         <time class="review-carousel__date">{{ review.date }}</time>
                       {%- endif -%}
@@ -69,24 +83,21 @@
             {%- comment -%} Default reviews if none provided {%- endcomment -%}
             <div class="embla__slide review-carousel__slide">
               <div class="review-carousel__card">
-                <div class="review-carousel__avatar">A</div>
                 <div class="review-carousel__content">
-                  {%- if show_stars -%}
-                    <div class="review-carousel__rating">
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                    </div>
-                  {%- endif -%}
                   <blockquote class="review-carousel__text">
-                    My knots are completely gone!! I sit all day working and my back was absolutely killing me. This thing was exactly what I needed, everything is loose now and I could finally focus on what's in front of me, highly, highly recommended
+                    by far the best tasting protein water i've tried. i can't believe it has 20g of protein in.
                   </blockquote>
                   <div class="review-carousel__meta">
-                    <cite class="review-carousel__author">Alex</cite>
-                    {%- if show_date -%}
-                      <time class="review-carousel__date">October 15th</time>
+                    <cite class="review-carousel__author">charlie linford</cite>
+                    <span class="review-carousel__verified">verified buyer</span>
+                    {%- if show_stars -%}
+                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      </div>
                     {%- endif -%}
                   </div>
                 </div>
@@ -97,20 +108,21 @@
               <div class="review-carousel__card">
                 <div class="review-carousel__avatar">S</div>
                 <div class="review-carousel__content">
-                  {%- if show_stars -%}
-                    <div class="review-carousel__rating">
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                    </div>
-                  {%- endif -%}
                   <blockquote class="review-carousel__text">
                     Amazing product! Helps relieve tension after long hours at the desk. The quality is exceptional and I've noticed a significant improvement in my muscle recovery.
                   </blockquote>
                   <div class="review-carousel__meta">
                     <cite class="review-carousel__author">Sarah</cite>
+                    <span class="review-carousel__verified">verified buyer</span>
+                    {%- if show_stars -%}
+                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      </div>
+                    {%- endif -%}
                     {%- if show_date -%}
                       <time class="review-carousel__date">October 12th</time>
                     {%- endif -%}
@@ -123,20 +135,21 @@
               <div class="review-carousel__card">
                 <div class="review-carousel__avatar">M</div>
                 <div class="review-carousel__content">
-                  {%- if show_stars -%}
-                    <div class="review-carousel__rating">
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                      <span class="review-carousel__star review-carousel__star--filled">★</span>
-                    </div>
-                  {%- endif -%}
                   <blockquote class="review-carousel__text">
                     Best purchase I've made this year! Works exactly as described. My shoulder pain is gone and I feel so much more relaxed. Highly recommend to anyone with muscle tension!
                   </blockquote>
                   <div class="review-carousel__meta">
                     <cite class="review-carousel__author">Michael</cite>
+                    <span class="review-carousel__verified">verified buyer</span>
+                    {%- if show_stars -%}
+                      <div class="review-carousel__rating" aria-label="Rated 5 out of 5 stars">
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                        <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      </div>
+                    {%- endif -%}
                     {%- if show_date -%}
                       <time class="review-carousel__date">October 8th</time>
                     {%- endif -%}
@@ -147,28 +160,6 @@
           {%- endif -%}
         </div>
       </div>
-
-      {%- comment -%} Navigation buttons {%- endcomment -%}
-      <button
-        type="button"
-        id="prev-reviews-{{ section_id }}"
-        class="embla__button embla__button--prev review-carousel__nav review-carousel__nav--prev"
-        aria-label="{{ 'general.slider.previous_slide' | t }}"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-      </button>
-      <button
-        type="button"
-        id="next-reviews-{{ section_id }}"
-        class="embla__button embla__button--next review-carousel__nav review-carousel__nav--next"
-        aria-label="{{ 'general.slider.next_slide' | t }}"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 18l6-6-6-6"/>
-        </svg>
-      </button>
 
       {%- comment -%} Dots indicator {%- endcomment -%}
       <div class="review-carousel__dots" data-carousel-dots></div>

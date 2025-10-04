@@ -10,7 +10,6 @@
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
-{{ 'component-button-animated.css' | asset_url | stylesheet_tag }}
 <div {{ block.shopify_attributes }}>
   {%- if product != blank -%}
     {%- liquid
@@ -75,7 +74,7 @@
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--animated button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null
@@ -106,7 +105,7 @@
         <button
           type="submit"
           name="add"
-          class="product-form__submit button button--animated button--full-width button--primary"
+          class="product-form__submit button button--full-width button--primary"
           disabled
         >
           {{ 'products.product.sold_out' | t }}
