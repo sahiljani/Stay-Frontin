@@ -1,0 +1,243 @@
+{{ 'component-button-animated.css' | asset_url | stylesheet_tag }}
+
+<div class="animated-buttons-demo section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="animated-buttons-demo__inner">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="animated-buttons-demo__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="animated-buttons-demo__description rte">
+          {{ section.settings.description }}
+        </div>
+      {%- endif -%}
+
+      <div class="animated-buttons-demo__buttons">
+        {%- if section.settings.button_label_1 != blank -%}
+          <a
+            href="{{ section.settings.button_link_1 }}"
+            class="button button--animated {% if section.settings.button_style_1 == 'secondary' %}button--secondary{% endif %}"
+          >
+            {{ section.settings.button_label_1 }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.button_label_2 != blank -%}
+          <a
+            href="{{ section.settings.button_link_2 }}"
+            class="button button--animated {% if section.settings.button_style_2 == 'secondary' %}button--secondary{% endif %}"
+          >
+            {{ section.settings.button_label_2 }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.button_label_3 != blank -%}
+          <a
+            href="{{ section.settings.button_link_3 }}"
+            class="button button--animated button--tertiary"
+          >
+            {{ section.settings.button_label_3 }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Animated Buttons Demo",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Animated Buttons"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Hover over the buttons to see the animation effect</p>"
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button 1 Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_1",
+      "label": "Button 1 Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button 2 Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style_2",
+      "label": "Button 2 Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "secondary"
+    },
+    {
+      "type": "header",
+      "content": "Button 3"
+    },
+    {
+      "type": "text",
+      "id": "button_label_3",
+      "label": "Button 3 Label (Tertiary)",
+      "default": "View Details"
+    },
+    {
+      "type": "url",
+      "id": "button_link_3",
+      "label": "Button 3 Link"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Animated Buttons Demo"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .animated-buttons-demo__inner {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .animated-buttons-demo__heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .animated-buttons-demo__description {
+    margin-bottom: 3rem;
+    color: rgba(var(--color-foreground), 0.75);
+  }
+
+  .animated-buttons-demo__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 749px) {
+    .animated-buttons-demo__buttons {
+      flex-direction: column;
+    }
+
+    .animated-buttons-demo__buttons .button {
+      width: 100%;
+    }
+  }
+{% endstyle %}

@@ -1,0 +1,193 @@
+/**
+ * Animated Button Styles
+ * Center-expand hover animation for buttons
+ *
+ * Usage: Add 'button--animated' class to any button element
+ * Example: <button class="button button--animated">Click Me</button>
+ */
+
+/* Animated button modifier */
+.button--animated {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 150ms ease-in-out, background-color 150ms ease-in-out;
+}
+
+/* Override default button:after for animated buttons */
+.button--animated:after {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 100%;
+  background: rgb(var(--color-button-text));
+  z-index: -1;
+  border-radius: var(--buttons-radius);
+  transition: width 150ms ease-in-out;
+  box-shadow: none;
+}
+
+/* Hover state */
+.button--animated:not([disabled]):hover {
+  color: rgb(var(--color-button));
+  background-color: transparent;
+}
+
+.button--animated:not([disabled]):hover:after {
+  width: 110%;
+  box-shadow: none;
+}
+
+/* Secondary button variant */
+.button--animated.button--secondary:after {
+  background: rgb(var(--color-button));
+}
+
+.button--animated.button--secondary:not([disabled]):hover {
+  color: rgb(var(--color-button-text));
+}
+
+/* Focus state */
+.button--animated:focus-visible:after,
+.button--animated:focus:after {
+  box-shadow: none;
+}
+
+/* Active/pressed state */
+.button--animated:active:after {
+  width: 110%;
+}
+
+/* Add to cart button specific */
+.button--animated[name="add"] {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Product form button */
+.product-form__submit.button--animated {
+  min-width: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .product-form__submit.button--animated {
+    min-width: calc(12rem + var(--buttons-border-width) * 2);
+  }
+}
+
+/* Disabled state - no animation */
+.button--animated[disabled]:after {
+  transition: none;
+  width: 0;
+}
+
+/* Loading state compatibility */
+.button--animated.loading:after {
+  width: 0;
+}
+
+/*
+ * Alternative animation styles
+ * Use these classes for different animation effects
+ */
+
+/* Faster animation */
+.button--animated-fast:after {
+  transition: width 100ms ease-in-out;
+}
+
+.button--animated-fast {
+  transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
+}
+
+/* Slower animation */
+.button--animated-slow:after {
+  transition: width 250ms ease-in-out;
+}
+
+.button--animated-slow {
+  transition: color 250ms ease-in-out, background-color 250ms ease-in-out;
+}
+
+/* Slide from left animation */
+.button--slide-left:after {
+  left: 0;
+  transform: translateX(0);
+}
+
+/* Slide from right animation */
+.button--slide-right:after {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+}
+
+/* Bounce effect */
+.button--animated-bounce:hover:after {
+  animation: bounceWidth 400ms ease-in-out;
+}
+
+@keyframes bounceWidth {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 120%;
+  }
+  100% {
+    width: 110%;
+  }
+}
+
+/* Smooth easing variants */
+.button--animated-smooth:after {
+  transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button--animated-smooth {
+  transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1), background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Works with tertiary buttons */
+.button--tertiary.button--animated {
+  font-size: 1.2rem;
+}
+
+/* Works with small buttons */
+.button--small.button--animated {
+  padding: 1.2rem 2.6rem;
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .button--animated,
+  .button--animated:after,
+  .button--animated-fast,
+  .button--animated-fast:after,
+  .button--animated-slow,
+  .button--animated-slow:after,
+  .button--animated-smooth,
+  .button--animated-smooth:after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .button--animated:hover:after {
+    width: 100%;
+  }
+}
+
+/* Dark mode support (if theme has dark mode) */
+@media (prefers-color-scheme: dark) {
+  .button--animated:after {
+    background: rgb(var(--color-button-text));
+  }
+
+  .button--animated.button--secondary:after {
+    background: rgb(var(--color-button));
+  }
+}

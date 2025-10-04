@@ -1,0 +1,180 @@
+{% comment %}
+  Animated Review Carousel
+
+  Displays customer reviews in an auto-rotating carousel
+
+  Accepts:
+  - reviews: {Array} Array of review objects (optional, uses default reviews if not provided)
+  - autoplay: {Boolean} Enable auto-rotation (default: true)
+  - autoplay_speed: {Number} Milliseconds between slides (default: 5000)
+  - show_stars: {Boolean} Show star ratings (default: true)
+  - show_date: {Boolean} Show review dates (default: true)
+
+  Usage:
+  {% render 'review-carousel' %}
+  {% render 'review-carousel', autoplay: true, autoplay_speed: 4000 %}
+{% endcomment %}
+
+{%- liquid
+  assign autoplay = autoplay | default: true
+  assign autoplay_speed = autoplay_speed | default: 5000
+  assign show_stars = show_stars | default: true
+  assign show_date = show_date | default: true
+  assign section_id = section.id | default: 'default'
+-%}
+
+<div class="review-carousel" data-review-carousel>
+  <div class="review-carousel__inner">
+    <div class="embla embla--reviews" data-embla-init data-section-id="reviews-{{ section_id }}" data-scroll-cards="1" {% if autoplay %}data-autoplay="{{ autoplay_speed }}"{% endif %}>
+      <div class="embla__viewport">
+        <div class="embla__container">
+          {%- if reviews and reviews.size > 0 -%}
+            {%- for review in reviews -%}
+              <div class="embla__slide review-carousel__slide">
+                <div class="review-carousel__card">
+                  {%- if review.image -%}
+                    <div class="review-carousel__image">
+                      {{ review.image | image_url: width: 80 | image_tag: loading: 'lazy', alt: review.author }}
+                    </div>
+                  {%- elsif review.author -%}
+                    <div class="review-carousel__avatar">
+                      {{ review.author | slice: 0 }}
+                    </div>
+                  {%- endif -%}
+
+                  <div class="review-carousel__content">
+                    {%- if show_stars and review.rating -%}
+                      <div class="review-carousel__rating">
+                        {%- for i in (1..5) -%}
+                          <span class="review-carousel__star{% if i <= review.rating %} review-carousel__star--filled{% endif %}">★</span>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                    <blockquote class="review-carousel__text">
+                      {{ review.text }}
+                    </blockquote>
+
+                    <div class="review-carousel__meta">
+                      <cite class="review-carousel__author">{{ review.author }}</cite>
+                      {%- if show_date and review.date -%}
+                        <time class="review-carousel__date">{{ review.date }}</time>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Default reviews if none provided {%- endcomment -%}
+            <div class="embla__slide review-carousel__slide">
+              <div class="review-carousel__card">
+                <div class="review-carousel__avatar">A</div>
+                <div class="review-carousel__content">
+                  {%- if show_stars -%}
+                    <div class="review-carousel__rating">
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                    </div>
+                  {%- endif -%}
+                  <blockquote class="review-carousel__text">
+                    My knots are completely gone!! I sit all day working and my back was absolutely killing me. This thing was exactly what I needed, everything is loose now and I could finally focus on what's in front of me, highly, highly recommended
+                  </blockquote>
+                  <div class="review-carousel__meta">
+                    <cite class="review-carousel__author">Alex</cite>
+                    {%- if show_date -%}
+                      <time class="review-carousel__date">October 15th</time>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="embla__slide review-carousel__slide">
+              <div class="review-carousel__card">
+                <div class="review-carousel__avatar">S</div>
+                <div class="review-carousel__content">
+                  {%- if show_stars -%}
+                    <div class="review-carousel__rating">
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                    </div>
+                  {%- endif -%}
+                  <blockquote class="review-carousel__text">
+                    Amazing product! Helps relieve tension after long hours at the desk. The quality is exceptional and I've noticed a significant improvement in my muscle recovery.
+                  </blockquote>
+                  <div class="review-carousel__meta">
+                    <cite class="review-carousel__author">Sarah</cite>
+                    {%- if show_date -%}
+                      <time class="review-carousel__date">October 12th</time>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="embla__slide review-carousel__slide">
+              <div class="review-carousel__card">
+                <div class="review-carousel__avatar">M</div>
+                <div class="review-carousel__content">
+                  {%- if show_stars -%}
+                    <div class="review-carousel__rating">
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                      <span class="review-carousel__star review-carousel__star--filled">★</span>
+                    </div>
+                  {%- endif -%}
+                  <blockquote class="review-carousel__text">
+                    Best purchase I've made this year! Works exactly as described. My shoulder pain is gone and I feel so much more relaxed. Highly recommend to anyone with muscle tension!
+                  </blockquote>
+                  <div class="review-carousel__meta">
+                    <cite class="review-carousel__author">Michael</cite>
+                    {%- if show_date -%}
+                      <time class="review-carousel__date">October 8th</time>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Navigation buttons {%- endcomment -%}
+      <button
+        type="button"
+        id="prev-reviews-{{ section_id }}"
+        class="embla__button embla__button--prev review-carousel__nav review-carousel__nav--prev"
+        aria-label="{{ 'general.slider.previous_slide' | t }}"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="next-reviews-{{ section_id }}"
+        class="embla__button embla__button--next review-carousel__nav review-carousel__nav--next"
+        aria-label="{{ 'general.slider.next_slide' | t }}"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+      {%- comment -%} Dots indicator {%- endcomment -%}
+      <div class="review-carousel__dots" data-carousel-dots></div>
+    </div>
+  </div>
+</div>
+
+{{ 'component-review-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'review-carousel.js' | asset_url }}" defer="defer"></script>

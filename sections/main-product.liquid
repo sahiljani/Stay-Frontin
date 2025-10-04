@@ -196,6 +196,11 @@
                   {%- endif -%}
                 </p>
               {%- when 'description' -%}
+                {%- comment -%} Review Carousel above description {%- endcomment -%}
+                <div class="product__reviews-section">
+                  {% render 'review-carousel' %}
+                </div>
+
                 {%- if product.description != blank -%}
                   <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
                     {{ product.description }}
