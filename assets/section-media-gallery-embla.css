@@ -1,0 +1,705 @@
+/**
+ * Product Media Gallery Embla Styles
+ * Main carousel with thumbnail navigation
+ */
+
+/* ===========================
+   Main Container
+   =========================== */
+.media-gallery-embla {
+  position: relative;
+  width: 100%;
+}
+
+.media-gallery-embla__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Desktop: thumbnails on left */
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .media-gallery-embla__wrapper {
+    flex-direction: row;
+  }
+
+  .media-gallery-embla--left .media-gallery-embla__thumbnails {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  .media-gallery-embla--left .media-gallery-embla__main {
+    order: 2;
+    flex: 1;
+  }
+}
+
+/* ===========================
+   Thumbnail Navigation
+   =========================== */
+.media-gallery-embla__thumbnails {
+  width: 100%;
+  position: relative;
+}
+
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .media-gallery-embla__thumbnails {
+    width: 100px;
+    max-height: 600px;
+  }
+}
+
+.embla--thumbnails {
+  position: relative;
+  overflow: hidden;
+}
+
+.embla--thumbnails .embla__viewport {
+  overflow: hidden;
+}
+
+.embla--thumbnails .embla__container {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Vertical layout for left-side thumbnails on desktop */
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .embla--thumbnails .embla__container {
+    flex-direction: column;
+  }
+}
+
+.media-gallery-embla__thumbnail {
+  position: relative;
+  flex: 0 0 80px;
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .media-gallery-embla__thumbnail {
+    flex: 0 0 100px;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.media-gallery-embla__thumbnail:hover {
+  border-color: rgba(var(--color-foreground), 0.3);
+  transform: scale(1.02);
+}
+
+.media-gallery-embla__thumbnail.is-active {
+  border-color: rgb(var(--color-foreground));
+}
+
+.media-gallery-embla__thumbnail:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.media-gallery-embla__thumbnail-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-gallery-embla__thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-gallery-embla__thumbnail-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.media-gallery-embla__thumbnail-badge svg {
+  width: 14px;
+  height: 14px;
+  fill: white;
+}
+
+/* Thumbnail carousel buttons */
+.embla--thumbnails .embla__button {
+  position: absolute;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(var(--color-background), 0.9);
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.embla--thumbnails .embla__button:hover:not(:disabled) {
+  background: rgb(var(--color-background));
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.embla--thumbnails .embla__button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.embla--thumbnails .embla__button svg {
+  width: 16px;
+  height: 16px;
+  fill: rgb(var(--color-foreground));
+}
+
+/* Horizontal thumbnail buttons (mobile/bottom) */
+.embla--thumbnails .embla__button--prev {
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.embla--thumbnails .embla__button--next {
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Vertical thumbnail buttons (desktop/left) */
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .embla--thumbnails .embla__button--prev {
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-90deg);
+  }
+
+  .media-gallery-embla--left .embla--thumbnails .embla__button--next {
+    bottom: -16px;
+    top: auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) rotate(90deg);
+  }
+}
+
+/* ===========================
+   Main Media Carousel
+   =========================== */
+.media-gallery-embla__main {
+  position: relative;
+  width: 100%;
+}
+
+.embla--main {
+  position: relative;
+  overflow: hidden;
+}
+
+.embla--main .embla__viewport {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.embla--main .embla__container {
+  display: flex;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.embla--main .embla__container.is-dragging {
+  cursor: grabbing;
+}
+
+.embla--main .embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.media-gallery-embla__media-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: rgb(var(--color-background));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.media-gallery-embla__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Video & Model Styles */
+.media-gallery-embla__video,
+.media-gallery-embla__model {
+  width: 100%;
+  height: 100%;
+}
+
+.deferred-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.deferred-media__poster {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.deferred-media__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.deferred-media__poster-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.deferred-media__poster:hover .deferred-media__poster-button {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.deferred-media__poster-button svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.deferred-media iframe,
+.deferred-media video,
+.deferred-media model-viewer {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===========================
+   Navigation Buttons
+   =========================== */
+.media-gallery-embla__nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(var(--color-background), 0.95);
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.media-gallery-embla__nav-button:hover:not(:disabled) {
+  background: rgb(var(--color-background));
+  border-color: rgba(var(--color-foreground), 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.media-gallery-embla__nav-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.media-gallery-embla__nav-button svg {
+  width: 20px;
+  height: 20px;
+  fill: rgb(var(--color-foreground));
+}
+
+.media-gallery-embla__nav-button.embla__button--prev {
+  left: 1rem;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.media-gallery-embla__nav-button.embla__button--next {
+  right: 1rem;
+}
+
+/* ===========================
+   Counter
+   =========================== */
+.media-gallery-embla__counter {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(var(--color-background), 0.95);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+/* ===========================
+   Responsive Adjustments
+   =========================== */
+@media screen and (max-width: 749px) {
+  .media-gallery-embla__wrapper {
+    gap: 1rem;
+  }
+
+  .media-gallery-embla__thumbnail {
+    flex: 0 0 60px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .media-gallery-embla__nav-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .media-gallery-embla__nav-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .media-gallery-embla__nav-button.embla__button--prev {
+    left: 0.5rem;
+  }
+
+  .media-gallery-embla__nav-button.embla__button--next {
+    right: 0.5rem;
+  }
+
+  .media-gallery-embla__counter {
+    bottom: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* ===========================
+   Animations
+   =========================== */
+
+/* Thumbnail pulse animation when activated */
+@keyframes thumbnailPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.media-gallery-embla__thumbnail.pulse-active {
+  animation: thumbnailPulse 0.3s ease-out;
+}
+
+/* Thumbnail hover state animation */
+.media-gallery-embla__thumbnail.is-hovered {
+  transform: scale(1.05);
+  border-color: rgba(var(--color-foreground), 0.2);
+}
+
+/* Ripple effect for thumbnail clicks */
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.3);
+  transform: scale(0);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Button click animation */
+.embla__button.clicked,
+.media-gallery-embla__nav-button.clicked {
+  transform: scale(0.95);
+}
+
+.media-gallery-embla__nav-button.embla__button--prev.clicked {
+  transform: translateY(-50%) rotate(180deg) scale(0.95);
+}
+
+/* Counter update animation */
+@keyframes counterUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.media-gallery-embla__counter-current.counter-update {
+  animation: counterUpdate 0.3s ease-out;
+  display: inline-block;
+}
+
+/* Slide transition animation */
+.embla__slide.transitioning {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Slide in animation for active slide */
+@keyframes slideIn {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.embla__slide.slide-in .media-gallery-embla__media-inner {
+  animation: slideIn 0.4s ease-out;
+}
+
+/* Fade in animation for images */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.media-gallery-embla__image {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Smooth transitions */
+.media-gallery-embla__thumbnail {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.media-gallery-embla__thumbnail-inner {
+  transition: transform 0.25s ease;
+}
+
+.media-gallery-embla__thumbnail.is-active .media-gallery-embla__thumbnail-inner {
+  transform: scale(1.02);
+}
+
+.media-gallery-embla__nav-button {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.embla--thumbnails .embla__button {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Carousel smooth scrolling */
+.embla__viewport {
+  transition: height 0.3s ease;
+}
+
+.embla__container {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.embla__container.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+/* Navigation button hover animations */
+.media-gallery-embla__nav-button:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.media-gallery-embla__nav-button.embla__button--prev:hover:not(:disabled) {
+  transform: translateY(-50%) rotate(180deg) scale(1.08);
+}
+
+.embla--thumbnails .embla__button--prev:hover:not(:disabled),
+.embla--thumbnails .embla__button--next:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+@media screen and (min-width: 990px) {
+  .media-gallery-embla--left .embla--thumbnails .embla__button--prev:hover:not(:disabled) {
+    transform: translateX(-50%) rotate(-90deg) scale(1.1);
+  }
+
+  .media-gallery-embla--left .embla--thumbnails .embla__button--next:hover:not(:disabled) {
+    transform: translateX(-50%) rotate(90deg) scale(1.1);
+  }
+}
+
+/* Disabled button state animation */
+.embla__button:disabled,
+.media-gallery-embla__nav-button:disabled {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+/* Badge animations */
+.media-gallery-embla__thumbnail-badge {
+  transition: all 0.3s ease;
+}
+
+.media-gallery-embla__thumbnail:hover .media-gallery-embla__thumbnail-badge {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.deferred-media__poster-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading animation for images */
+.media-gallery-embla__image[loading="lazy"] {
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.media-gallery-embla__media-inner:empty::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-foreground), 0.04) 0%,
+    rgba(var(--color-foreground), 0.08) 50%,
+    rgba(var(--color-foreground), 0.04) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Focus animations */
+.media-gallery-embla__thumbnail:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+  animation: focusPulse 1s ease-in-out infinite;
+}
+
+@keyframes focusPulse {
+  0%, 100% {
+    outline-color: rgb(var(--color-foreground));
+  }
+  50% {
+    outline-color: rgba(var(--color-foreground), 0.5);
+  }
+}
+
+/* Stagger animation for thumbnails on load */
+.media-gallery-embla__thumbnail {
+  opacity: 0;
+  animation: fadeInStagger 0.4s ease-out forwards;
+}
+
+.media-gallery-embla__thumbnail:nth-child(1) { animation-delay: 0.05s; }
+.media-gallery-embla__thumbnail:nth-child(2) { animation-delay: 0.1s; }
+.media-gallery-embla__thumbnail:nth-child(3) { animation-delay: 0.15s; }
+.media-gallery-embla__thumbnail:nth-child(4) { animation-delay: 0.2s; }
+.media-gallery-embla__thumbnail:nth-child(5) { animation-delay: 0.25s; }
+.media-gallery-embla__thumbnail:nth-child(n+6) { animation-delay: 0.3s; }
+
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   Accessibility
+   =========================== */
+.media-gallery-embla:focus-within .media-gallery-embla__nav-button {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-gallery-embla__thumbnail,
+  .media-gallery-embla__nav-button,
+  .deferred-media__poster-button,
+  .embla__container,
+  .media-gallery-embla__thumbnail-inner,
+  .embla__button,
+  .media-gallery-embla__counter-current {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .media-gallery-embla__thumbnail {
+    opacity: 1;
+    transform: none;
+  }
+}

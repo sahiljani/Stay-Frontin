@@ -1,0 +1,311 @@
+{% comment %}
+  Product Media Gallery with Embla Carousel
+
+  Features:
+  - Clickable thumbnail navigation
+  - Main image carousel with prev/next controls
+  - Automatic variant image switching
+  - Support for images, videos, and 3D models
+  - Responsive layout (thumbnails on left for desktop, below for mobile)
+
+  Accepts:
+  - product: {Object} Product liquid object
+  - section: {Object} Section object for settings
+  - position: {String} Thumbnail position - 'left' or 'bottom' (default: 'left')
+
+  Usage:
+  {% render 'product-media-gallery-embla', product: product, section: section %}
+{% endcomment %}
+
+{%- liquid
+  assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+  assign media_count = product.media.size
+  assign thumbnail_position = position | default: 'left'
+
+  if section.settings.media_size == 'large'
+    assign media_width = 0.65
+  elsif section.settings.media_size == 'medium'
+    assign media_width = 0.55
+  elsif section.settings.media_size == 'small'
+    assign media_width = 0.45
+  else
+    assign media_width = 0.6
+  endif
+-%}
+
+<media-gallery-embla
+  id="MediaGalleryEmbla-{{ section.id }}"
+  class="media-gallery-embla media-gallery-embla--{{ thumbnail_position }}"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  role="region"
+  aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
+>
+  <div class="media-gallery-embla__wrapper">
+
+    {%- if media_count > 1 -%}
+      <!-- Thumbnail Navigation -->
+      <div class="media-gallery-embla__thumbnails">
+        <div class="embla embla--thumbnails" data-embla-thumbnails data-section-id="thumbs-{{ section.id }}">
+          <div class="embla__viewport">
+            <div class="embla__container">
+              {%- for media in product.media -%}
+                <button
+                  type="button"
+                  class="embla__slide media-gallery-embla__thumbnail{% if forloop.first %} is-active{% endif %}"
+                  data-media-id="{{ media.id }}"
+                  data-media-position="{{ forloop.index }}"
+                  data-thumbnail-button
+                  aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+                  aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                >
+                  <div class="media-gallery-embla__thumbnail-inner">
+                    {%- case media.media_type -%}
+                      {%- when 'image' -%}
+                        {{
+                          media.preview_image
+                          | image_url: width: 120
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '60, 120, 180',
+                            class: 'media-gallery-embla__thumbnail-image',
+                            alt: media.alt | escape
+                        }}
+                      {%- when 'external_video' or 'video' -%}
+                        {{
+                          media.preview_image
+                          | image_url: width: 120
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '60, 120, 180',
+                            class: 'media-gallery-embla__thumbnail-image',
+                            alt: media.alt | escape
+                        }}
+                        <span class="media-gallery-embla__thumbnail-badge" aria-hidden="true">
+                          {{- 'icon-play.svg' | inline_asset_content -}}
+                        </span>
+                      {%- when 'model' -%}
+                        {{
+                          media.preview_image
+                          | image_url: width: 120
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '60, 120, 180',
+                            class: 'media-gallery-embla__thumbnail-image',
+                            alt: media.alt | escape
+                        }}
+                        <span class="media-gallery-embla__thumbnail-badge" aria-hidden="true">
+                          {{- 'icon-3d-model.svg' | inline_asset_content -}}
+                        </span>
+                    {%- endcase -%}
+                  </div>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if media_count > 4 -%}
+            <button
+              type="button"
+              id="prev-thumbs-{{ section.id }}"
+              class="embla__button embla__button--prev"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+            >
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </button>
+            <button
+              type="button"
+              id="next-thumbs-{{ section.id }}"
+              class="embla__button embla__button--next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+            >
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </button>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Main Media Viewer -->
+    <div class="media-gallery-embla__main">
+      <div class="embla embla--main" data-embla-init data-section-id="main-{{ section.id }}" data-scroll-cards="1">
+        <div class="embla__viewport">
+          <div class="embla__container">
+            {%- for media in product.media -%}
+              <div
+                class="embla__slide media-gallery-embla__media{% if forloop.first %} is-active{% endif %}"
+                data-media-id="{{ media.id }}"
+                data-media-type="{{ media.media_type }}"
+                data-media-position="{{ forloop.index }}"
+              >
+                <div class="media-gallery-embla__media-inner">
+                  {%- case media.media_type -%}
+                    {%- when 'image' -%}
+                      <img
+                        srcset="
+                          {%- if media.width >= 493 -%}{{ media | image_url: width: 493 }} 493w,{%- endif -%}
+                          {%- if media.width >= 600 -%}{{ media | image_url: width: 600 }} 600w,{%- endif -%}
+                          {%- if media.width >= 713 -%}{{ media | image_url: width: 713 }} 713w,{%- endif -%}
+                          {%- if media.width >= 990 -%}{{ media | image_url: width: 990 }} 990w,{%- endif -%}
+                          {%- if media.width >= 1100 -%}{{ media | image_url: width: 1100 }} 1100w,{%- endif -%}
+                          {%- if media.width >= 1426 -%}{{ media | image_url: width: 1426 }} 1426w,{%- endif -%}
+                          {%- if media.width >= 1780 -%}{{ media | image_url: width: 1780 }} 1780w,{%- endif -%}
+                          {{ media | image_url }} {{ media.width }}w
+                        "
+                        src="{{ media | image_url: width: 1426 }}"
+                        sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | times: media_width | round }}px, (min-width: 990px) calc({{ media_width | times: 100 }}vw - 10rem), calc(100vw - 4rem)"
+                        alt="{{ media.alt | escape }}"
+                        class="media-gallery-embla__image"
+                        {%- unless forloop.first -%}
+                          loading="lazy"
+                        {%- endunless -%}
+                        width="{{ media.width }}"
+                        height="{{ media.height }}"
+                      >
+
+                    {%- when 'external_video' -%}
+                      <deferred-media
+                        class="media-gallery-embla__video deferred-media"
+                        data-media-id="{{ media.id }}"
+                      >
+                        <button
+                          id="Deferred-Poster-{{ media.id }}-{{ section.id }}"
+                          class="deferred-media__poster"
+                          type="button"
+                          aria-label="{{ 'products.product.media.play_video' | t }}"
+                        >
+                          <img
+                            src="{{ media.preview_image | image_url: width: 1426 }}"
+                            alt="{{ media.preview_image.alt | escape }}"
+                            width="{{ media.preview_image.width }}"
+                            height="{{ media.preview_image.height }}"
+                            loading="lazy"
+                          >
+                          <span class="deferred-media__poster-button">
+                            {{- 'icon-play.svg' | inline_asset_content -}}
+                          </span>
+                        </button>
+                        <template>
+                          {%- if media.host == 'youtube' -%}
+                            <iframe
+                              src="https://www.youtube.com/embed/{{ media.external_id }}?enablejsapi=1&autoplay=1{%- if section.settings.enable_video_looping -%}&loop=1&playlist={{ media.external_id }}{%- endif -%}"
+                              class="js-youtube"
+                              allow="autoplay; encrypted-media"
+                              allowfullscreen
+                              title="{{ media.alt | escape }}"
+                            ></iframe>
+                          {%- else -%}
+                            <iframe
+                              src="https://player.vimeo.com/video/{{ media.external_id }}?autoplay=1{%- if section.settings.enable_video_looping -%}&loop=1{%- endif -%}"
+                              class="js-vimeo"
+                              allow="autoplay; encrypted-media"
+                              allowfullscreen
+                              title="{{ media.alt | escape }}"
+                            ></iframe>
+                          {%- endif -%}
+                        </template>
+                      </deferred-media>
+
+                    {%- when 'video' -%}
+                      {{
+                        media
+                        | video_tag:
+                          image_size: '1426x',
+                          autoplay: false,
+                          loop: section.settings.enable_video_looping,
+                          controls: true,
+                          muted: false,
+                          class: 'media-gallery-embla__video'
+                      }}
+
+                    {%- when 'model' -%}
+                      <product-model class="media-gallery-embla__model deferred-media" data-media-id="{{ media.id }}">
+                        <button
+                          id="Deferred-Poster-{{ media.id }}-{{ section.id }}"
+                          class="deferred-media__poster"
+                          type="button"
+                          aria-label="{{ 'products.product.media.play_model' | t }}"
+                        >
+                          <img
+                            src="{{ media.preview_image | image_url: width: 1426 }}"
+                            alt="{{ media.preview_image.alt | escape }}"
+                            width="{{ media.preview_image.width }}"
+                            height="{{ media.preview_image.height }}"
+                            loading="lazy"
+                          >
+                          <span class="deferred-media__poster-button">
+                            {{- 'icon-3d-model.svg' | inline_asset_content -}}
+                          </span>
+                        </button>
+                        <template>
+                          <model-viewer
+                            src="{{ media.sources[1].url }}"
+                            alt="{{ media.alt | escape }}"
+                            poster="{{ media.preview_image | image_url: width: 1024 }}"
+                            interaction-prompt="auto"
+                            camera-controls
+                            auto-rotate
+                            ar
+                          ></model-viewer>
+                        </template>
+                      </product-model>
+                  {%- endcase -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- if media_count > 1 -%}
+          <!-- Carousel Controls -->
+          <button
+            type="button"
+            id="prev-main-{{ section.id }}"
+            class="embla__button embla__button--prev media-gallery-embla__nav-button"
+            aria-label="{{ 'general.slider.previous_slide' | t }}"
+          >
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </button>
+          <button
+            type="button"
+            id="next-main-{{ section.id }}"
+            class="embla__button embla__button--next media-gallery-embla__nav-button"
+            aria-label="{{ 'general.slider.next_slide' | t }}"
+          >
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </button>
+
+          <!-- Counter -->
+          <div class="media-gallery-embla__counter">
+            <span class="media-gallery-embla__counter-current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="media-gallery-embla__counter-total">{{ media_count }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden data for variant switching -->
+  <script type="application/json" data-media-gallery-data>
+    {
+      "sectionId": {{ section.id | json }},
+      "productId": {{ product.id | json }},
+      "variantImages": {{ variant_images | json }},
+      "mediaData": [
+        {%- for media in product.media -%}
+          {
+            "id": {{ media.id | json }},
+            "position": {{ forloop.index | json }},
+            "mediaType": {{ media.media_type | json }},
+            "alt": {{ media.alt | json }},
+            "variantIds": {{ media.variant_ids | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</media-gallery-embla>
+
+{{ 'section-media-gallery-embla.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'media-gallery-embla.js' | asset_url }}" defer="defer"></script>
