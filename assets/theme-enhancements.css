@@ -1,0 +1,243 @@
+/**
+ * Theme Enhancements - Custom Design System
+ * Professional color palette for beauty/hair care niche
+ */
+
+:root {
+  /* ===== Enhanced Color Palette ===== */
+  /* Primary - Sophisticated Rose/Mauve */
+  --color-primary: #C97D89;
+  --color-primary-light: #E6A5AD;
+  --color-primary-dark: #B86C78;
+  --color-primary-darker: #A65566;
+
+  /* Neutral - Clean and Modern */
+  --color-background-primary: #FFFFFF;
+  --color-background-secondary: #FAF8F6;
+  --color-background-tertiary: #F5F1ED;
+  --color-surface: #FEFEFE;
+
+  /* Text Colors */
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #4A4A4A;
+  --color-text-tertiary: #757575;
+  --color-text-light: #FFFFFF;
+
+  /* Accent - Dark for Contrast */
+  --color-accent-dark: #2C2C2C;
+  --color-accent-darker: #1A1A1A;
+
+  /* Status & Interactive */
+  --color-success: #34A853;
+  --color-error: #EA4335;
+  --color-border: #E5E5E5;
+  --color-border-light: #F0F0F0;
+}
+
+/* ===== Button Enhancements ===== */
+.button,
+button,
+[type="button"],
+[type="submit"] {
+  transition: all 0.3s ease;
+}
+
+.button--primary,
+.shopify-payment-button__button--unbranded {
+  background-color: var(--color-accent-dark) !important;
+  color: var(--color-text-light) !important;
+  border: 2px solid var(--color-accent-dark) !important;
+}
+
+.button--primary:hover,
+.shopify-payment-button__button--unbranded:hover {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button--secondary {
+  background-color: transparent !important;
+  color: var(--color-accent-dark) !important;
+  border: 2px solid var(--color-accent-dark) !important;
+}
+
+.button--secondary:hover {
+  background-color: var(--color-accent-dark) !important;
+  color: var(--color-text-light) !important;
+}
+
+/* ===== Section Background Colors ===== */
+.color-scheme-1,
+.color-background-1 {
+  background-color: var(--color-background-primary);
+}
+
+.color-scheme-2,
+.color-background-2 {
+  background-color: var(--color-background-secondary);
+}
+
+.color-scheme-3,
+.color-background-3 {
+  background-color: var(--color-background-tertiary);
+}
+
+/* Primary colored backgrounds */
+.gradient-primary,
+.bg-primary {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 35%, var(--color-primary-dark) 100%);
+}
+
+/* Dark backgrounds */
+.bg-dark {
+  background-color: var(--color-accent-dark);
+  color: var(--color-text-light);
+}
+
+.bg-dark h1,
+.bg-dark h2,
+.bg-dark h3,
+.bg-dark h4,
+.bg-dark h5,
+.bg-dark h6,
+.bg-dark p {
+  color: var(--color-text-light);
+}
+
+/* ===== Announcement Bar Styling ===== */
+.announcement-bar-section {
+  display: none; /* Hide announcement bar with "Welcome to our store" */
+}
+
+/* ===== Header Improvements ===== */
+.header-wrapper {
+  background-color: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+/* ===== Footer Improvements ===== */
+.footer {
+  background-color: var(--color-accent-dark) !important;
+  color: var(--color-text-light);
+}
+
+.footer__content-top {
+  padding-top: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer__content-bottom {
+  background-color: var(--color-accent-darker);
+  padding: 2rem 0;
+}
+
+.footer h2,
+.footer .footer-block__heading {
+  color: var(--color-text-light);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: var(--color-primary-light);
+}
+
+.footer .list-menu__item {
+  padding: 0.5rem 0;
+}
+
+/* Hide country/region selector in footer */
+.footer__localization,
+.footer__column--localization {
+  display: none !important;
+}
+
+.footer__content-bottom-wrapper {
+  justify-content: center !important;
+}
+
+/* ===== Product Card Enhancements ===== */
+.card {
+  border: 1px solid var(--color-border-light);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+/* ===== Price Styling ===== */
+.price {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.price--on-sale .price-item--sale {
+  color: var(--color-primary-dark);
+}
+
+/* ===== Newsletter Section ===== */
+.newsletter-form__field-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 500px;
+}
+
+.newsletter-form .field__input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text-light);
+}
+
+.newsletter-form .field__input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== Utility Classes ===== */
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-dark {
+  color: var(--color-text-primary);
+}
+
+.text-light {
+  color: var(--color-text-light);
+}
+
+.bg-light {
+  background-color: var(--color-background-secondary);
+}
+
+/* ===== Responsive Refinements ===== */
+@media screen and (max-width: 749px) {
+  .footer__content-top {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* ===== Smooth Transitions ===== */
+* {
+  transition-property: background-color, border-color, color, box-shadow, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+a, button, .button {
+  transition-duration: 0.2s;
+}

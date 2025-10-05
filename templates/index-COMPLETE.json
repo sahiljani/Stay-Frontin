@@ -1,47 +1,30 @@
 {
   "sections": {
-    "featured_product_spotlight": {
-      "type": "featured-product",
-      "settings": {
-        "product": "ghostbond-xl-1-3oz",
-        "color_scheme": "scheme-2",
-        "secondary_background": true,
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false,
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "hero_2_grid_z46BYi": {
+    "hero_2_grid_main": {
       "type": "hero-2-grid",
       "blocks": {
-        "ticker_item_ctNTph": {
+        "ticker_item_1": {
           "type": "ticker_item",
           "settings": {
             "emoji": "❤️",
             "text": "LATEX - FREE"
           }
         },
-        "ticker_item_z7jkCb": {
+        "ticker_item_2": {
           "type": "ticker_item",
           "settings": {
             "emoji": "",
             "text": "MULTI - WEEK HOLD"
           }
         },
-        "ticker_item_zHYa7B": {
+        "ticker_item_3": {
           "type": "ticker_item",
           "settings": {
             "emoji": "💧",
             "text": "WATER + SWEAT RESISTANT"
           }
         },
-        "ticker_item_UwyqjG": {
+        "ticker_item_4": {
           "type": "ticker_item",
           "settings": {
             "emoji": "🔥",
@@ -50,10 +33,10 @@
         }
       },
       "block_order": [
-        "ticker_item_ctNTph",
-        "ticker_item_z7jkCb",
-        "ticker_item_zHYa7B",
-        "ticker_item_UwyqjG"
+        "ticker_item_1",
+        "ticker_item_2",
+        "ticker_item_3",
+        "ticker_item_4"
       ],
       "custom_css": [
         ".hero2-left {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}",
@@ -79,7 +62,7 @@
         "primary_color": "#e5e7eb"
       }
     },
-    "image_with_overlap_slider_KYgUd3": {
+    "product_carousel_slider": {
       "type": "image-with-overlap-slider",
       "settings": {
         "left_image": "shopify://shop_images/Gemini_Generated_Image_4z67pq4z67pq4z67_1.png",
@@ -89,13 +72,13 @@
         "overlap": 12,
         "radius": 16,
         "panel_bg": "#ffffff",
-        "section_bg": "#FAF8F6"
+        "section_bg": "#f6f2ef"
       }
     },
-    "feature_showcase_7q9V7E": {
+    "feature_showcase_center": {
       "type": "feature-showcase",
       "blocks": {
-        "feature_RwPhrY": {
+        "feature_1": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/drop.svg",
@@ -104,7 +87,7 @@
             "column": "left"
           }
         },
-        "feature_p48xbV": {
+        "feature_2": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/dema.svg",
@@ -113,7 +96,7 @@
             "column": "right"
           }
         },
-        "feature_BTHjrQ": {
+        "feature_3": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/time.svg",
@@ -122,7 +105,7 @@
             "column": "left"
           }
         },
-        "feature_TtPYGT": {
+        "feature_4": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/star.svg",
@@ -131,7 +114,7 @@
             "column": "left"
           }
         },
-        "feature_hbajEk": {
+        "feature_5": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/clap.svg",
@@ -140,7 +123,7 @@
             "column": "right"
           }
         },
-        "feature_CtLzdy": {
+        "feature_6": {
           "type": "feature",
           "settings": {
             "icon": "shopify://shop_images/star_2.svg",
@@ -151,17 +134,17 @@
         }
       },
       "block_order": [
-        "feature_RwPhrY",
-        "feature_p48xbV",
-        "feature_BTHjrQ",
-        "feature_TtPYGT",
-        "feature_hbajEk",
-        "feature_CtLzdy"
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4",
+        "feature_5",
+        "feature_6"
       ],
       "custom_css": [
         "h3,p {color: white;}",
         "h2 {color: white;}",
-        ".feature-showcase {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}",
+        "#feature-showcase-template--25554219270510__feature_showcase_center {background: radial-gradient( circle at 50% 50%, #e6a5ad 0%, #d7929b 35%, #c97d89 70%, #b86c78 100% );}",
         "img {max-width: 1080px !important;}"
       ],
       "settings": {
@@ -184,40 +167,40 @@
         "overlay_opacity": 0
       }
     },
-    "comparison_table_xmXfkH": {
+    "comparison_table_main": {
       "type": "comparison-table",
       "blocks": {
-        "checklist_item_TCEgTD": {
+        "checklist_item_1": {
           "type": "checklist_item",
           "settings": {
             "text": "Hold strength & durability"
           }
         },
-        "checklist_item_4BGzgg": {
+        "checklist_item_2": {
           "type": "checklist_item",
           "settings": {
             "text": "Skin compatibility"
           }
         },
-        "checklist_item_6r3hDj": {
+        "checklist_item_3": {
           "type": "checklist_item",
           "settings": {
             "text": "Water resistance"
           }
         },
-        "checklist_item_TmmLag": {
+        "checklist_item_4": {
           "type": "checklist_item",
           "settings": {
             "text": "Application ease"
           }
         },
-        "checklist_item_QTmwrR": {
+        "checklist_item_5": {
           "type": "checklist_item",
           "settings": {
             "text": "Removal safety"
           }
         },
-        "comparison_row_jm4ic4": {
+        "comparison_row_1": {
           "type": "comparison_row",
           "settings": {
             "label": "Hold Duration",
@@ -227,7 +210,7 @@
             "secondary_value": "3-7 days"
           }
         },
-        "comparison_row_bVRXfA": {
+        "comparison_row_2": {
           "type": "comparison_row",
           "settings": {
             "label": "Water Resistant",
@@ -237,7 +220,7 @@
             "secondary_value": "Limited"
           }
         },
-        "comparison_row_7RPKdb": {
+        "comparison_row_3": {
           "type": "comparison_row",
           "settings": {
             "label": "Latex-Free",
@@ -247,7 +230,7 @@
             "secondary_value": "Sometimes"
           }
         },
-        "comparison_row_iYqDPW": {
+        "comparison_row_4": {
           "type": "comparison_row",
           "settings": {
             "label": "Dermatologist Tested",
@@ -257,7 +240,7 @@
             "secondary_value": "Rarely"
           }
         },
-        "comparison_row_7LfCLk": {
+        "comparison_row_5": {
           "type": "comparison_row",
           "settings": {
             "label": "Application",
@@ -267,7 +250,7 @@
             "secondary_value": "Difficult"
           }
         },
-        "comparison_row_G6mPbd": {
+        "comparison_row_6": {
           "type": "comparison_row",
           "settings": {
             "label": "Trusted By Professionals",
@@ -279,17 +262,17 @@
         }
       },
       "block_order": [
-        "checklist_item_TCEgTD",
-        "checklist_item_4BGzgg",
-        "checklist_item_6r3hDj",
-        "checklist_item_TmmLag",
-        "checklist_item_QTmwrR",
-        "comparison_row_jm4ic4",
-        "comparison_row_bVRXfA",
-        "comparison_row_7RPKdb",
-        "comparison_row_iYqDPW",
-        "comparison_row_7LfCLk",
-        "comparison_row_G6mPbd"
+        "checklist_item_1",
+        "checklist_item_2",
+        "checklist_item_3",
+        "checklist_item_4",
+        "checklist_item_5",
+        "comparison_row_1",
+        "comparison_row_2",
+        "comparison_row_3",
+        "comparison_row_4",
+        "comparison_row_5",
+        "comparison_row_6"
       ],
       "settings": {
         "heading": "Not All Wig Adhesives Are Built Equal",
@@ -300,48 +283,56 @@
         "button_link": "shopify://collections/all",
         "column_1_header": "GHOSTBOND",
         "column_2_header": "Standard Adhesives",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
         "padding_top": 64,
         "padding_bottom": 96
       }
     },
-    "trust_badges_multicolumn": {
+    "testimonials_section": {
+      "type": "testimonials",
+      "disabled": false,
+      "settings": {
+        "heading": "What Our Customers Say",
+        "subheading": "Join thousands of satisfied customers who trust GHOSTBOND",
+        "background_color": "#f6f2ef",
+        "text_color": "#000000",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "trust_badges": {
       "type": "multicolumn",
       "blocks": {
-        "trust_badge_1": {
+        "badge_1": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Free Shipping",
             "text": "<p>On orders over $50</p>",
             "link_label": "",
             "link": ""
           }
         },
-        "trust_badge_2": {
+        "badge_2": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Secure Payment",
             "text": "<p>100% secure transactions</p>",
             "link_label": "",
             "link": ""
           }
         },
-        "trust_badge_3": {
+        "badge_3": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Money-Back Guarantee",
             "text": "<p>30-day satisfaction guarantee</p>",
             "link_label": "",
             "link": ""
           }
         },
-        "trust_badge_4": {
+        "badge_4": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "24/7 Support",
             "text": "<p>Expert customer service</p>",
             "link_label": "",
@@ -350,15 +341,15 @@
         }
       },
       "block_order": [
-        "trust_badge_1",
-        "trust_badge_2",
-        "trust_badge_3",
-        "trust_badge_4"
+        "badge_1",
+        "badge_2",
+        "badge_3",
+        "badge_4"
       ],
       "settings": {
         "title": "",
         "heading_size": "h1",
-        "image_width": "third",
+        "image_width": "full",
         "image_ratio": "adapt",
         "columns_desktop": 4,
         "column_alignment": "center",
@@ -372,56 +363,30 @@
         "padding_bottom": 60
       }
     },
-    "final_cta_section": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_block": {
-          "type": "heading",
-          "settings": {
-            "heading": "Ready to Experience the GHOSTBOND Difference?",
-            "heading_size": "h1"
-          }
-        },
-        "text_block": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Join over 7 million satisfied customers who trust GHOSTBOND for flawless, long-lasting wig adhesion. Whether you're a professional stylist or wearing wigs daily, our dermatologically tested formula delivers the invisible hold you deserve.</p>"
-          }
-        },
-        "button_block": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop All Products",
-            "button_link": "shopify://collections/all",
-            "button_style_secondary": false,
-            "button_label_2": "Learn More",
-            "button_link_2": "shopify://pages/about",
-            "button_style_secondary_2": true
-          }
-        }
-      },
-      "block_order": [
-        "heading_block",
-        "text_block",
-        "button_block"
-      ],
+    "email_signup_banner": {
+      "type": "email-signup-banner",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 80,
-        "padding_bottom": 80
+        "paragraph": "<p>Subscribe to our emails and be the first to know about new collections, exclusive offers, and expert wig care tips.</p>",
+        "heading_size": "h1",
+        "show_background": true,
+        "background_style": "primary",
+        "show_divider": false,
+        "email_form_action": "",
+        "button_label": "Subscribe",
+        "button_link": "",
+        "color_scheme": "scheme-2",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     }
   },
   "order": [
-    "hero_2_grid_z46BYi",
-    "image_with_overlap_slider_KYgUd3",
-    "featured_product_spotlight",
-    "feature_showcase_7q9V7E",
-    "comparison_table_xmXfkH",
-    "trust_badges_multicolumn",
-    "final_cta_section"
+    "hero_2_grid_main",
+    "product_carousel_slider",
+    "feature_showcase_center",
+    "comparison_table_main",
+    "testimonials_section",
+    "trust_badges",
+    "email_signup_banner"
   ]
 }
