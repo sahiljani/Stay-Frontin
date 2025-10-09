@@ -76,35 +76,121 @@
     }
   }
 
-  /* FIX FOR DOUBLE UNDERLINE - START */
+  /* ============================================ */
+  /* FIX TO SHOW ONLY ONE UNDERLINE - START */
+  /* ============================================ */
+  
+  /* Remove text-decoration underline completely */
   .list-menu__item--link,
   .list-menu__item--link:hover,
-  .list-menu__item--link:focus {
+  .list-menu__item--link:focus,
+  .list-menu__item--link:active {
     text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
   }
 
   .header__menu-item,
   .header__menu-item:hover,
-  .header__menu-item:focus {
+  .header__menu-item:focus,
+  .header__menu-item:active {
     text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
   }
 
-  /* Remove any pseudo-element underlines */
+  /* Remove ALL pseudo-element underlines */
   .list-menu__item--link::before,
-  .list-menu__item--link::after {
-    border-bottom: none !important;
-  }
-
+  .list-menu__item--link::after,
   .header__menu-item::before,
-  .header__menu-item::after {
+  .header__menu-item::after,
+  .list-menu__item::before,
+  .list-menu__item::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    border: none !important;
+    border-bottom: none !important;
+    background: none !important;
+    background-image: none !important;
+    content: none !important;
+    height: 0 !important;
+    width: 0 !important;
+  }
+
+  /* Target all link variations */
+  .header__inline-menu .list-menu__item--link,
+  .header__inline-menu .list-menu__item--link:hover,
+  .header__inline-menu .list-menu__item--link:focus {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove underline from parent containers */
+  .list-menu__item,
+  .list-menu__item:hover,
+  .header__menu-item,
+  .header__inline-menu {
+    text-decoration: none !important;
     border-bottom: none !important;
   }
 
-  /* Remove border-bottom if any */
-  .list-menu__item--link {
+  /* Force remove all header link underlines */
+  .header a,
+  .header a:hover,
+  .header a:focus,
+  .header a:active,
+  .header nav a,
+  .header nav a:hover,
+  .header nav a:focus {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  /* Override any underline utility classes */
+  .header .link--text,
+  .header .link--text:hover,
+  .header .link--text:focus {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    text-decoration-style: none !important;
+  }
+
+  /* Additional targeting for menu items */
+  .header__inline-menu .list-menu--inline .list-menu__item a,
+  .header__inline-menu .list-menu--inline .list-menu__item a:hover {
+    text-decoration: none !important;
     border-bottom: none !important;
   }
-  /* FIX FOR DOUBLE UNDERLINE - END */
+
+  /* Remove any line-height based underlines */
+  details[open] > .header__menu-item,
+  details[open] > .header__submenu {
+    text-decoration: none !important;
+    border-bottom: none !important;
+  }
+
+  /* Nuclear option - remove all possible underline sources */
+  * .header a[class*="menu"],
+  * .header a[class*="menu"]:hover,
+  * .header [class*="list-menu"] a,
+  * .header [class*="list-menu"] a:hover {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    -webkit-text-decoration: none !important;
+  }
+
+  /* ============================================ */
+  /* FIX TO SHOW ONLY ONE UNDERLINE - END */
+  /* ============================================ */
 </style>
 
 {%- style -%}
@@ -644,30 +730,6 @@
     {
       "type": "header",
       "content": "t:sections.all.spacing"
-    },
-    {
-      "type": "range",
-      "id": "margin_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.header.settings.margin_bottom.label",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 36,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 20
     },
     {
       "type": "range",
