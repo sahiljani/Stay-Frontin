@@ -1,22 +1,14 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "featured_product_spotlight": {
-      "type": "featured-product",
-      "settings": {
-        "product": "ghostbond-xl-1-3oz",
-        "color_scheme": "scheme-2",
-        "secondary_background": true,
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false,
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
     "hero_2_grid_z46BYi": {
       "type": "hero-2-grid",
       "blocks": {
@@ -76,7 +68,7 @@
         "show_ticker": true,
         "dark_background_color": "#b86c78",
         "text_color": "#ffffff",
-        "primary_color": "#e5e7eb"
+        "primary_color": "#ffffff"
       }
     },
     "image_with_overlap_slider_KYgUd3": {
@@ -89,7 +81,24 @@
         "overlap": 12,
         "radius": 16,
         "panel_bg": "#ffffff",
-        "section_bg": "#FAF8F6"
+        "section_bg": "#faf8f6"
+      }
+    },
+    "featured_product_spotlight": {
+      "type": "featured-product",
+      "settings": {
+        "product": "ghostbond-xl-1-3oz",
+        "color_scheme": "scheme-2",
+        "secondary_background": true,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "feature_showcase_7q9V7E": {
@@ -311,7 +320,6 @@
         "trust_badge_1": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Free Shipping",
             "text": "<p>On orders over $50</p>",
             "link_label": "",
@@ -321,7 +329,6 @@
         "trust_badge_2": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Secure Payment",
             "text": "<p>100% secure transactions</p>",
             "link_label": "",
@@ -331,7 +338,6 @@
         "trust_badge_3": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "Money-Back Guarantee",
             "text": "<p>30-day satisfaction guarantee</p>",
             "link_label": "",
@@ -341,7 +347,6 @@
         "trust_badge_4": {
           "type": "column",
           "settings": {
-            "image": "",
             "title": "24/7 Support",
             "text": "<p>Expert customer service</p>",
             "link_label": "",
@@ -360,11 +365,11 @@
         "heading_size": "h1",
         "image_width": "third",
         "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
         "columns_desktop": 4,
         "column_alignment": "center",
         "background_style": "none",
-        "button_label": "",
-        "button_link": "",
         "color_scheme": "scheme-1",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
