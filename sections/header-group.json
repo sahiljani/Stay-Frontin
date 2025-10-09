@@ -38,7 +38,9 @@
     "header": {
       "type": "header",
       "custom_css": [
-        "/* Add space on top of header */.header {margin-top: 20px;}"
+        "/* Add space on top of header */.header {margin-top: 20px; /* Space for desktop (990px and above) */}",
+        "/* Mobile specific - screens smaller than 750px */@media screen and (max-width: 749px) {.header {margin-top: 5px; /* Less space for mobile */ }}",
+        "/* Tablet specific - screens between 750px and 989px */@media screen and (min-width: 750px) and (max-width: 989px) {.header {margin-top: 5px; /* Medium space for tablet */ }}"
       ],
       "settings": {
         "logo_position": "middle-left",
