@@ -75,6 +75,36 @@
       padding-top: 0.5rem;
     }
   }
+
+  /* FIX FOR DOUBLE UNDERLINE - START */
+  .list-menu__item--link,
+  .list-menu__item--link:hover,
+  .list-menu__item--link:focus {
+    text-decoration: none !important;
+  }
+
+  .header__menu-item,
+  .header__menu-item:hover,
+  .header__menu-item:focus {
+    text-decoration: none !important;
+  }
+
+  /* Remove any pseudo-element underlines */
+  .list-menu__item--link::before,
+  .list-menu__item--link::after {
+    border-bottom: none !important;
+  }
+
+  .header__menu-item::before,
+  .header__menu-item::after {
+    border-bottom: none !important;
+  }
+
+  /* Remove border-bottom if any */
+  .list-menu__item--link {
+    border-bottom: none !important;
+  }
+  /* FIX FOR DOUBLE UNDERLINE - END */
 </style>
 
 {%- style -%}
