@@ -425,19 +425,25 @@
         "video_rUmrby": {
           "type": "video",
           "settings": {
-            "title": "Crimson Red Print"
+            "title": "Crimson Red Print",
+            "video_url": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/6bd7a7ccf9014446bea10d42aecec4ee.mp4"
           }
         },
         "video_Ncryj8": {
           "type": "video",
           "settings": {
-            "title": "Green Elegance"
+            "title": "Green Elegance",
+            "video_url": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/b8a0ffdd706742e487a283667ba0f797.mp4"
           }
         },
         "video_rNFPEV": {
           "type": "video",
           "settings": {
-            "title": "Blue Floral"
+            "title": "Blue Floral",
+            "video_url": "",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/351df49e501e4245b4a5511b9be1156c.mp4"
           }
         }
       },
@@ -447,7 +453,9 @@
         "video_rNFPEV"
       ],
       "name": "Video Carousel",
-      "settings": {}
+      "settings": {
+        "background_color": "#f5f5f5"
+      }
     }
   },
   "order": [
