@@ -212,8 +212,10 @@
               muted 
               loop 
               playsinline
+              controls
+              controlsList="nodownload"
               {% if forloop.index == 2 %}autoplay{% endif %}
-              data-video-id="{{ item_index }}">
+              id="video-{{ section.id }}-{{ item_index }}">
               <source src="{{ block.settings.video_file }}" type="video/mp4">
             </video>
           {% elsif block.settings.poster_image != blank %}
@@ -312,17 +314,27 @@
   container.querySelectorAll('.fullscreen-control').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const index = btn.dataset.index;
-      const video = container.querySelector(`[data-video-id="${index}"]`);
+      e.preventDefault();
+      
+      // Get the video element from the parent carousel item
+      const carouselItem = btn.closest('.carousel-item');
+      const video = carouselItem.querySelector('video');
       
       if (video) {
+        // Try multiple fullscreen methods for browser compatibility
         if (video.requestFullscreen) {
           video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
+        } else if (video.mozRequestFullScreen) { // Firefox
+          video.mozRequestFullScreen();
+        } else if (video.webkitRequestFullscreen) { // Chrome, Safari, Opera
           video.webkitRequestFullscreen();
-        } else if (video.webkitEnterFullscreen) {
+        } else if (video.msRequestFullscreen) { // IE/Edge
+          video.msRequestFullscreen();
+        } else if (video.webkitEnterFullscreen) { // iOS Safari
           video.webkitEnterFullscreen();
         }
+      } else {
+        console.log('No video element found in this card');
       }
     });
   });
