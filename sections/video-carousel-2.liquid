@@ -1,167 +1,200 @@
 {% comment %}
-  Video Carousel Section
-  Displays a carousel of videos with custom controls
+  Video Carousel Section - Exact replica
 {% endcomment %}
 
 <style>
-  .video-carousel-wrapper {
+  .video-carousel-section {
     position: relative;
     width: 100%;
-    overflow: hidden;
-    padding: 40px 0;
-  }
-
-  .video-carousel-container {
+    min-height: 600px;
     display: flex;
-    gap: 20px;
-    transition: transform 0.5s ease;
-    padding: 0 60px;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: {{ section.settings.background_color }};
   }
 
-  .video-carousel-item {
-    min-width: calc(33.333% - 14px);
+  .video-carousel-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: -100px;
     position: relative;
-    border-radius: 8px;
+    width: 100%;
+    max-width: 1400px;
+    perspective: 1200px;
+  }
+
+  .video-card {
+    position: relative;
+    width: 320px;
+    height: 550px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
   }
 
-  @media (max-width: 1024px) {
-    .video-carousel-item {
-      min-width: calc(50% - 10px);
-    }
+  /* Side cards styling */
+  .video-card.side {
+    transform: scale(0.85) translateZ(-100px);
+    opacity: 0.6;
+    filter: brightness(0.7);
+    z-index: 1;
   }
 
-  @media (max-width: 768px) {
-    .video-carousel-item {
-      min-width: calc(100% - 20px);
-    }
-    .video-carousel-container {
-      padding: 0 40px;
-    }
+  .video-card.side-left {
+    transform: scale(0.85) translateX(50px) translateZ(-100px) rotateY(5deg);
   }
 
-  .video-carousel-item:hover {
-    transform: scale(1.02);
+  .video-card.side-right {
+    transform: scale(0.85) translateX(-50px) translateZ(-100px) rotateY(-5deg);
   }
 
-  .video-carousel-item.active {
-    transform: scale(1.05);
+  /* Center/Active card styling */
+  .video-card.center {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+    filter: brightness(1);
     z-index: 10;
   }
 
-  .video-wrapper {
+  /* Hidden cards */
+  .video-card.hidden {
+    opacity: 0;
+    transform: scale(0.7) translateZ(-200px);
+    pointer-events: none;
+  }
+
+  .video-card-inner {
     position: relative;
     width: 100%;
-    padding-bottom: 177.78%; /* 9:16 aspect ratio */
+    height: 100%;
     background: #000;
   }
 
-  .video-wrapper video {
-    position: absolute;
-    top: 0;
-    left: 0;
+  .video-card video,
+  .video-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .video-controls {
+  /* Top controls */
+  .video-top-controls {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     display: flex;
     gap: 8px;
     z-index: 20;
   }
 
-  .video-control-btn {
-    background: rgba(0, 0, 0, 0.6);
+  .video-menu-btn {
+    background: rgba(0, 0, 0, 0.5);
     border: none;
     color: white;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s ease;
+    backdrop-filter: blur(10px);
+    transition: background 0.2s;
   }
 
-  .video-control-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
+  .video-menu-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
   }
 
-  .video-title {
+  /* Three dots menu */
+  .video-menu-btn.dots::before {
+    content: '⋮';
+    font-size: 20px;
+  }
+
+  /* Video title overlay */
+  .video-title-overlay {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 40px 15px 15px;
-    font-size: 16px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
     font-weight: 500;
+    backdrop-filter: blur(10px);
+    z-index: 20;
   }
 
-  .video-view-btn {
+  /* Bottom View button */
+  .video-view-button {
     position: absolute;
-    bottom: 15px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    color: #000;
+    background: white;
+    color: black;
     border: none;
-    padding: 12px 40px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
+    padding: 14px 50px;
+    border-radius: 6px;
     font-size: 16px;
-    transition: background 0.3s ease;
-    z-index: 15;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
-  .video-view-btn:hover {
-    background: #fff;
+  .video-view-button:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   }
 
-  .carousel-nav-btn {
+  /* Navigation arrows */
+  .carousel-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
+    background: white;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 100;
-    transition: background 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
   }
 
-  .carousel-nav-btn:hover {
-    background: #fff;
+  .carousel-arrow:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
-  .carousel-nav-btn.prev {
-    left: 10px;
+  .carousel-arrow.prev {
+    left: 20px;
   }
 
-  .carousel-nav-btn.next {
-    right: 10px;
+  .carousel-arrow.next {
+    right: 20px;
   }
 
-  .carousel-nav-btn svg {
+  .carousel-arrow svg {
     width: 24px;
     height: 24px;
+    stroke: #333;
+    stroke-width: 2.5;
   }
 
+  /* Modal */
   .video-modal {
     display: none;
     position: fixed;
@@ -170,7 +203,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    z-index: 1000;
+    z-index: 9999;
     align-items: center;
     justify-content: center;
   }
@@ -182,189 +215,219 @@
   .video-modal-content {
     position: relative;
     width: 90%;
-    max-width: 600px;
+    max-width: 500px;
     aspect-ratio: 9/16;
   }
 
-  .video-modal-content video {
+  .video-modal video {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    border-radius: 12px;
   }
 
-  .modal-close-btn {
+  .modal-close {
     position: absolute;
-    top: -40px;
+    top: -50px;
     right: 0;
     background: none;
     border: none;
     color: white;
-    font-size: 32px;
+    font-size: 36px;
     cursor: pointer;
     width: 40px;
     height: 40px;
+    line-height: 1;
+  }
+
+  @media (max-width: 768px) {
+    .video-card {
+      width: 280px;
+      height: 480px;
+    }
+    
+    .carousel-arrow {
+      width: 44px;
+      height: 44px;
+    }
   }
 </style>
 
-<div class="video-carousel-wrapper" id="video-carousel-{{ section.id }}">
-  <button class="carousel-nav-btn prev" onclick="moveCarousel('{{ section.id }}', -1)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<div class="video-carousel-section">
+  <button class="carousel-arrow prev" onclick="changeSlide{{ section.id }}(-1)" aria-label="Previous video">
+    <svg viewBox="0 0 24 24" fill="none">
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </button>
 
-  <div class="video-carousel-container" id="carousel-container-{{ section.id }}">
+  <div class="video-carousel-track" id="track-{{ section.id }}">
     {% for block in section.blocks %}
-      <div class="video-carousel-item" data-index="{{ forloop.index0 }}">
-        <div class="video-wrapper">
-          <video 
-            id="video-{{ section.id }}-{{ forloop.index0 }}"
-            {% if block.settings.video_url != blank %}
-              src="{{ block.settings.video_url }}"
-            {% elsif block.settings.video_file != blank %}
-              src="{{ block.settings.video_file | file_url }}"
+      <div class="video-card {% if forloop.index == 1 %}side-left{% elsif forloop.index == 2 %}center{% elsif forloop.index == 3 %}side-right{% else %}hidden{% endif %}" 
+           data-index="{{ forloop.index0 }}" 
+           id="card-{{ section.id }}-{{ forloop.index0 }}">
+        <div class="video-card-inner">
+          {% if block.settings.video_file != blank %}
+            <video 
+              loop 
+              muted 
+              playsinline
+              {% if forloop.index == 2 %}autoplay{% endif %}
+              id="video-{{ section.id }}-{{ forloop.index0 }}">
+              <source src="{{ block.settings.video_file }}" type="video/mp4">
+            </video>
+          {% elsif block.settings.video_shopify != blank %}
+            {% if forloop.index == 2 %}
+              {{ block.settings.video_shopify | video_tag: autoplay: true, loop: true, muted: true, id: video_id }}
+            {% else %}
+              {{ block.settings.video_shopify | video_tag: loop: true, muted: true, id: video_id }}
             {% endif %}
-            playsinline
-            {% if block.settings.loop %}loop{% endif %}
-            {% if block.settings.muted %}muted{% endif %}
-            {% if block.settings.autoplay %}autoplay{% endif %}
-          ></video>
+          {% elsif block.settings.poster_image != blank %}
+            <img src="{{ block.settings.poster_image | image_url: width: 640 }}" alt="{{ block.settings.title }}">
+          {% endif %}
 
-          <div class="video-controls">
-            <button class="video-control-btn" onclick="toggleMute('{{ section.id }}', {{ forloop.index0 }})">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          {% if block.settings.title != blank %}
+            <div class="video-title-overlay">{{ block.settings.title }}</div>
+          {% endif %}
+
+          <div class="video-top-controls">
+            <button class="video-menu-btn dots" onclick="toggleMenu{{ section.id }}({{ forloop.index0 }})" aria-label="Menu"></button>
+            <button class="video-menu-btn" onclick="toggleMute{{ section.id }}({{ forloop.index0 }})" aria-label="Toggle mute">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
               </svg>
             </button>
-            <button class="video-control-btn" onclick="toggleFullscreen('{{ section.id }}', {{ forloop.index0 }})">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <button class="video-menu-btn" onclick="toggleFullscreen{{ section.id }}({{ forloop.index0 }})" aria-label="Fullscreen">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
               </svg>
             </button>
           </div>
 
-          {% if block.settings.title != blank %}
-            <div class="video-title">{{ block.settings.title }}</div>
-          {% endif %}
-
-          {% if block.settings.show_view_button %}
-            <button class="video-view-btn" onclick="openVideoModal('{{ section.id }}', {{ forloop.index0 }})">
-              View
-            </button>
-          {% endif %}
+          <button class="video-view-button" onclick="openModal{{ section.id }}({{ forloop.index0 }})">
+            View
+          </button>
         </div>
       </div>
     {% endfor %}
   </div>
 
-  <button class="carousel-nav-btn next" onclick="moveCarousel('{{ section.id }}', 1)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <button class="carousel-arrow next" onclick="changeSlide{{ section.id }}(1)" aria-label="Next video">
+    <svg viewBox="0 0 24 24" fill="none">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </button>
 </div>
 
-<div class="video-modal" id="video-modal-{{ section.id }}">
+<div class="video-modal" id="modal-{{ section.id }}">
   <div class="video-modal-content">
-    <button class="modal-close-btn" onclick="closeVideoModal('{{ section.id }}')">×</button>
+    <button class="modal-close" onclick="closeModal{{ section.id }}()">&times;</button>
     <video id="modal-video-{{ section.id }}" controls playsinline></video>
   </div>
 </div>
 
 <script>
-  let currentIndex = 0;
-  const carouselData = {};
+(function() {
+  const sectionId = '{{ section.id }}';
+  let currentIndex = 1;
+  const totalCards = {{ section.blocks.size }};
 
-  function initCarousel(sectionId) {
-    if (!carouselData[sectionId]) {
-      carouselData[sectionId] = { currentIndex: 0 };
-    }
-  }
+  window['changeSlide' + sectionId] = function(direction) {
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = totalCards - 1;
+    if (currentIndex >= totalCards) currentIndex = 0;
+    updateCarousel();
+  };
 
-  function moveCarousel(sectionId, direction) {
-    initCarousel(sectionId);
-    const container = document.getElementById('carousel-container-' + sectionId);
-    const items = container.querySelectorAll('.video-carousel-item');
-    const containerWidth = container.offsetWidth;
-    const itemWidth = items[0].offsetWidth + 20;
+  function updateCarousel() {
+    const cards = document.querySelectorAll(`#track-${sectionId} .video-card`);
     
-    carouselData[sectionId].currentIndex += direction;
-    
-    if (carouselData[sectionId].currentIndex < 0) {
-      carouselData[sectionId].currentIndex = 0;
-    }
-    if (carouselData[sectionId].currentIndex > items.length - 3) {
-      carouselData[sectionId].currentIndex = Math.max(0, items.length - 3);
-    }
-    
-    const translateX = -carouselData[sectionId].currentIndex * itemWidth;
-    container.style.transform = `translateX(${translateX}px)`;
-
-    // Update active state
-    items.forEach((item, index) => {
-      item.classList.remove('active');
-      if (index === carouselData[sectionId].currentIndex + 1) {
-        item.classList.add('active');
+    cards.forEach((card, index) => {
+      card.className = 'video-card';
+      
+      // Pause all videos
+      const video = card.querySelector('video');
+      if (video) video.pause();
+      
+      if (index === currentIndex) {
+        card.classList.add('center');
+        if (video) video.play();
+      } else if (index === (currentIndex - 1 + totalCards) % totalCards) {
+        card.classList.add('side-left');
+      } else if (index === (currentIndex + 1) % totalCards) {
+        card.classList.add('side-right');
+      } else {
+        card.classList.add('hidden');
       }
     });
   }
 
-  function toggleMute(sectionId, videoIndex) {
-    const video = document.getElementById(`video-${sectionId}-${videoIndex}`);
-    video.muted = !video.muted;
-  }
-
-  function toggleFullscreen(sectionId, videoIndex) {
-    const video = document.getElementById(`video-${sectionId}-${videoIndex}`);
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if (video.webkitRequestFullscreen) {
-      video.webkitRequestFullscreen();
-    } else if (video.msRequestFullscreen) {
-      video.msRequestFullscreen();
+  window['toggleMute' + sectionId] = function(index) {
+    const video = document.getElementById(`video-${sectionId}-${index}`);
+    if (video) {
+      video.muted = !video.muted;
     }
-  }
+  };
 
-  function openVideoModal(sectionId, videoIndex) {
-    const modal = document.getElementById(`video-modal-${sectionId}`);
+  window['toggleFullscreen' + sectionId] = function(index) {
+    const video = document.getElementById(`video-${sectionId}-${index}`);
+    if (video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      }
+    }
+  };
+
+  window['toggleMenu' + sectionId] = function(index) {
+    alert('Menu options for video ' + (index + 1));
+  };
+
+  window['openModal' + sectionId] = function(index) {
+    const modal = document.getElementById(`modal-${sectionId}`);
     const modalVideo = document.getElementById(`modal-video-${sectionId}`);
-    const sourceVideo = document.getElementById(`video-${sectionId}-${videoIndex}`);
+    const sourceVideo = document.getElementById(`video-${sectionId}-${index}`);
     
-    modalVideo.src = sourceVideo.src;
-    modal.classList.add('active');
-    modalVideo.play();
-    
-    // Pause the source video
-    sourceVideo.pause();
-  }
+    if (sourceVideo) {
+      modalVideo.src = sourceVideo.src;
+      modal.classList.add('active');
+      modalVideo.play();
+      sourceVideo.pause();
+    }
+  };
 
-  function closeVideoModal(sectionId) {
-    const modal = document.getElementById(`video-modal-${sectionId}`);
+  window['closeModal' + sectionId] = function() {
+    const modal = document.getElementById(`modal-${sectionId}`);
     const modalVideo = document.getElementById(`modal-video-${sectionId}`);
     
     modal.classList.remove('active');
     modalVideo.pause();
     modalVideo.src = '';
-  }
+  };
 
-  // Close modal on outside click
-  document.addEventListener('DOMContentLoaded', function() {
-    const modals = document.querySelectorAll('.video-modal');
-    modals.forEach(modal => {
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          const sectionId = modal.id.replace('video-modal-', '');
-          closeVideoModal(sectionId);
-        }
-      });
-    });
+  // Close modal on backdrop click
+  document.getElementById(`modal-${sectionId}`).addEventListener('click', function(e) {
+    if (e.target === this) {
+      window['closeModal' + sectionId]();
+    }
   });
+
+  // Initialize
+  updateCarousel();
+})();
 </script>
 
 {% schema %}
 {
   "name": "Video Carousel",
-  "settings": [],
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    }
+  ],
   "blocks": [
     {
       "type": "video",
@@ -378,40 +441,21 @@
         },
         {
           "type": "url",
-          "id": "video_url",
-          "label": "Video URL",
-          "info": "Add external video URL (YouTube, Vimeo, or direct .mp4 link)"
+          "id": "video_file",
+          "label": "Video File URL",
+          "info": "Direct URL to .mp4 video file"
         },
         {
           "type": "video",
-          "id": "video_file",
+          "id": "video_shopify",
           "label": "Upload Video",
-          "info": "Upload video file directly (recommended for best performance)"
+          "info": "Or upload video directly to Shopify"
         },
         {
-          "type": "checkbox",
-          "id": "autoplay",
-          "label": "Autoplay",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "loop",
-          "label": "Loop Video",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "muted",
-          "label": "Muted by Default",
-          "default": true,
-          "info": "Videos must be muted for autoplay to work"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_view_button",
-          "label": "Show View Button",
-          "default": true
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster Image",
+          "info": "Fallback image if video not available"
         }
       ]
     }
@@ -436,6 +480,18 @@
           "type": "video",
           "settings": {
             "title": "Blue Floral"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "title": "Pink Pattern"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "title": "Navy Design"
           }
         }
       ]
