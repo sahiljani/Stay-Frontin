@@ -454,7 +454,7 @@
       ],
       "name": "Video Carousel",
       "settings": {
-        "background_color": "#f5f5f5"
+        "background_color": "#000000"
       }
     }
   },
