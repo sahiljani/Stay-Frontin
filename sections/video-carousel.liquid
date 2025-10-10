@@ -1,5 +1,5 @@
 {% comment %}
-  Video Carousel Section - Exact replica
+  Video Carousel Section - Fixed Version
 {% endcomment %}
 
 <style>
@@ -81,7 +81,7 @@
     object-fit: cover;
   }
 
-  /* Top controls */
+  /* Top controls - Only Fullscreen Button */
   .video-top-controls {
     position: absolute;
     top: 12px;
@@ -91,29 +91,24 @@
     z-index: 20;
   }
 
-  .video-menu-btn {
+  .video-fullscreen-btn {
     background: rgba(0, 0, 0, 0.5);
     border: none;
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(10px);
-    transition: background 0.2s;
+    transition: all 0.2s;
   }
 
-  .video-menu-btn:hover {
+  .video-fullscreen-btn:hover {
     background: rgba(0, 0, 0, 0.7);
-  }
-
-  /* Three dots menu */
-  .video-menu-btn.dots::before {
-    content: '⋮';
-    font-size: 20px;
+    transform: scale(1.1);
   }
 
   /* Video title overlay */
@@ -130,8 +125,6 @@
     backdrop-filter: blur(10px);
     z-index: 20;
   }
-
-
 
   /* Navigation arrows */
   .carousel-arrow {
@@ -172,52 +165,6 @@
     stroke-width: 2.5;
   }
 
-  /* Modal */
-  .video-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .video-modal.active {
-    display: flex;
-  }
-
-  .video-modal-content {
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-    aspect-ratio: 9/16;
-  }
-
-  .video-modal video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 12px;
-  }
-
-  .modal-close {
-    position: absolute;
-    top: -50px;
-    right: 0;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 36px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    line-height: 1;
-  }
-
   @media (max-width: 768px) {
     .video-card {
       width: 280px;
@@ -231,8 +178,8 @@
   }
 </style>
 
-<div class="video-carousel-section">
-  <button class="carousel-arrow prev" onclick="changeSlideFunc{{ section.id }}(-1)" aria-label="Previous video">
+<div class="video-carousel-section" id="section-{{ section.id }}">
+  <button class="carousel-arrow prev" aria-label="Previous video">
     <svg viewBox="0 0 24 24" fill="none">
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
@@ -268,14 +215,8 @@
           {% endif %}
 
           <div class="video-top-controls">
-            <button class="video-menu-btn dots" aria-label="Menu"></button>
-            <button class="video-menu-btn" onclick="toggleMuteVideo{{ section.id }}({{ forloop.index0 }})" aria-label="Toggle mute">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
-              </svg>
-            </button>
-            <button class="video-menu-btn" onclick="toggleFullscreenVideo{{ section.id }}({{ forloop.index0 }})" aria-label="Fullscreen">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <button class="video-fullscreen-btn" data-video-index="{{ forloop.index0 }}" aria-label="Fullscreen">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
               </svg>
             </button>
@@ -285,18 +226,11 @@
     {% endfor %}
   </div>
 
-  <button class="carousel-arrow next" onclick="changeSlideFunc{{ section.id }}(1)" aria-label="Next video">
+  <button class="carousel-arrow next" aria-label="Next video">
     <svg viewBox="0 0 24 24" fill="none">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </button>
-</div>
-
-<div class="video-modal" id="modal-{{ section.id }}">
-  <div class="video-modal-content">
-    <button class="modal-close" onclick="closeModalFunc{{ section.id }}()">&times;</button>
-    <video id="modal-video-{{ section.id }}" controls playsinline></video>
-  </div>
 </div>
 
 <script>
@@ -304,7 +238,7 @@
   var sectionId = '{{ section.id }}';
   var currentIndex = 1;
   var totalCards = {{ section.blocks.size }};
-  var isInitialized = false;
+  var isTransitioning = false;
 
   function updateCarousel() {
     var track = document.getElementById('track-' + sectionId);
@@ -312,19 +246,24 @@
     
     var cards = track.querySelectorAll('.video-card');
     
-    for (var i = 0; i < cards.length; i++) {
-      var card = cards[i];
+    cards.forEach(function(card, i) {
+      // Remove all classes first
       card.className = 'video-card';
       
+      // Pause all videos
       var video = card.querySelector('video');
       if (video) {
         video.pause();
       }
       
+      // Apply appropriate class based on position
       if (i === currentIndex) {
         card.className = 'video-card center';
+        // Play center video
         if (video) {
-          video.play().catch(function(err) {});
+          video.play().catch(function(err) {
+            console.log('Video play failed:', err);
+          });
         }
       } else if (i === (currentIndex - 1 + totalCards) % totalCards) {
         card.className = 'video-card side-left';
@@ -333,87 +272,118 @@
       } else {
         card.className = 'video-card hidden';
       }
-    }
+    });
   }
 
   function changeSlide(direction) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    
     currentIndex += direction;
+    
     if (currentIndex < 0) {
       currentIndex = totalCards - 1;
     }
     if (currentIndex >= totalCards) {
       currentIndex = 0;
     }
+    
     updateCarousel();
+    
+    setTimeout(function() {
+      isTransitioning = false;
+    }, 500);
   }
 
-  function toggleMute(index) {
-    var video = document.getElementById('video-' + sectionId + '-' + index);
-    if (video && video.tagName === 'VIDEO') {
-      video.muted = !video.muted;
+  function toggleFullscreen(videoIndex) {
+    var video = document.getElementById('video-' + sectionId + '-' + videoIndex);
+    
+    if (!video || video.tagName !== 'VIDEO') {
+      console.log('Video element not found or not a video tag');
+      return;
     }
-  }
-
-  function toggleFullscreen(index) {
-    var video = document.getElementById('video-' + sectionId + '-' + index);
-    if (video && video.tagName === 'VIDEO') {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      } else if (video.mozRequestFullScreen) {
-        video.mozRequestFullScreen();
-      } else if (video.msRequestFullscreen) {
-        video.msRequestFullscreen();
-      }
+    
+    // Try different fullscreen methods for cross-browser compatibility
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+    } else if (video.mozRequestFullScreen) {
+      video.mozRequestFullScreen();
+    } else if (video.msRequestFullscreen) {
+      video.msRequestFullscreen();
+    } else if (video.webkitEnterFullscreen) {
+      // iOS specific
+      video.webkitEnterFullscreen();
     }
   }
 
   function init() {
-    if (isInitialized) return;
-    isInitialized = true;
+    var section = document.getElementById('section-' + sectionId);
+    if (!section) return;
 
-    // Arrow buttons
-    var prevBtn = document.querySelector('.video-carousel-section .carousel-arrow.prev');
-    var nextBtn = document.querySelector('.video-carousel-section .carousel-arrow.next');
+    // Navigation arrows
+    var prevBtn = section.querySelector('.carousel-arrow.prev');
+    var nextBtn = section.querySelector('.carousel-arrow.next');
     
     if (prevBtn) {
-      prevBtn.onclick = function(e) {
+      prevBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         changeSlide(-1);
-      };
+      });
     }
     
     if (nextBtn) {
-      nextBtn.onclick = function(e) {
+      nextBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         changeSlide(1);
-      };
+      });
     }
 
-    // Control buttons
-    var muteButtons = document.querySelectorAll('#track-' + sectionId + ' .video-menu-btn[aria-label="Toggle mute"]');
-    var fullscreenButtons = document.querySelectorAll('#track-' + sectionId + ' .video-menu-btn[aria-label="Fullscreen"]');
-    
-    muteButtons.forEach(function(btn, index) {
-      btn.onclick = function(e) {
+    // Fullscreen buttons
+    var fullscreenButtons = section.querySelectorAll('.video-fullscreen-btn');
+    fullscreenButtons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        toggleMute(index);
-      };
-    });
-    
-    fullscreenButtons.forEach(function(btn, index) {
-      btn.onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleFullscreen(index);
-      };
+        var videoIndex = btn.getAttribute('data-video-index');
+        toggleFullscreen(videoIndex);
+      });
     });
 
+    // Touch/swipe support for mobile
+    var touchStartX = 0;
+    var touchEndX = 0;
+    
+    var track = document.getElementById('track-' + sectionId);
+    if (track) {
+      track.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      
+      track.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+    }
+    
+    function handleSwipe() {
+      var swipeThreshold = 50;
+      if (touchEndX < touchStartX - swipeThreshold) {
+        changeSlide(1); // Swipe left = next
+      }
+      if (touchEndX > touchStartX + swipeThreshold) {
+        changeSlide(-1); // Swipe right = previous
+      }
+    }
+
+    // Initialize carousel
     updateCarousel();
   }
 
+  // Wait for DOM to be ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
