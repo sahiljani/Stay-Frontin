@@ -113,40 +113,63 @@
   /* STICKY HEADER FIX - START */
   /* ============================================ */
   
+  .section-header {
+    position: relative;
+    z-index: 100;
+  }
+
   .header-wrapper {
     position: relative;
-    background: rgb(var(--color-background));
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    will-change: transform;
-    z-index: 10;
+    width: 100%;
+    background-color: rgb(var(--color-background));
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
 
   .shopify-section-header-sticky {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
   }
 
   .shopify-section-header-hidden {
     transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+  }
+
+  .shopify-section-header-sticky:not(.shopify-section-header-hidden) {
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
   }
 
   .scrolled-past-header {
-    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.08);
   }
 
   .header-wrapper.animate {
-    transition: transform 0.3s ease;
+    transition: transform 0.15s ease-in-out;
   }
 
-  .section-header {
-    position: relative;
-    z-index: 10;
-  }
-
-  /* Ensure smooth transitions */
   .header {
-    transition: padding 0.3s ease;
+    transition: all 0.15s ease-in-out;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  /* Force GPU acceleration */
+  .shopify-section-header-sticky,
+  .header-wrapper,
+  .header {
+    will-change: transform;
+  }
+
+  /* Prevent layout shift */
+  .shopify-section-header-sticky .header-wrapper {
+    width: 100%;
   }
 
   /* ============================================ */
