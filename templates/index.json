@@ -193,6 +193,41 @@
         "overlay_opacity": 0
       }
     },
+    "video_carousel_2_LLHhmR": {
+      "type": "video-carousel-2",
+      "blocks": {
+        "video_rUmrby": {
+          "type": "video",
+          "settings": {
+            "title": "Crimson Red Print",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/6bd7a7ccf9014446bea10d42aecec4ee.mp4"
+          }
+        },
+        "video_Ncryj8": {
+          "type": "video",
+          "settings": {
+            "title": "Green Elegance",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/b8a0ffdd706742e487a283667ba0f797.mp4"
+          }
+        },
+        "video_rNFPEV": {
+          "type": "video",
+          "settings": {
+            "title": "Blue Floral",
+            "video_file": "https://cdn.shopify.com/videos/c/o/v/351df49e501e4245b4a5511b9be1156c.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "video_rUmrby",
+        "video_Ncryj8",
+        "video_rNFPEV"
+      ],
+      "name": "Video Carousel",
+      "settings": {
+        "background_color": "#000000"
+      }
+    },
     "comparison_table_xmXfkH": {
       "type": "comparison-table",
       "blocks": {
@@ -418,41 +453,6 @@
         "padding_top": 80,
         "padding_bottom": 80
       }
-    },
-    "video_carousel_2_LLHhmR": {
-      "type": "video-carousel-2",
-      "blocks": {
-        "video_rUmrby": {
-          "type": "video",
-          "settings": {
-            "title": "Crimson Red Print",
-            "video_file": "https://cdn.shopify.com/videos/c/o/v/6bd7a7ccf9014446bea10d42aecec4ee.mp4"
-          }
-        },
-        "video_Ncryj8": {
-          "type": "video",
-          "settings": {
-            "title": "Green Elegance",
-            "video_file": "https://cdn.shopify.com/videos/c/o/v/b8a0ffdd706742e487a283667ba0f797.mp4"
-          }
-        },
-        "video_rNFPEV": {
-          "type": "video",
-          "settings": {
-            "title": "Blue Floral",
-            "video_file": "https://cdn.shopify.com/videos/c/o/v/351df49e501e4245b4a5511b9be1156c.mp4"
-          }
-        }
-      },
-      "block_order": [
-        "video_rUmrby",
-        "video_Ncryj8",
-        "video_rNFPEV"
-      ],
-      "name": "Video Carousel",
-      "settings": {
-        "background_color": "#000000"
-      }
     }
   },
   "order": [
@@ -461,8 +461,8 @@
     "featured_product_spotlight",
     "feature_showcase_7q9V7E",
     "comparison_table_xmXfkH",
+    "video_carousel_2_LLHhmR",
     "trust_badges_multicolumn",
-    "final_cta_section",
-    "video_carousel_2_LLHhmR"
+    "final_cta_section"
   ]
 }
