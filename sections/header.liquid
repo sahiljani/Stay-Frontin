@@ -77,119 +77,80 @@
   }
 
   /* ============================================ */
-  /* FIX TO SHOW ONLY ONE UNDERLINE - START */
+  /* SIMPLIFIED UNDERLINE REMOVAL - START */
   /* ============================================ */
   
-  /* Remove text-decoration underline completely */
-  .list-menu__item--link,
-  .list-menu__item--link:hover,
-  .list-menu__item--link:focus,
-  .list-menu__item--link:active {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    background-image: none !important;
-  }
-
-  .header__menu-item,
-  .header__menu-item:hover,
-  .header__menu-item:focus,
-  .header__menu-item:active {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    background-image: none !important;
-  }
-
-  /* Remove ALL pseudo-element underlines */
-  .list-menu__item--link::before,
-  .list-menu__item--link::after,
-  .header__menu-item::before,
-  .header__menu-item::after,
-  .list-menu__item::before,
-  .list-menu__item::after {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    border: none !important;
-    border-bottom: none !important;
-    background: none !important;
-    background-image: none !important;
-    content: none !important;
-    height: 0 !important;
-    width: 0 !important;
-  }
-
-  /* Target all link variations */
+  /* Remove underlines from menu links */
   .header__inline-menu .list-menu__item--link,
-  .header__inline-menu .list-menu__item--link:hover,
-  .header__inline-menu .list-menu__item--link:focus {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  /* Remove underline from parent containers */
-  .list-menu__item,
-  .list-menu__item:hover,
   .header__menu-item,
-  .header__inline-menu {
-    text-decoration: none !important;
-    border-bottom: none !important;
+  .list-menu__item--link {
+    text-decoration: none;
+    border-bottom: none;
   }
 
-  /* Force remove all header link underlines */
+  /* Remove pseudo-element underlines */
+  .header__inline-menu .list-menu__item--link::after,
+  .header__inline-menu .list-menu__item--link::before,
+  .header__menu-item::after,
+  .header__menu-item::before,
+  .list-menu__item--link::after,
+  .list-menu__item--link::before {
+    display: none;
+  }
+
+  /* Remove all header link underlines */
   .header a,
-  .header a:hover,
-  .header a:focus,
-  .header a:active,
-  .header nav a,
-  .header nav a:hover,
-  .header nav a:focus {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    background-image: none !important;
-  }
-
-  /* Override any underline utility classes */
-  .header .link--text,
-  .header .link--text:hover,
-  .header .link--text:focus {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    text-decoration-line: none !important;
-    text-decoration-style: none !important;
-  }
-
-  /* Additional targeting for menu items */
-  .header__inline-menu .list-menu--inline .list-menu__item a,
-  .header__inline-menu .list-menu--inline .list-menu__item a:hover {
-    text-decoration: none !important;
-    border-bottom: none !important;
-  }
-
-  /* Remove any line-height based underlines */
-  details[open] > .header__menu-item,
-  details[open] > .header__submenu {
-    text-decoration: none !important;
-    border-bottom: none !important;
-  }
-
-  /* Nuclear option - remove all possible underline sources */
-  * .header a[class*="menu"],
-  * .header a[class*="menu"]:hover,
-  * .header [class*="list-menu"] a,
-  * .header [class*="list-menu"] a:hover {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    text-decoration-line: none !important;
-    -webkit-text-decoration: none !important;
+  .header nav a {
+    text-decoration: none;
+    border-bottom: none;
   }
 
   /* ============================================ */
-  /* FIX TO SHOW ONLY ONE UNDERLINE - END */
+  /* SIMPLIFIED UNDERLINE REMOVAL - END */
+  /* ============================================ */
+
+  /* ============================================ */
+  /* STICKY HEADER FIX - START */
+  /* ============================================ */
+  
+  .header-wrapper {
+    position: relative;
+    background: rgb(var(--color-background));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+    z-index: 10;
+  }
+
+  .shopify-section-header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .shopify-section-header-hidden {
+    transform: translateY(-100%);
+  }
+
+  .scrolled-past-header {
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  }
+
+  .header-wrapper.animate {
+    transition: transform 0.3s ease;
+  }
+
+  .section-header {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Ensure smooth transitions */
+  .header {
+    transition: padding 0.3s ease;
+  }
+
+  /* ============================================ */
+  /* STICKY HEADER FIX - END */
   /* ============================================ */
 </style>
 
@@ -199,7 +160,7 @@
   }
 
   .section-header {
-    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    position: sticky;
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
   }
 
@@ -253,7 +214,7 @@
       assign localization_forms = true
     endif
   -%}
-  <header class=" header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
       if section.settings.menu != blank
         render 'header-drawer'
