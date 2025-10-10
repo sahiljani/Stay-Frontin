@@ -1,0 +1,609 @@
+{{ 'section-video-gallery.css' | asset_url | stylesheet_tag }}
+
+<div class="video-gallery-wrapper" style="background-color: {{ section.settings.background_color }};">
+  <div class="video-gallery-container">
+    <!-- Navigation Arrow Left -->
+    <button class="gallery-nav gallery-nav-left" aria-label="Previous video">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Video Stack -->
+    <div class="video-stack">
+      {% for block in section.blocks %}
+        <div class="gallery-item" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="video-wrapper">
+            {% if block.settings.video_url != blank %}
+              <!-- Video Element -->
+              <video 
+                class="gallery-video"
+                {% if block.settings.show_controls %}controls{% endif %}
+                {% if block.settings.autoplay %}autoplay{% endif %}
+                {% if block.settings.loop %}loop{% endif %}
+                {% if block.settings.muted %}muted{% endif %}
+                playsinline
+                poster="{{ block.settings.poster_image | img_url: '800x' }}"
+              >
+                <source src="{{ block.settings.video_url }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            {% elsif block.settings.video_shopify != blank %}
+              <!-- Shopify Hosted Video -->
+              {{ block.settings.video_shopify | video_tag: 
+                image_size: "1100x",
+                autoplay: block.settings.autoplay,
+                loop: block.settings.loop,
+                controls: block.settings.show_controls,
+                muted: block.settings.muted
+              }}
+            {% elsif block.settings.youtube_id != blank %}
+              <!-- YouTube Video -->
+              <div class="video-embed">
+                <iframe 
+                  src="https://www.youtube.com/embed/{{ block.settings.youtube_id }}?controls={{ block.settings.show_controls | default: 1 }}&autoplay=0&mute={{ block.settings.muted | default: 0 }}&loop={{ block.settings.loop | default: 0 }}"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            {% elsif block.settings.vimeo_id != blank %}
+              <!-- Vimeo Video -->
+              <div class="video-embed">
+                <iframe 
+                  src="https://player.vimeo.com/video/{{ block.settings.vimeo_id }}?controls={{ block.settings.show_controls | default: 1 }}&autoplay=0&muted={{ block.settings.muted | default: 0 }}&loop={{ block.settings.loop | default: 0 }}"
+                  frameborder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            {% else %}
+              <!-- Placeholder -->
+              <div class="placeholder-video">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                </svg>
+                <p>Add a video</p>
+              </div>
+            {% endif %}
+
+            <!-- Video Overlay -->
+            <div class="video-overlay">
+              {% if block.settings.title != blank %}
+                <h3 class="video-title">{{ block.settings.title }}</h3>
+              {% endif %}
+              
+              <!-- Mute/Unmute Toggle -->
+              {% if block.settings.show_mute_toggle %}
+                <button class="mute-toggle" aria-label="Toggle mute">
+                  <svg class="mute-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M15.54 8.46C16.4774 9.39764 17.0039 10.6692 17.0039 11.995C17.0039 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <svg class="unmute-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+                    <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M23 9L17 15M17 9L23 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              {% endif %}
+
+              <!-- Fullscreen Toggle -->
+              {% if block.settings.show_fullscreen_toggle %}
+                <button class="fullscreen-toggle" aria-label="Toggle fullscreen">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 3H5C3.89543 3 3 3.89543 3 5V8M21 8V5C21 3.89543 20.1046 3 19 3H16M16 21H19C20.1046 21 21 20.1046 21 19V16M3 16V19C3 20.1046 3.89543 21 5 21H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- View/CTA Button -->
+          {% if block.settings.button_text != blank %}
+            <a href="{{ block.settings.button_link }}" class="view-button">
+              {{ block.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation Arrow Right -->
+    <button class="gallery-nav gallery-nav-right" aria-label="Next video">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const leftNav = document.querySelector('.gallery-nav-left');
+    const rightNav = document.querySelector('.gallery-nav-right');
+    let currentIndex = Math.floor(galleryItems.length / 2);
+
+    function updateGallery() {
+      galleryItems.forEach((item, index) => {
+        item.classList.remove('active', 'left-1', 'left-2', 'right-1', 'right-2');
+        
+        const diff = index - currentIndex;
+        
+        if (diff === 0) {
+          item.classList.add('active');
+          // Play active video if autoplay is enabled
+          const video = item.querySelector('video');
+          if (video && video.hasAttribute('autoplay')) {
+            video.play().catch(e => console.log('Autoplay prevented'));
+          }
+        } else {
+          // Pause non-active videos
+          const video = item.querySelector('video');
+          if (video) {
+            video.pause();
+          }
+          
+          if (diff === -1) {
+            item.classList.add('left-1');
+          } else if (diff === -2) {
+            item.classList.add('left-2');
+          } else if (diff === 1) {
+            item.classList.add('right-1');
+          } else if (diff === 2) {
+            item.classList.add('right-2');
+          }
+        }
+      });
+    }
+
+    leftNav.addEventListener('click', function() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateGallery();
+      }
+    });
+
+    rightNav.addEventListener('click', function() {
+      if (currentIndex < galleryItems.length - 1) {
+        currentIndex++;
+        updateGallery();
+      }
+    });
+
+    // Mute toggle functionality
+    document.querySelectorAll('.mute-toggle').forEach(toggle => {
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const videoWrapper = this.closest('.video-wrapper');
+        const video = videoWrapper.querySelector('video');
+        const muteIcon = this.querySelector('.mute-icon');
+        const unmuteIcon = this.querySelector('.unmute-icon');
+        
+        if (video) {
+          video.muted = !video.muted;
+          if (video.muted) {
+            muteIcon.style.display = 'none';
+            unmuteIcon.style.display = 'block';
+          } else {
+            muteIcon.style.display = 'block';
+            unmuteIcon.style.display = 'none';
+          }
+        }
+      });
+    });
+
+    // Fullscreen toggle functionality
+    document.querySelectorAll('.fullscreen-toggle').forEach(toggle => {
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const videoWrapper = this.closest('.video-wrapper');
+        const video = videoWrapper.querySelector('video, iframe');
+        
+        if (video) {
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (video.webkitRequestFullscreen) {
+            video.webkitRequestFullscreen();
+          } else if (video.msRequestFullscreen) {
+            video.msRequestFullscreen();
+          }
+        }
+      });
+    });
+
+    updateGallery();
+  });
+</script>
+
+<style>
+.video-gallery-wrapper {
+  padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  overflow: hidden;
+}
+
+.video-gallery-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.video-stack {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-item {
+  position: absolute;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: scale(0.8) translateX(0);
+  pointer-events: none;
+}
+
+.gallery-item.active {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.gallery-item.left-1 {
+  opacity: 0.7;
+  transform: scale(0.85) translateX(-280px) rotate(-5deg);
+  z-index: 4;
+}
+
+.gallery-item.left-2 {
+  opacity: 0.5;
+  transform: scale(0.75) translateX(-450px) rotate(-8deg);
+  z-index: 3;
+}
+
+.gallery-item.right-1 {
+  opacity: 0.7;
+  transform: scale(0.85) translateX(280px) rotate(5deg);
+  z-index: 4;
+}
+
+.gallery-item.right-2 {
+  opacity: 0.5;
+  transform: scale(0.75) translateX(450px) rotate(8deg);
+  z-index: 3;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 400px;
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: #000;
+}
+
+.gallery-video,
+.video-embed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-embed iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder-video {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.video-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.mute-toggle,
+.fullscreen-toggle {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+}
+
+.mute-toggle:hover,
+.fullscreen-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.view-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 40px;
+  background: {{ section.settings.button_background }};
+  color: {{ section.settings.button_text_color }};
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.view-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-nav:hover {
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-nav-left {
+  left: 20px;
+}
+
+.gallery-nav-right {
+  right: 20px;
+}
+
+@media (max-width: 768px) {
+  .video-wrapper {
+    width: 280px;
+    height: 380px;
+  }
+
+  .gallery-item.left-1,
+  .gallery-item.right-1 {
+    transform: scale(0.7) translateX(0);
+    opacity: 0.3;
+  }
+
+  .gallery-item.left-2,
+  .gallery-item.right-2 {
+    display: none;
+  }
+
+  .gallery-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .video-title {
+    font-size: 14px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Video Gallery",
+  "tag": "section",
+  "class": "section-video-gallery",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Video Title",
+          "default": "Blue Chanderi Kurta"
+        },
+        {
+          "type": "header",
+          "content": "Video Source (Choose One)"
+        },
+        {
+          "type": "video",
+          "id": "video_shopify",
+          "label": "Shopify Hosted Video"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (.mp4, .webm)",
+          "info": "Direct link to video file"
+        },
+        {
+          "type": "text",
+          "id": "youtube_id",
+          "label": "YouTube Video ID",
+          "info": "Example: dQw4w9WgXcQ"
+        },
+        {
+          "type": "text",
+          "id": "vimeo_id",
+          "label": "Vimeo Video ID",
+          "info": "Example: 123456789"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster Image (Thumbnail)",
+          "info": "Shows before video plays"
+        },
+        {
+          "type": "header",
+          "content": "Video Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay",
+          "default": false,
+          "info": "Video will play automatically when active"
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Loop",
+          "default": true,
+          "info": "Video will replay continuously"
+        },
+        {
+          "type": "checkbox",
+          "id": "muted",
+          "label": "Muted by default",
+          "default": true,
+          "info": "Video will start muted"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_controls",
+          "label": "Show Video Controls",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mute_toggle",
+          "label": "Show Mute Toggle Button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_fullscreen_toggle",
+          "label": "Show Fullscreen Toggle",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Call to Action"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Gallery",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
