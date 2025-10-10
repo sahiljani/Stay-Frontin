@@ -418,6 +418,36 @@
         "padding_top": 80,
         "padding_bottom": 80
       }
+    },
+    "video_carousel_2_LLHhmR": {
+      "type": "video-carousel-2",
+      "blocks": {
+        "video_rUmrby": {
+          "type": "video",
+          "settings": {
+            "title": "Crimson Red Print"
+          }
+        },
+        "video_Ncryj8": {
+          "type": "video",
+          "settings": {
+            "title": "Green Elegance"
+          }
+        },
+        "video_rNFPEV": {
+          "type": "video",
+          "settings": {
+            "title": "Blue Floral"
+          }
+        }
+      },
+      "block_order": [
+        "video_rUmrby",
+        "video_Ncryj8",
+        "video_rNFPEV"
+      ],
+      "name": "Video Carousel",
+      "settings": {}
     }
   },
   "order": [
@@ -427,6 +457,7 @@
     "feature_showcase_7q9V7E",
     "comparison_table_xmXfkH",
     "trust_badges_multicolumn",
-    "final_cta_section"
+    "final_cta_section",
+    "video_carousel_2_LLHhmR"
   ]
 }

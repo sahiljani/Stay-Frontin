@@ -440,16 +440,17 @@
           "default": "Video Title"
         },
         {
-          "type": "url",
-          "id": "video_file",
-          "label": "Video File URL",
-          "info": "Direct URL to .mp4 video file"
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Video URL",
+          "accept": ["youtube", "vimeo"],
+          "info": "YouTube or Vimeo video URL"
         },
         {
-          "type": "video",
-          "id": "video_shopify",
-          "label": "Upload Video",
-          "info": "Or upload video directly to Shopify"
+          "type": "text",
+          "id": "video_file",
+          "label": "Direct Video URL",
+          "info": "Direct .mp4 video file URL (from Shopify Files or external CDN)"
         },
         {
           "type": "image_picker",
