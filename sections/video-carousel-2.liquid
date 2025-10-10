@@ -290,7 +290,7 @@
 
     // Click on cards to navigate
     var cards = section.querySelectorAll('.video-card');
-    cards.forEach(function(card, index) {
+    cards.forEach(function(card) {
       card.addEventListener('click', function(e) {
         if (card.classList.contains('side-left')) {
           changeSlide(-1);
