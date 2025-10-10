@@ -301,49 +301,62 @@
 
 <script>
 (function() {
-  const sectionId = '{{ section.id }}';
-  let currentIndex = 1;
-  const totalCards = {{ section.blocks.size }};
-
-  window['changeSlideFunc' + sectionId] = function(direction) {
-    currentIndex += direction;
-    if (currentIndex < 0) currentIndex = totalCards - 1;
-    if (currentIndex >= totalCards) currentIndex = 0;
-    updateCarousel();
-  };
+  var sectionId = '{{ section.id }}';
+  var currentIndex = 1;
+  var totalCards = {{ section.blocks.size }};
+  var isInitialized = false;
 
   function updateCarousel() {
-    const cards = document.querySelectorAll('#track-' + sectionId + ' .video-card');
+    var track = document.getElementById('track-' + sectionId);
+    if (!track) return;
     
-    cards.forEach((card, index) => {
+    var cards = track.querySelectorAll('.video-card');
+    
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
       card.className = 'video-card';
       
-      const video = card.querySelector('video');
-      if (video) video.pause();
-      
-      if (index === currentIndex) {
-        card.classList.add('center');
-        if (video) video.play();
-      } else if (index === (currentIndex - 1 + totalCards) % totalCards) {
-        card.classList.add('side-left');
-      } else if (index === (currentIndex + 1) % totalCards) {
-        card.classList.add('side-right');
-      } else {
-        card.classList.add('hidden');
+      var video = card.querySelector('video');
+      if (video) {
+        video.pause();
       }
-    });
+      
+      if (i === currentIndex) {
+        card.className = 'video-card center';
+        if (video) {
+          video.play().catch(function(err) {});
+        }
+      } else if (i === (currentIndex - 1 + totalCards) % totalCards) {
+        card.className = 'video-card side-left';
+      } else if (i === (currentIndex + 1) % totalCards) {
+        card.className = 'video-card side-right';
+      } else {
+        card.className = 'video-card hidden';
+      }
+    }
   }
 
-  window['toggleMuteVideo' + sectionId] = function(index) {
-    const video = document.getElementById('video-' + sectionId + '-' + index);
-    if (video) {
+  function changeSlide(direction) {
+    currentIndex += direction;
+    if (currentIndex < 0) {
+      currentIndex = totalCards - 1;
+    }
+    if (currentIndex >= totalCards) {
+      currentIndex = 0;
+    }
+    updateCarousel();
+  }
+
+  function toggleMute(index) {
+    var video = document.getElementById('video-' + sectionId + '-' + index);
+    if (video && video.tagName === 'VIDEO') {
       video.muted = !video.muted;
     }
-  };
+  }
 
-  window['toggleFullscreenVideo' + sectionId] = function(index) {
-    const video = document.getElementById('video-' + sectionId + '-' + index);
-    if (video) {
+  function toggleFullscreen(index) {
+    var video = document.getElementById('video-' + sectionId + '-' + index);
+    if (video && video.tagName === 'VIDEO') {
       if (video.requestFullscreen) {
         video.requestFullscreen();
       } else if (video.webkitRequestFullscreen) {
@@ -354,27 +367,58 @@
         video.msRequestFullscreen();
       }
     }
-  };
-
-  window['closeModalFunc' + sectionId] = function() {
-    const modal = document.getElementById('modal-' + sectionId);
-    const modalVideo = document.getElementById('modal-video-' + sectionId);
-    
-    modal.classList.remove('active');
-    modalVideo.pause();
-    modalVideo.src = '';
-  };
-
-  const modal = document.getElementById('modal-' + sectionId);
-  if (modal) {
-    modal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        window['closeModalFunc' + sectionId]();
-      }
-    });
   }
 
-  updateCarousel();
+  function init() {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    // Arrow buttons
+    var prevBtn = document.querySelector('.video-carousel-section .carousel-arrow.prev');
+    var nextBtn = document.querySelector('.video-carousel-section .carousel-arrow.next');
+    
+    if (prevBtn) {
+      prevBtn.onclick = function(e) {
+        e.preventDefault();
+        changeSlide(-1);
+      };
+    }
+    
+    if (nextBtn) {
+      nextBtn.onclick = function(e) {
+        e.preventDefault();
+        changeSlide(1);
+      };
+    }
+
+    // Control buttons
+    var muteButtons = document.querySelectorAll('#track-' + sectionId + ' .video-menu-btn[aria-label="Toggle mute"]');
+    var fullscreenButtons = document.querySelectorAll('#track-' + sectionId + ' .video-menu-btn[aria-label="Fullscreen"]');
+    
+    muteButtons.forEach(function(btn, index) {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMute(index);
+      };
+    });
+    
+    fullscreenButtons.forEach(function(btn, index) {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFullscreen(index);
+      };
+    });
+
+    updateCarousel();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 
